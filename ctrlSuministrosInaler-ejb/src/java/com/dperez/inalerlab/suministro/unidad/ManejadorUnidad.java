@@ -1,0 +1,61 @@
+package com.dperez.inalerlab.suministro.unidad;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+@Named
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class ManejadorUnidad {
+    @PersistenceContext(unitName = "CtrlSuministros_PU")
+    private EntityManager em;
+    
+    public int CrearUnidad(Unidad Unidad){
+        try{
+            em.persist(Unidad);
+            return Unidad.getIdUnidad();
+        }catch(Exception ex){}
+        return -1;
+    }
+    
+    public int ActualizarUnidad(Unidad Unidad){
+        try{
+            em.merge(Unidad);
+            return Unidad.getIdUnidad();
+        }catch(Exception ex){}
+        return -1;
+    }
+    
+    public int BorrarUnidad(Unidad Unidad){
+        try{
+            em.remove(Unidad);
+            return Unidad.getIdUnidad();
+        }catch(Exception ex){}
+        return -1;
+    }
+    
+    public Unidad ObtenerUnidad(int IdUnidad){
+        TypedQuery<Unidad> query = em.createQuery("SELECT u FROM Unidad u WHERE u.IdUnidad= :idUnidad", Unidad.class);
+        query.setParameter("idUnidad", IdUnidad);
+        try{
+            return query.getSingleResult();
+        }catch(Exception ex){}
+        return null;
+    }
+    
+    public List<Unidad> ListarUnidades(){
+        List<Unidad> Unidades = new ArrayList<>();
+        TypedQuery<Unidad> query = em.createQuery("FROM Unidad u", Unidad.class);
+        try{
+            Unidades = query.getResultList();
+        }catch(Exception ex){}
+        return Unidades;
+    }
+}
