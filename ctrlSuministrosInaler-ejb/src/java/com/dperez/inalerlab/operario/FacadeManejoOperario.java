@@ -1,7 +1,8 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.permiso.EnumPermiso;
-import java.util.ArrayList;
+import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
+import com.dperez.inalerlab.operario.permiso.Permiso;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -13,9 +14,11 @@ import javax.inject.Named;
  */
 @Named
 @Stateless
-public class FacadeManejoOperario {
+public class FacadeManejoOperario implements Serializable {
     @Inject
     private ControladorOperario cOperario;
+    @Inject
+    private ControladorPermiso cPermiso;
 
     /**
      * Lista todos los operario registrados en la base de datos.
@@ -37,14 +40,10 @@ public class FacadeManejoOperario {
     
     /**
      * Lista todos los permisos existentes.
-     * @return Retorna una lista de strings que representan cada permiso.
+     * @return Retorna una lista de permisos.
      */
-    public List<String> ListarStrPermisos(){
-        List<String> permisos = new ArrayList<>();
-        for (int i = 0; i < EnumPermiso.values().length; i++) {
-            permisos.add(EnumPermiso.values()[i].toString());
-        }
-        return permisos;
+    public List<Permiso> ListarStrPermisos(){
+        return cPermiso.ListarPermisos();
     }
 
     /**
@@ -84,11 +83,11 @@ public class FacadeManejoOperario {
      * Agrega el permiso especificado al operario indicado por su id.
      * No se comprueba que el permiso no este ya agregado.
      * @param IdOperario
-     * @param Permiso
+     * @param IdPermiso
      * @return Retorna el id del operario si se agrego. Retorna -1 si no se pudo agregar.
      */
-    public int AgregarPermiso(int IdOperario, EnumPermiso Permiso){
-        return cOperario.AgregarPermiso(IdOperario, Permiso);
+    public int AgregarPermiso(int IdOperario, int IdPermiso){
+        return cOperario.AgregarPermiso(IdOperario, cPermiso.BuscarPermiso(IdPermiso));
     }
     
     /**
@@ -109,7 +108,7 @@ public class FacadeManejoOperario {
      * @param PasswordNuevo Password que se asociara al operario.
      * @return Retorna el id del operario se se actualizo. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
-        return cOperario.ModificarPassword(IdOperario, PasswordActual, PasswordNuevo);
-    }
+//    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
+//        return cOperario.ModificarPassword(IdOperario, PasswordActual, PasswordNuevo);
+//    }
 }

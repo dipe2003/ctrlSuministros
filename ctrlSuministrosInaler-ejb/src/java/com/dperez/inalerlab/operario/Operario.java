@@ -1,16 +1,16 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.permiso.EnumPermiso;
+import com.dperez.inalerlab.operario.credenciales.Credenciales;
+import com.dperez.inalerlab.operario.permiso.Permiso;
 import com.dperez.inalerlab.suministro.lote.Ingreso;
 import com.dperez.inalerlab.suministro.lote.Salida;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Operario implements Serializable{
@@ -18,45 +18,44 @@ public class Operario implements Serializable{
     private int IdOperario;
     private String NombreOperario;
     private String ApellidoOperario;
-    private String Password;
+    @OneToOne
+    private Credenciales CredencialesOperario;
     @OneToMany(mappedBy = "OperarioIngresoSuministro" )
     private List<Ingreso> IngresosSuministrosOperario;
     @OneToMany(mappedBy = "OperarioSalidaSuministro")
     private List<Salida> SalidasSuministrosOperario;
     @OneToMany
-    private Map<String, EnumPermiso> PermisosOperario;
+    private List<Permiso> PermisosOperario;
     
     //	Constructores
     public Operario(){}
-    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String Password){
+    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, Credenciales CredencialesOperario){
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
         this.ApellidoOperario = ApellidoOperario;
-        this.Password = Password;
+        this.CredencialesOperario = CredencialesOperario;
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
-        this.PermisosOperario = new HashMap<>();
+        this.PermisosOperario = new ArrayList<>();
     }
     
     //	Getters
     public int getIdOperario(){return this.IdOperario;}
     public String getNombreOperario(){return this.NombreOperario;}
     public String getApellidoOperario(){return this.ApellidoOperario;}
-    public Map<String, EnumPermiso> getPermisosOperario(){return this.PermisosOperario;}    
+    public List<Permiso> getPermisosOperario(){return this.PermisosOperario;}    
     public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}    
     public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
+    public Credenciales getCredencialesOperario() {return CredencialesOperario;}
     
     //	Setters
     public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
     public void setNombreOperario(String NombreOperario){this.NombreOperario = NombreOperario;}
     public void setApellidoOperario(String ApellidoOperario){this.ApellidoOperario = ApellidoOperario;}
-    public void setPermisosOperario(Map<String, EnumPermiso> PermisosOperario){this.PermisosOperario = PermisosOperario;}
-    public void setPassword(String PasswordActual, String PasswordNuevo)throws IllegalArgumentException{
-        if(!this.Password.equals(PasswordActual)) throw new IllegalArgumentException("El password no es correcto.");
-        this.Password = PasswordNuevo;
-    }
+    public void setPermisosOperario(List<Permiso> PermisosOperario){this.PermisosOperario = PermisosOperario;}
     public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {this.IngresosSuministrosOperario = IngresosSuministrosOperario;}
     public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
+    public void setCredencialesOperario(Credenciales CredencialesOperario) {this.CredencialesOperario = CredencialesOperario;}
     
     //	Ingresos - Egresos
     public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){
@@ -76,23 +75,23 @@ public class Operario implements Serializable{
     public void removeSalidaSuministroOperario(Salida SalidaSuministroOperario){this.SalidasSuministrosOperario.remove(SalidaSuministroOperario);}
     
     //	Permisos
-    public void addPermisoOperario(EnumPermiso PermisoOperario){this.PermisosOperario.put(PermisoOperario.toString(), PermisoOperario);}
-    public void removePermisoOperario(String PermisoOperario){this.PermisosOperario.remove(PermisoOperario);}
-    
+    public void addPermisoOperario(Permiso PermisoOperario){this.PermisosOperario.add(PermisoOperario);}
+    public void removePermisoOperario(Permiso PermisoOperario){this.PermisosOperario.remove(PermisoOperario);}
+        
     public List<String> ListarPermisosOperario(){
         List<String> permisos = new ArrayList<>();
-        for(String key : this.PermisosOperario.keySet()){
-            permisos.add(this.PermisosOperario.get(key).toString());
+        for(Permiso permiso : this.PermisosOperario){
+            permisos.add(permiso.getNombrePermiso());
         }
         return permisos;
     }
     
     public boolean TienePermiso(String PermisoOperario){
-        return this.PermisosOperario.get(PermisoOperario)!=null;
-    }
-    
-    public boolean EsPasswordValido(String Password){
-        return this.Password.equals(Password);
-    }
-    
+        for(Permiso permiso : this.PermisosOperario){
+            if (permiso.getNombrePermiso().equals(PermisoOperario)) {
+                return true;
+            }
+        }
+        return false;
+    }    
 }

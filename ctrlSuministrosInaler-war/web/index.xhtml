@@ -7,6 +7,16 @@
     </h:head>
     <h:body>
         Hello from Facelets
+        
+        <div>
+            <h:form id="frm">
+                <h:inputText value="#{loginBean.idOperario}" />
+                <h:inputSecret value="#{loginBean.password}" />
+                <h:commandButton value="Login" action="#{loginBean.login()}"/>
+                <h:message for="frm"/>
+            </h:form>    
+        </div>
+        
     </h:body>
 </html>
 

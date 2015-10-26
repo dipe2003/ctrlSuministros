@@ -1,6 +1,7 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.permiso.EnumPermiso;
+import com.dperez.inalerlab.operario.credenciales.ControladorCredenciales;
+import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -12,6 +13,8 @@ import javax.inject.Named;
 public class ControladorOperario implements Serializable{
     @Inject
     private ManejadorOperario mOperario;
+    @Inject
+    private ControladorCredenciales cCredenciales;
     
     /**
      * Crea un operario en la base de datos.
@@ -21,8 +24,8 @@ public class ControladorOperario implements Serializable{
      * @param Password
      * @return 
      */
-    public Operario CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String Password){
-        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, Password);
+    public Operario CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String Password){ 
+        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, cCredenciales.CrearCredenciales(Password));
         if(mOperario.CrearOperario(operario)!=-1){
             return operario;
         }
@@ -56,19 +59,19 @@ public class ControladorOperario implements Serializable{
      */
     public boolean ValidarOperario(int IdOperario, String Password){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
-        return operario.EsPasswordValido(Password);
+        return cCredenciales.ValidarPassword(Password, operario.getCredencialesOperario().getIdCredenciales());
     }
     
     /**
      * Agrega el permiso indicado al usuario especificado por su id.
      * @param IdOperario
-     * @param Permiso
+     * @param PermisoOperario
      * @return retorna el id del operario si se agergo, sino retorna -1.
      */
-    public int AgregarPermiso(int IdOperario, EnumPermiso Permiso){
+    public int AgregarPermiso(int IdOperario, Permiso PermisoOperario){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
         if (operario!=null) {
-            operario.addPermisoOperario(Permiso);
+            operario.addPermisoOperario(PermisoOperario);
             return mOperario.ActualizarOperario(operario);
         }
         return -1;
@@ -95,12 +98,12 @@ public class ControladorOperario implements Serializable{
      * @param PasswordNuevo Password que se asociara al operario.
      * @return Retorna el id del operario se se actualizo. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
-        try{
-            Operario operario = mOperario.ObtenerOperario(IdOperario);
-            operario.setPassword(PasswordActual, PasswordNuevo);
-            return mOperario.ActualizarOperario(operario);
-        }catch(IllegalArgumentException ex){}
-        return -1;
-    }
+//    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
+//        try{
+//            Operario operario = mOperario.ObtenerOperario(IdOperario);
+//            operario.setPassword(PasswordActual, PasswordNuevo);
+//            return mOperario.ActualizarOperario(operario);
+//        }catch(IllegalArgumentException ex){}
+//        return -1;
+//    }
 }	
