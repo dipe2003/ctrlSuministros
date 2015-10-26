@@ -16,10 +16,9 @@ import javax.inject.Named;
 @Named
 @Stateless
 public class Seguridad implements Serializable{
-   //   constructores
-    
-    public Seguridad(){
-    }
+   
+    //   constructores    
+    public Seguridad(){}
 
     /**
      * Devuelve la combinacion passord + salt
@@ -40,30 +39,30 @@ public class Seguridad implements Serializable{
     /**
      * Devuelve el password correspondiente al salt.
      * @param Password
-     * @param Salt
+     * @param Salt caracteres generados de forma aleatoria para agregar al string de password.
      * @return 
      */
     public String getPasswordSeguro(String Password, String Salt){
         return getSecurePassword(Password, Salt);
     }
     
+    /**
+     * Utiliza MessageDigest SHA-256 para generar passwords.
+     * Utiliza los bytes de sal y password y los convierte a hexadecimal.
+     * @param passwordToHash
+     * @param salt
+     * @return 
+     */
     private static String getSecurePassword(String passwordToHash, String salt) {
         String generatedPassword = null;
         try {
-            // Create MessageDigest instance for MD5
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            //Add password bytes to digest
             md.update(salt.getBytes());
-            //Get the hash's bytes
             byte[] bytes = md.digest(passwordToHash.getBytes());
-            //This bytes[] has bytes in decimal format;
-            //Convert it to hexadecimal format
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++)
-            {
+            for(int i=0; i< bytes.length ;i++){
                 sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
-            //Get complete hashed password in hex format
             generatedPassword = sb.toString();
         }
         catch (NoSuchAlgorithmException e) {
@@ -72,15 +71,17 @@ public class Seguridad implements Serializable{
         return generatedPassword;
     }
      
-    //Add salt
+
+    /**
+     * Genera un array de caracteres de forma aleatoria.
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException 
+     */
     private static String getSalt() throws NoSuchAlgorithmException, NoSuchProviderException{
-        //Always use a SecureRandom generator
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        //Create array for salt
         byte[] salt = new byte[16];
-        //Get a random salt
         sr.nextBytes(salt);
-        //return salt
         return salt.toString();
     }
     

@@ -5,7 +5,6 @@ import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -45,7 +44,7 @@ public class loginBean implements Serializable{
             int idOp = fOperario.RegistrarOperario(2425, "diego", "perez", "2017.Calidad").getIdOperario();
             fOperario.AgregarPermiso(idOp, idPermiso);
             idPermiso = cPermiso.CrearPermiso("Analista").getIdPermiso();
-            idOp = fOperario.RegistrarOperario(914, "bruno", "braco", "labo.2015").getIdOperario();
+            idOp = fOperario.RegistrarOperario(914, "bruno", "bracco", "labo.2015").getIdOperario();
             fOperario.AgregarPermiso(idOp, idPermiso);
         }catch(NullPointerException ex){
             System.out.print(ex.getStackTrace());
