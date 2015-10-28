@@ -1,6 +1,6 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.credenciales.ControladorCredenciales;
+import com.dperez.inalerlab.operario.seguridad.ControladorSeguridad;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
 import java.util.List;
@@ -14,22 +14,19 @@ public class ControladorOperario implements Serializable{
     @Inject
     private ManejadorOperario mOperario;
     @Inject
-    private ControladorCredenciales cCredenciales;
-    
+    private ControladorSeguridad cSeg;
     /**
      * Crea un operario en la base de datos.
      * @param IdOperario
      * @param NombreOperario
      * @param ApellidoOperario
-     * @param Password
-     * @return 
+     * @param PasswordOperario
+     * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
-    public Operario CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String Password){ 
-        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, cCredenciales.CrearCredenciales(Password));
-        if(mOperario.CrearOperario(operario)!=-1){
-            return operario;
-        }
-        return null;
+    public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario){ 
+        String[] seg = cSeg.getPasswordSeguro(PasswordOperario);
+        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[1], seg[0]);
+        return mOperario.CrearOperario(operario);
     }
     
     /**
@@ -59,7 +56,8 @@ public class ControladorOperario implements Serializable{
      */
     public boolean ValidarOperario(int IdOperario, String Password){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
-        return cCredenciales.ValidarPassword(Password, operario.getCredencialesOperario().getIdCredenciales());
+        String[] seg = cSeg.getPasswordSeguro(Password);
+        return operario.getPasswordOperario().equals(cSeg.getPasswordSeguro(Password, operario.getPasswordKeyOperario()));
     }
     
     /**

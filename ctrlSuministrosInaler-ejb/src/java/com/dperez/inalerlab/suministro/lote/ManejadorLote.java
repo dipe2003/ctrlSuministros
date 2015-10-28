@@ -42,7 +42,7 @@ public class ManejadorLote {
     }
     
     public Lote ObtenerLote(int IdLote){
-        TypedQuery<Lote> query = em.createQuery("SELECT s FROM Lote s WHERE s.IdLote= :idLote", Lote.class);
+        TypedQuery<Lote> query = em.createQuery("FROM Lote s WHERE s.IdLote= :idLote", Lote.class);
         query.setParameter("idLote", IdLote);
         try{
             return query.getSingleResult();

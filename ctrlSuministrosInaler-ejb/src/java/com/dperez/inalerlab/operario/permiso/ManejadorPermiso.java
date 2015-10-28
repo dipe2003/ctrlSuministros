@@ -42,7 +42,7 @@ public class ManejadorPermiso {
     }
     
     public Permiso ObtenerPermiso(int IdPermiso){
-        TypedQuery<Permiso> query = em.createQuery("SELECT o FROM Permiso o WHERE o.IdPermiso= :idPermiso", Permiso.class);
+        TypedQuery<Permiso> query = em.createQuery("FROM Permiso o WHERE o.IdPermiso= :idPermiso", Permiso.class);
         query.setParameter("idPermiso", IdPermiso);
         try{
             return query.getSingleResult();

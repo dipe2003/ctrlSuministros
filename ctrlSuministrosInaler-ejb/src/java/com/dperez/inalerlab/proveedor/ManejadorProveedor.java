@@ -42,7 +42,7 @@ public class ManejadorProveedor {
     }
     
     public Proveedor ObtenerProveedor(int IdProveedor){
-        TypedQuery<Proveedor> query = em.createQuery("SELECT u FROM Proveedor u WHERE u.IdProveedor= :idProveedor", Proveedor.class);
+        TypedQuery<Proveedor> query = em.createQuery("FROM Proveedor u WHERE u.IdProveedor= :idProveedor", Proveedor.class);
         query.setParameter("idProveedor", IdProveedor);
         try{
             return query.getSingleResult();

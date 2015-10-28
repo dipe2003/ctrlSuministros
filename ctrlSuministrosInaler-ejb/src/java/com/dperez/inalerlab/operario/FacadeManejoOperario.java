@@ -1,5 +1,6 @@
 package com.dperez.inalerlab.operario;
 
+import com.dperez.inalerlab.operario.seguridad.ControladorSeguridad;
 import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
@@ -19,6 +20,8 @@ public class FacadeManejoOperario implements Serializable {
     private ControladorOperario cOperario;
     @Inject
     private ControladorPermiso cPermiso;
+    @Inject
+    private ControladorSeguridad cSeg;
 
     /**
      * Lista todos los operario registrados en la base de datos.
@@ -72,11 +75,11 @@ public class FacadeManejoOperario implements Serializable {
      * @param NombreOperario
      * @param ApellidoOperario
      * @param Password
-     * @return Retorna el operario creado.
+     * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
-    public Operario RegistrarOperario(int IdOperario, String NombreOperario, String ApellidoOperario, 
-            String Password){
-        return cOperario.CrearOperario(IdOperario, NombreOperario, ApellidoOperario, Password);
+    public int RegistrarOperario(int IdOperario, String NombreOperario, String ApellidoOperario, 
+            String Password){        
+        return cOperario.CrearOperario(IdOperario, NombreOperario, ApellidoOperario,  Password);
     }
     
     /**

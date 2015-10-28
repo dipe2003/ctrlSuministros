@@ -1,5 +1,6 @@
 package com.dperez.inalerlab.suministro;
 
+import com.dperez.inalerlab.suministro.stockminimo.StockMinimo;
 import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
@@ -14,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Suministro implements Serializable{
+abstract public class Suministro implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int IdSuministro;
@@ -65,6 +66,9 @@ public class Suministro implements Serializable{
     
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){
+        for (StockMinimo stock : this.StocksMinimosSuministro) {
+            stock.setVigente(Boolean.FALSE);
+        }
         this.StocksMinimosSuministro.add(StockMinimoSuministro);
     }
     public StockMinimo getStockMinimoSuministro(){

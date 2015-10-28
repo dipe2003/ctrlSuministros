@@ -1,5 +1,5 @@
 
-package com.dperez.inalerlab.operario.credenciales;
+package com.dperez.inalerlab.operario.seguridad;
 
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -15,10 +15,10 @@ import javax.inject.Named;
  */
 @Named
 @Stateless
-public class Seguridad implements Serializable{
+public class ControladorSeguridad implements Serializable{
    
     //   constructores    
-    public Seguridad(){}
+    public ControladorSeguridad(){}
 
     /**
      * Devuelve la combinacion passord + salt

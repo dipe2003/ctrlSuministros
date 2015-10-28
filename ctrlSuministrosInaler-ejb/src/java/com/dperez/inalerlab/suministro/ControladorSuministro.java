@@ -1,9 +1,11 @@
 package com.dperez.inalerlab.suministro;
 
+import com.dperez.inalerlab.suministro.stockminimo.StockMinimo;
 import com.dperez.inalerlab.proveedor.ControladorProveedor;
-import com.dperez.inalerlab.suministro.lote.ControladorLote;
+import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,7 +24,7 @@ public class ControladorSuministro implements Serializable{
     private ControladorProveedor cProveedor;
     
     @Inject
-    private ControladorLote cLote;
+    private ControladorStockMinimo cStock;
     
     /**
      * Crea un Crea un Reactivo Quimico en la base de datos.
@@ -31,56 +33,31 @@ public class ControladorSuministro implements Serializable{
      * @param CodigoSAPSuministro
      * @param IdUnidadSuministro
      * @param IdProveedorSuministro
-     * @return 
+     * @param TipoSuministro
+     * @return Devuelve el Id del suministro creado. Devuelve -1 cuando no se guardo el suministro.
      */
-    public Suministro CrearReactivoQuimico(String NombreSuministro, String DescripcionSuministro, 
-            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro){
-        Suministro suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
-                cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
-        if(mSuministro.CrearSuministro(suministro)!=-1){
-            return suministro;
+    public int CrearSuministro(String NombreSuministro, String DescripcionSuministro, 
+            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro){
+        Suministro suministro = null;
+        switch(TipoSuministro.toString()){
+            case  "Material":
+                suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                break;
+                
+            case "MedioEnsayo":
+                suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                break;
+                
+            case "ReactivoQuimico":
+                suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                break;
         }
-        return null;
-    }
-    
-    /**
-     * Crea un Medio de Cultivo en la base de datos.
-     * @param NombreSuministro
-     * @param DescripcionSuministro
-     * @param CodigoSAPSuministro
-     * @param IdUnidadSuministro
-     * @param IdProveedorSuministro
-     * @return 
-     */
-    public Suministro CrearMedioCultivo(String NombreSuministro, String DescripcionSuministro, 
-            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro){
-        Suministro suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
-                cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
-        if(mSuministro.CrearSuministro(suministro)!=-1){
-            return suministro;
-        }
-        return null;
-    }
-    
-    /**
-     * Crea un Material en la base de datos.
-     * @param NombreSuministro
-     * @param DescripcionSuministro
-     * @param CodigoSAPSuministro
-     * @param IdUnidadSuministro
-     * @param IdProveedorSuministro
-     * @return 
-     */
-    public Suministro CrearMaterial(String NombreSuministro, String DescripcionSuministro, 
-            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro){
-        Suministro suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
-                cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
-        if(mSuministro.CrearSuministro(suministro)!=-1){
-            return suministro;
-        }
-        return null;
+        return mSuministro.CrearSuministro(suministro);
     }    
-   
+       
     /**
      * Busca un suministro segun el id especificado.
      * @param IdSuministro
@@ -97,6 +74,24 @@ public class ControladorSuministro implements Serializable{
      */
     public List<Suministro> ListarSuministros(){
         return mSuministro.ListarSuministros();
+    }
+    
+    /**
+     *  STOCK MINIMO
+     */
+    
+    /**
+     * Registrar Stock Minimo de Suministro
+     * @param CantidadStockMinimo cantidad de suministro
+     * @param FechaVigenteStockMinimo fecha de entrada en vigencia
+     * @param IdSuministro id del suministro
+     * @return 
+     */
+    public int RegistrarStockMinimoSuministro(float CantidadStockMinimo, Date FechaVigenteStockMinimo, int IdSuministro){
+        StockMinimo stockMinimo = cStock.CrearStockMinimo(CantidadStockMinimo, FechaVigenteStockMinimo);
+        Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
+        suministro.addStockMinimoSuministro(stockMinimo);
+        return mSuministro.ActualizarSuministro(suministro);
     }
     
 }	

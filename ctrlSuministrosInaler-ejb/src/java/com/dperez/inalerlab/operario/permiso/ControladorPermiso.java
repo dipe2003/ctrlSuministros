@@ -15,14 +15,11 @@ public class ControladorPermiso implements Serializable{
     /**
      * Crea un permiso en la base de datos.
      * @param NombrePermiso
-     * @return 
+     * @return Retorna el id del permiso creado. Si no se creo retorna -1.
      */
-    public Permiso CrearPermiso(String NombrePermiso){
+    public int CrearPermiso(String NombrePermiso){
         Permiso permiso = new Permiso(NombrePermiso);
-        if(mPermiso.CrearPermiso(permiso)!=-1){
-            return permiso;
-        }
-        return null;
+        return mPermiso.CrearPermiso(permiso);
     }
     
     /**

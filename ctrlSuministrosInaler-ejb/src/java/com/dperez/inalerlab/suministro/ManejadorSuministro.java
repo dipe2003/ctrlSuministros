@@ -42,7 +42,7 @@ public class ManejadorSuministro {
     }
     
     public Suministro ObtenerSuministro(int IdSuministro){
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s WHERE s.IdSuministro= :idSuministro", Suministro.class);
+        TypedQuery<Suministro> query = em.createQuery("FROM Suministro s WHERE s.IdSuministro= :idSuministro", Suministro.class);
         query.setParameter("idSuministro", IdSuministro);
         try{
             return query.getSingleResult();

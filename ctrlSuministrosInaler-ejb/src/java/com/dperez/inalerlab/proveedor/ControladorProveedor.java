@@ -16,14 +16,11 @@ public class ControladorProveedor implements Serializable{
      * Crea un proveedor en la base de datos.
      * @param NombreProveedor
      * @param ContactoProveedor
-     * @return 
+     * @return Retorna el id del proveedor creado. Si no se creo retorna -1.
      */
-    public Proveedor CrearProveedor(String NombreProveedor, String ContactoProveedor){
+    public int CrearProveedor(String NombreProveedor, String ContactoProveedor){
         Proveedor proveedor = new Proveedor(NombreProveedor, ContactoProveedor);
-        if(mProveedor.CrearProveedor(proveedor)!=-1){
-            return proveedor;
-        }
-        return null;
+        return mProveedor.CrearProveedor(proveedor);
     }
     
     /**
@@ -42,6 +39,20 @@ public class ControladorProveedor implements Serializable{
      */
     public List<Proveedor> ListarProveedores(){
         return mProveedor.ListarProveedores();
+    }
+    
+    /**
+     * Actualiza los datos de un usuario especificado por su id.
+     * @param IdProveedor
+     * @param NombreProveedor
+     * @param ContactoProveedor
+     * @return Retorna el id del proveedor. Retorna -1 si no se pudo actualizar.
+     */
+    public int ModificarDatosProveedor(int IdProveedor, String NombreProveedor, String ContactoProveedor){
+        Proveedor proveedor = mProveedor.ObtenerProveedor(IdProveedor);
+        proveedor.setNombreProveedor(NombreProveedor);
+        proveedor.setContactoProveedor(ContactoProveedor);
+        return mProveedor.ActualizarProveedor(proveedor);
     }
     
 }	

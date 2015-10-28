@@ -1,6 +1,5 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.credenciales.Credenciales;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import com.dperez.inalerlab.suministro.lote.Ingreso;
 import com.dperez.inalerlab.suministro.lote.Salida;
@@ -10,7 +9,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Operario implements Serializable{
@@ -18,8 +16,8 @@ public class Operario implements Serializable{
     private int IdOperario;
     private String NombreOperario;
     private String ApellidoOperario;
-    @OneToOne
-    private Credenciales CredencialesOperario;
+    private String PasswordKeyOperario;
+    private String PasswordOperario;
     @OneToMany(mappedBy = "OperarioIngresoSuministro" )
     private List<Ingreso> IngresosSuministrosOperario;
     @OneToMany(mappedBy = "OperarioSalidaSuministro")
@@ -29,11 +27,12 @@ public class Operario implements Serializable{
     
     //	Constructores
     public Operario(){}
-    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, Credenciales CredencialesOperario){
+    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario){
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
         this.ApellidoOperario = ApellidoOperario;
-        this.CredencialesOperario = CredencialesOperario;
+        this.PasswordKeyOperario = PasswordKeyOperario;
+        this.PasswordOperario = PasswordOperario;
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.PermisosOperario = new ArrayList<>();
@@ -46,7 +45,8 @@ public class Operario implements Serializable{
     public List<Permiso> getPermisosOperario(){return this.PermisosOperario;}    
     public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}    
     public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
-    public Credenciales getCredencialesOperario() {return CredencialesOperario;}
+    public String getPasswordKeyOperario() {return PasswordKeyOperario;}
+    public String getPasswordOperario() {return PasswordOperario;}
     
     //	Setters
     public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
@@ -55,7 +55,8 @@ public class Operario implements Serializable{
     public void setPermisosOperario(List<Permiso> PermisosOperario){this.PermisosOperario = PermisosOperario;}
     public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {this.IngresosSuministrosOperario = IngresosSuministrosOperario;}
     public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
-    public void setCredencialesOperario(Credenciales CredencialesOperario) {this.CredencialesOperario = CredencialesOperario;}
+    public void setPasswordKeyOperario(String PasswordKeyOperario) {this.PasswordKeyOperario = PasswordKeyOperario;}
+    public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}    
     
     //	Ingresos - Egresos
     public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){

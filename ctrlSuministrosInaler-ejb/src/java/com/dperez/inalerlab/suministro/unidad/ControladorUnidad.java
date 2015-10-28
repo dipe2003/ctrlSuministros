@@ -12,12 +12,9 @@ public class ControladorUnidad implements Serializable{
     @Inject
     private ManejadorUnidad mUnidad;
     
-    public Unidad CrearUnidad(){
-        Unidad unidad = new Unidad();
-        if(mUnidad.CrearUnidad(unidad)!=-1){
-            return unidad;
-        }
-        return null;
+    public int CrearUnidad(String NombreUnidad){
+        Unidad unidad = new Unidad(NombreUnidad);
+        return mUnidad.CrearUnidad(unidad);
     }
         
     public Unidad BuscarUnidad(int IdUnidad){

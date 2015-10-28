@@ -42,7 +42,7 @@ public class ManejadorUnidad {
     }
     
     public Unidad ObtenerUnidad(int IdUnidad){
-        TypedQuery<Unidad> query = em.createQuery("SELECT u FROM Unidad u WHERE u.IdUnidad= :idUnidad", Unidad.class);
+        TypedQuery<Unidad> query = em.createQuery("FROM Unidad u WHERE u.IdUnidad= :idUnidad", Unidad.class);
         query.setParameter("idUnidad", IdUnidad);
         try{
             return query.getSingleResult();

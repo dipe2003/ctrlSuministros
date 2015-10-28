@@ -42,7 +42,7 @@ public class ManejadorOperario {
     }
     
     public Operario ObtenerOperario(int IdOperario){
-        TypedQuery<Operario> query = em.createQuery("SELECT o FROM Operario o WHERE o.IdOperario= :idOperario", Operario.class);
+        TypedQuery<Operario> query = em.createQuery("FROM Operario o WHERE o.IdOperario= :idOperario", Operario.class);
         query.setParameter("idOperario", IdOperario);
         try{
             return query.getSingleResult();
