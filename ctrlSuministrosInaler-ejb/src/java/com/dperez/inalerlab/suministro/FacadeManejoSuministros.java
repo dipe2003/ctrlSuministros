@@ -1,6 +1,5 @@
 package com.dperez.inalerlab.suministro;
 
-import com.dperez.inalerlab.proveedor.ControladorProveedor;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.Date;
@@ -18,8 +17,6 @@ public class FacadeManejoSuministros implements Serializable {
     private ControladorSuministro cSuministro;
     @Inject
     private ControladorUnidad cUnidad;
-    @Inject
-    private ControladorProveedor cProveedor;
 
     /**
      * Lista todos los suministros registrados en la base de datos.

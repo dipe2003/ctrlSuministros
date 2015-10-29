@@ -1,9 +1,8 @@
 package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.Operario;
-import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +16,7 @@ public class Salida implements Serializable{
     @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private int IdSalida;
     @Temporal(TemporalType.DATE)
-    private Calendar FechaSalida;
+    private Date FechaSalida;
     private float CantidadSalida;
     @ManyToOne
     private Lote LoteSalida;
@@ -26,20 +25,22 @@ public class Salida implements Serializable{
     
     //	Constructores
     public Salida(){}
-    public Salida(Calendar FechaSalida, float CantidadSalida){
+    public Salida(Date FechaSalida, float CantidadSalida, Lote LoteSalida){
         this.FechaSalida = FechaSalida;
         this.CantidadSalida = CantidadSalida;
+        this.LoteSalida = LoteSalida;
     }
     
     //	Getters
     public int getIdSalida(){return this.IdSalida;}
-    public Calendar getFechaSalida(){return this.FechaSalida;}
+    public Date getFechaSalida(){return this.FechaSalida;}
     public float getCantidadSalida(){return this.CantidadSalida;}
     public Operario getOperarioSalidaSuministro(){return this.OperarioSalidaSuministro;}
+    public Lote getLoteSalida() {return LoteSalida;}
     
     //	Setters
     public void setIdSalida(int IdSalida){this.IdSalida = IdSalida;}
-    public void setFechaSalida(Calendar FechaSalida){this.FechaSalida = FechaSalida;}
+    public void setFechaSalida(Date FechaSalida){this.FechaSalida = FechaSalida;}
     public void setCantidadSalida(float CantidadSalida){this.CantidadSalida = CantidadSalida;}
     public void setOperarioSalidaSuministro(Operario OperarioSalidaSuministro){
         this.OperarioSalidaSuministro = OperarioSalidaSuministro;
@@ -47,4 +48,11 @@ public class Salida implements Serializable{
             OperarioSalidaSuministro.getSalidasSuministrosOperario().add(this);
         }
     }
+    public void setLoteSalida(Lote LoteSalida) {
+        this.LoteSalida = LoteSalida;
+        if(!LoteSalida.getSalidasLote().contains(this)){
+            LoteSalida.getSalidasLote().add(this);
+        }
+    }
+    
 }

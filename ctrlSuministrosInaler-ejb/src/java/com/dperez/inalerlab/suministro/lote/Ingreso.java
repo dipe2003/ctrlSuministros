@@ -1,9 +1,8 @@
 package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.Operario;
-import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +16,9 @@ public class Ingreso implements Serializable{
     @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private int IdIngreso;
     @Temporal(TemporalType.DATE)
-    private Calendar FechaIngreso;
+    private Date FechaIngreso;
     private float CantidadIngreso;
+    private String NumeroFactura;
     @ManyToOne
     private Lote LoteIngreso;
     @ManyToOne
@@ -26,21 +26,24 @@ public class Ingreso implements Serializable{
     
     //	Constructores
     public Ingreso(){}
-    public Ingreso(Calendar FechaIngreso, float CantidadIngreso){
+    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, Lote LoteIngreso){
         this.FechaIngreso = FechaIngreso;
         this.CantidadIngreso = CantidadIngreso;
+        this.NumeroFactura = NumeroFactura;
+        this.LoteIngreso = LoteIngreso;
     }
     
     //	Getters
     public int getIdIngreso(){return this.IdIngreso;}
-    public Calendar getFechaIngreso(){return this.FechaIngreso;}
+    public Date getFechaIngreso(){return this.FechaIngreso;}
     public float getCantidadIngreso(){return this.CantidadIngreso;}    
     public Lote getLoteIngreso() {return LoteIngreso;}    
     public Operario getOperarioIngresoSuministro() {return OperarioIngresoSuministro;}
+    public String getNumeroFactura() {return NumeroFactura;}
     
     //	Setters
     public void setIdIngreso(int IdIngreso){this.IdIngreso = IdIngreso;}
-    public void setFechaIngreso(Calendar FechaIngreso){this.FechaIngreso = FechaIngreso;}
+    public void setFechaIngreso(Date FechaIngreso){this.FechaIngreso = FechaIngreso;}
     public void setCantidadIngreso(float CantidadIngreso){this.CantidadIngreso = CantidadIngreso;}
     public void setOperarioIngresoSuministro(Operario OperarioIngresoSuministro){
         this.OperarioIngresoSuministro = OperarioIngresoSuministro;
@@ -48,6 +51,13 @@ public class Ingreso implements Serializable{
             OperarioIngresoSuministro.getIngresosSuministrosOperario().add(this);
         }
     }
-    public void setLoteIngreso(Lote LoteIngreso) {this.LoteIngreso = LoteIngreso;}
+    public void setLoteIngreso(Lote LoteIngreso) {
+        this.LoteIngreso = LoteIngreso;
+        if (!LoteIngreso.getIngresosLote().contains(this)) {
+            LoteIngreso.getIngresosLote().add(this);
+        }
+    }
+    public void setNumeroFactura(String NumeroFactura) {this.NumeroFactura = NumeroFactura;}
+    
     
 }

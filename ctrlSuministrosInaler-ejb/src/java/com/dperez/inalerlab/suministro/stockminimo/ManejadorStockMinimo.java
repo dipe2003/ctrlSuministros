@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ManejadorStockMinimo {
-    @PersistenceContext(unitName = "CtrlStockMinimos_PU")
+    @PersistenceContext(unitName = "CtrlSuministros_PU")
     private EntityManager em;
     
     public int CrearStockMinimo(StockMinimo StockMinimo){

@@ -1,7 +1,8 @@
 package com.dperez.inalerlab.suministro.lote;
 
+import com.dperez.inalerlab.suministro.ControladorSuministro;
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,18 +13,19 @@ import javax.inject.Named;
 public class ControladorLote implements Serializable{
     @Inject
     private ManejadorLote mLote;
+    @Inject
+    private ControladorIngresoSalida cInSal;
+    @Inject
+    private ControladorSuministro cSuministro;
     
     /**
      * Crea un lote en la base de datos.
      * @param VencimientoLote
-     * @return 
+     * @return Retorna el id del lote creado. Retorna -1 si no se creo.
      */
-    public Lote CrearLote(Calendar VencimientoLote){
+    public int CrearLote(Date VencimientoLote){
         Lote lote = new Lote(VencimientoLote);
-        if(mLote.CrearLote(lote)!=-1){
-            return lote;
-        }
-        return null;
+        return mLote.CrearLote(lote);
     }
     
     /**
@@ -42,6 +44,18 @@ public class ControladorLote implements Serializable{
      */
     public List<Lote> ListarLotes(){
         return mLote.ListarLotes();
+    }
+    
+    /**
+     * Agrega un lote ya creado al suministro especificado por su id.
+     * @param IdLote
+     * @param IdSuministro
+     * @return Retorna el id del lote. Retorna -1 si no se agrego.
+     */
+    public int AgregarLoteSuministro(int IdLote, int IdSuministro){
+        Lote lote = mLote.ObtenerLote(IdLote);
+        lote.setSuministroLote(cSuministro.BuscarSuministro(IdSuministro));
+        return mLote.ActualizarLote(lote);
     }
     
 }	

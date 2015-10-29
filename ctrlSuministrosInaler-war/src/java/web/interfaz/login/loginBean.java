@@ -48,6 +48,7 @@ public class loginBean implements Serializable{
     @PostConstruct
     public void init(){
         try{
+            //  Operarios
             int idPermiso = cPermiso.CrearPermiso("Admin");
             int idOp = fOperario.RegistrarOperario(2425, "diego", "perez", "2017.Calidad");
             fOperario.AgregarPermiso(idOp, idPermiso);
@@ -56,11 +57,21 @@ public class loginBean implements Serializable{
             idOp = fOperario.RegistrarOperario(914, "bruno", "bracco", "labo.2015");
             fOperario.AgregarPermiso(idOp, idPermiso);
             
+            //  Suministros
             int idUnidad = fSuministro.RegistrarUnidadSuministro("unidades");
             int idProveedor = fProveedor.RegistrarProveedor("El Proveedor S.A.", "Fulano Perengano");           
             int idSuministro = fSuministro.RegistrarMaterial("material", "es un material de laboratorio", "1000743", idUnidad, idProveedor);
             float stock = 12.0f;
             fSuministro.RegistrarStockMinimo(stock, Calendar.getInstance().getTime(), idSuministro);
+            
+            idUnidad = fSuministro.RegistrarUnidadSuministro("motones");
+            idProveedor = fProveedor.RegistrarProveedor("Segundo Proveedor Ltda", "Rompelotas");           
+            idSuministro = fSuministro.RegistrarReactivoQuimico("reactivo", "es un reactivo de laboratorio", "1000744", idUnidad, idProveedor);
+            stock = 5.0f;
+            fSuministro.RegistrarStockMinimo(stock, Calendar.getInstance().getTime(), idSuministro);
+            
+            // Ingresos
+
         }catch(NullPointerException ex){
             System.out.print(Arrays.toString(ex.getStackTrace()));
         }
