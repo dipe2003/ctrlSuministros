@@ -20,21 +20,32 @@ public class ControladorLote implements Serializable{
     
     /**
      * Crea un lote en la base de datos.
+     * @param ProduccionLote
      * @param VencimientoLote
+     * @param NumeroLote
      * @return Retorna el id del lote creado. Retorna -1 si no se creo.
      */
-    public int CrearLote(Date VencimientoLote){
-        Lote lote = new Lote(VencimientoLote);
+    public int CrearLote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
+        Lote lote = new Lote(ProduccionLote, VencimientoLote, NumeroLote);
         return mLote.CrearLote(lote);
     }
     
     /**
-     * Busca un lote en la base de datos.
+     * Busca un lote por su IdLote en la base de datos.
      * @param IdLote
      * @return 
      */
     public Lote BuscarLote(int IdLote){
         return mLote.ObtenerLote(IdLote);
+    }
+    
+    /**
+     * Busca un lote por su NumeroLote en la base de datos.
+     * @param NumeroLote
+     * @return 
+     */
+    public Lote BuscarLotePorNumeroLote(String NumeroLote){
+        return mLote.ObtenerLote(NumeroLote);
     }
     
     /**

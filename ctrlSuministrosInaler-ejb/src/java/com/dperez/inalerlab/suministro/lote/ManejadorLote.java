@@ -42,20 +42,33 @@ public class ManejadorLote {
     }
     
     public Lote ObtenerLote(int IdLote){
-        TypedQuery<Lote> query = em.createQuery("FROM Lote s WHERE s.IdLote= :idLote", Lote.class);
+        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.IdLote= :idLote", Lote.class);
         query.setParameter("idLote", IdLote);
         try{
-            return query.getSingleResult();
+            return (Lote) query.getSingleResult();
         }catch(Exception ex){}
+        return null;
+    }
+    
+    public Lote ObtenerLote(String NumeroLote){
+        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.NumeroLote= :numeroLote", Lote.class);
+        query.setParameter("numeroLote", NumeroLote);
+        try{
+            return (Lote) query.getSingleResult();
+        }catch(Exception ex){
+            System.out.println("Error: "+ ex.getMessage());
+        }
         return null;
     }
     
     public List<Lote> ListarLotes(){
         List<Lote> suministros = new ArrayList<>();
-        TypedQuery<Lote> query = em.createQuery("FROM Lote s", Lote.class);
+        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l", Lote.class);
         try{
             suministros = query.getResultList();
         }catch(Exception ex){}
         return suministros;
     }
+    
+    
 }

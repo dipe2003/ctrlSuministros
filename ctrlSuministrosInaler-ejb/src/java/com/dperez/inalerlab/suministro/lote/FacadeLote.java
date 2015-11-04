@@ -16,11 +16,13 @@ public class FacadeLote implements Serializable{
     
     /**
      * Crea un lote.
+     * @param ProduccionLote
      * @param VencimientoLote
+     * @param NumeroLote
      * @return Retorna el id del lote. Retorna -1 si no se pudo crear.
      */
-    public int CrearLote(Date VencimientoLote){
-        return cLote.CrearLote(VencimientoLote);
+    public int CrearLote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
+        return cLote.CrearLote(ProduccionLote, VencimientoLote, NumeroLote);
     }
     
     /**
@@ -29,10 +31,11 @@ public class FacadeLote implements Serializable{
      * @param CantidadIngreso
      * @param NumeroFactura
      * @param IdLoteIngreso
+     * @param IdOperario
      * @return 
      */
-    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso){
-        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso);
+    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario ){
+        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario);
     }
     
     /**
@@ -40,10 +43,11 @@ public class FacadeLote implements Serializable{
      * @param FechaSalida
      * @param CantidadSalida
      * @param IdLoteSalida
+     * @param IdOperario
      * @return 
      */
-    public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida){
-        return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida);
+    public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario){
+        return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario);
     }
     
     /**
@@ -54,5 +58,24 @@ public class FacadeLote implements Serializable{
      */
     public int AgregarLoteSuministro(int IdSuministro, int IdLote){
         return cLote.AgregarLoteSuministro(IdLote, IdSuministro);
+    }
+    
+    
+    /**
+     * Buscar un lote por numero de lote.
+     * @param NumeroLote
+     * @return Retorna Null si no existe.
+     */
+    public Lote BuscarLotePorNumeroLote(String NumeroLote){
+        return cLote.BuscarLotePorNumeroLote(NumeroLote);
+    }
+    
+    /**
+     * Buscar un lote por Id.
+     * @param IdLote
+     * @return Retorna Null si no existe.
+     */
+    public Lote BuscarLotePorIdLote(int IdLote){
+        return cLote.BuscarLote(IdLote);
     }
 }

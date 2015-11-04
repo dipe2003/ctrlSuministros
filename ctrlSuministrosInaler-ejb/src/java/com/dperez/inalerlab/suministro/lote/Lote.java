@@ -5,6 +5,7 @@ import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,11 @@ public class Lote implements Serializable{
     @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private int IdLote;
     @Temporal(TemporalType.DATE)
+    private Date ProduccionLote;
+    @Temporal(TemporalType.DATE)
     private Date VencimientoLote;
+    @Column(unique = true)
+    private String NumeroLote;
     @ManyToOne
     private Suministro SuministroLote;
     @OneToMany(mappedBy = "LoteIngreso")
@@ -29,17 +34,24 @@ public class Lote implements Serializable{
     
     //	Constructores
     public Lote(){}
-    public Lote(Date VencimientoLote){this.VencimientoLote = VencimientoLote;}
+    public Lote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
+        this.ProduccionLote = ProduccionLote;
+        this.VencimientoLote = VencimientoLote;
+        this.NumeroLote = NumeroLote;
+    }
     
     //	Getters
     public int getIdLote(){return this.IdLote;}
+    public Date getProduccionLote() {return ProduccionLote;}    
     public Date getVencimientoLote(){return this.VencimientoLote;}
     public Suministro getSuministroLote(){return this.SuministroLote;}
     public List<Ingreso> getIngresosLote(){return this.IngresosLote;}
     public List<Salida> getSalidasLote(){return this.SalidasLote;}
+    public String getNumeroLote() {return NumeroLote;}
     
     //	Setters
     public void setIdLote(int IdLote){this.IdLote = IdLote;}
+    public void setProduccionLote(Date ProduccionLote) {this.ProduccionLote = ProduccionLote;}    
     public void setVencimientoLote(Date VencimientoLote){this.VencimientoLote = VencimientoLote;}
     public void setSuministroLote(Suministro SuministroLote){
         this.SuministroLote = SuministroLote;
@@ -48,8 +60,8 @@ public class Lote implements Serializable{
         }
     }
     public void setIngresosLote(List<Ingreso> IngresosLote){this.IngresosLote = IngresosLote;}
-    public void setSalidasLotes(List<Salida> SalidasLote){this.SalidasLote = SalidasLote;}
-    
+    public void setNumeroLote(String NumeroLote) {this.NumeroLote = NumeroLote;}
+    public void setSalidasLote(List<Salida> SalidasLote) {this.SalidasLote = SalidasLote;}    
     
     //	Ingresos - Salidas
     
