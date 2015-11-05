@@ -85,7 +85,7 @@ padding-top: 50%;
 }
 
 .divMenuItem{
-    border: 3px solid;
+    border: 2px solid;
     border-color: #96c841;
     color: white;
     text-align: center;
@@ -95,6 +95,7 @@ padding-top: 50%;
     background-color: #96c841;
     border-color: white;
     color: #2c5697;
+    box-shadow: #999 1px 1px 1px 1px;
 }
 
 .error {
