@@ -21,7 +21,7 @@ public class ControladorSeguridad implements Serializable{
     public ControladorSeguridad(){}
 
     /**
-     * Devuelve la combinacion passord + salt
+     * Devuelve la combinacion password + salt
      * Se utiliza para crear un hash del password con una cadena aleatoria (salt) agregada para aumentar seguridad.
      * Esta cadena se debe utilizar para recuperar el password.
      * @param Password

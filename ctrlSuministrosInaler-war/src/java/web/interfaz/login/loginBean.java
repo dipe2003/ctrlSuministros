@@ -2,7 +2,9 @@
 package web.interfaz.login;
 
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
+import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
+import com.dperez.inalerlab.operario.permiso.Permiso;
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.lote.FacadeLote;
@@ -15,6 +17,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 @Named
 @SessionScoped
@@ -29,25 +32,54 @@ public class loginBean implements Serializable{
     private FacadeManejoProveedor fProveedor;
     @EJB
     private FacadeLote fLote;
-        
+    
     private String IdOperario;
     private String Password;
+    private String NombreOperario;
+    private String PermisoOperario;
+    private boolean Logueado;
     
     //  getters
     public String getIdOperario() {return IdOperario;}
     public String getPassword() {return Password;}
+    public boolean isLogueado() {return Logueado;}
+    public String getNombreOperario() {return NombreOperario;}
+    public String getPermisoOperario() {return PermisoOperario;}
     
     //  setters
     public void setIdOperario(String IdOperario) {this.IdOperario = IdOperario;}
     public void setPassword(String Password) {this.Password = Password;}
+    public void setLogueado(boolean Logueado) {this.Logueado = Logueado;}
+    public void setNombreOperario(String NombreOperario) {this.NombreOperario = NombreOperario;}
+    public void setPermisoOperario(String PermisoOperario) {this.PermisoOperario = PermisoOperario;}
     
     public void login(){
-        if (fOperario.ValidarOperario(Integer.parseInt(this.IdOperario), Password)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("OK", "OK"));
-        }else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO OK", "NO OK"));
+        try{
+            if (fOperario.ValidarOperario(Integer.parseInt(this.IdOperario), Password)) {     
+                FacesContext context = FacesContext.getCurrentInstance();
+                HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+                Operario operario = fOperario.BuscarOperario(Integer.parseInt(this.IdOperario));
+                request.getSession().setAttribute("Operario", operario);
+                this.NombreOperario = operario.getNombreOperario() + " " + operario.getApellidoOperario();
+                Logueado = true;
+                context.addMessage("frmLogin:msjLogin", new FacesMessage("OK", "OK"));
+            }else{
+                FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
+            }            
+        }catch(NullPointerException | NumberFormatException ex){
+            FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
         }
     }
+    
+    public void logout(){
+        try{
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            request.getSession().invalidate();
+            Logueado = false;
+        }catch(Exception ex){}
+    }
+    
     @PostConstruct
     public void init(){
         try{
@@ -57,7 +89,10 @@ public class loginBean implements Serializable{
             fOperario.AgregarPermiso(idOp, idPermiso);
             
             idPermiso = cPermiso.CrearPermiso("Analista");
-            idOp = fOperario.RegistrarOperario(300914, "bruno", "bracco", "labo.2015");
+            idOp = fOperario.RegistrarOperario(3000914, "Bruno", "Bracco", "labo.2015");
+            fOperario.AgregarPermiso(idOp, idPermiso);
+            
+            idOp = fOperario.RegistrarOperario(3000952, "Lorena", "Peña", "labo.2015");
             fOperario.AgregarPermiso(idOp, idPermiso);
             
             //  Suministros
@@ -78,7 +113,7 @@ public class loginBean implements Serializable{
             fProd.set(2010, 11, 3);
             Calendar fVenc = Calendar.getInstance();
             fVenc.set(2015, 11, 3);
-            int idlote = fLote.CrearLote( fProd.getTime(), fVenc.getTime(), "A001");
+            int idlote = fLote.CrearLote(fProd.getTime(), fVenc.getTime(), "A001");
             fLote.AgregarLoteSuministro(idSuministro, idlote);
             
             //  Ingreso
@@ -95,10 +130,10 @@ public class loginBean implements Serializable{
     public void comprobarNumeroOperario(String NumeroOperario){
         try{
             if (!fOperario.ExisteOperario(Integer.parseInt(NumeroOperario))){
-                FacesContext.getCurrentInstance().addMessage("frm", new FacesMessage("No existe ese operario"));
+                FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No existe ese operario"));
             }
-        }catch(NumberFormatException | NullPointerException e){
-            FacesContext.getCurrentInstance().addMessage("frm", new FacesMessage("No es un numero valido."));
+        }catch(NumberFormatException | NullPointerException e ){
+            FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No es un numero valido."));
         }
     }
 }

@@ -23,16 +23,16 @@ public class ControladorOperario implements Serializable{
      * @param PasswordOperario
      * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
-    public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario){ 
+    public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario){
         String[] seg = cSeg.getPasswordSeguro(PasswordOperario);
-        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[1], seg[0]);
+        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[0], seg[1]);
         return mOperario.CrearOperario(operario);
     }
     
     /**
      * Busca un operario en la base de datos.
      * @param IdOperario
-     * @return 
+     * @return
      */
     public Operario BuscarOperario(int IdOperario){
         return mOperario.ObtenerOperario(IdOperario);
@@ -41,7 +41,7 @@ public class ControladorOperario implements Serializable{
     /**
      * Devuelve una lista con todos los operarios registrados en la base de datos.
      * Si no hay operarios registrados devuelve una lista vacia.
-     * @return 
+     * @return
      */
     public List<Operario> ListarOperarios(){
         return mOperario.ListarOperarios();
@@ -55,9 +55,12 @@ public class ControladorOperario implements Serializable{
      * @return retorna <b>True</b> si es valido.
      */
     public boolean ValidarOperario(int IdOperario, String Password){
-        Operario operario = mOperario.ObtenerOperario(IdOperario);
-        String[] seg = cSeg.getPasswordSeguro(Password);
-        return operario.getPasswordOperario().equals(cSeg.getPasswordSeguro(Password, operario.getPasswordKeyOperario()));
+        try{
+            Operario operario = mOperario.ObtenerOperario(IdOperario);
+            String seg = cSeg.getPasswordSeguro(Password, operario.getPasswordKeyOperario());
+            return operario.getPasswordOperario().equals(seg);
+        }catch(NullPointerException ex){}
+        return false;
     }
     
     /**
@@ -69,7 +72,7 @@ public class ControladorOperario implements Serializable{
     public int AgregarPermiso(int IdOperario, Permiso PermisoOperario){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
         if (operario!=null) {
-            operario.addPermisoOperario(PermisoOperario);
+            operario.setPermisosOperario(PermisoOperario);
             return mOperario.ActualizarOperario(operario);
         }
         return -1;

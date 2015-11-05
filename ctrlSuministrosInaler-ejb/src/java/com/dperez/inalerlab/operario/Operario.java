@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,8 +23,8 @@ public class Operario implements Serializable{
     private List<Ingreso> IngresosSuministrosOperario;
     @OneToMany(mappedBy = "OperarioSalidaSuministro")
     private List<Salida> SalidasSuministrosOperario;
-    @OneToMany
-    private List<Permiso> PermisosOperario;
+    @ManyToOne
+    private Permiso PermisoOperario;
     
     //	Constructores
     public Operario(){}
@@ -35,14 +36,13 @@ public class Operario implements Serializable{
         this.PasswordOperario = PasswordOperario;
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
-        this.PermisosOperario = new ArrayList<>();
     }
     
     //	Getters
     public int getIdOperario(){return this.IdOperario;}
     public String getNombreOperario(){return this.NombreOperario;}
     public String getApellidoOperario(){return this.ApellidoOperario;}
-    public List<Permiso> getPermisosOperario(){return this.PermisosOperario;}    
+    public Permiso getPermisoOperario(){return this.PermisoOperario;}    
     public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}    
     public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
     public String getPasswordKeyOperario() {return PasswordKeyOperario;}
@@ -52,7 +52,12 @@ public class Operario implements Serializable{
     public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
     public void setNombreOperario(String NombreOperario){this.NombreOperario = NombreOperario;}
     public void setApellidoOperario(String ApellidoOperario){this.ApellidoOperario = ApellidoOperario;}
-    public void setPermisosOperario(List<Permiso> PermisosOperario){this.PermisosOperario = PermisosOperario;}
+    public void setPermisosOperario(Permiso PermisoOperario){
+        this.PermisoOperario = PermisoOperario;
+        if (!PermisoOperario.getOperariosPermiso().contains(this)) {
+            PermisoOperario.getOperariosPermiso().add(this);
+        }
+    }
     public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {this.IngresosSuministrosOperario = IngresosSuministrosOperario;}
     public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
     public void setPasswordKeyOperario(String PasswordKeyOperario) {this.PasswordKeyOperario = PasswordKeyOperario;}
@@ -74,25 +79,5 @@ public class Operario implements Serializable{
         }
     }
     public void removeSalidaSuministroOperario(Salida SalidaSuministroOperario){this.SalidasSuministrosOperario.remove(SalidaSuministroOperario);}
-    
-    //	Permisos
-    public void addPermisoOperario(Permiso PermisoOperario){this.PermisosOperario.add(PermisoOperario);}
-    public void removePermisoOperario(Permiso PermisoOperario){this.PermisosOperario.remove(PermisoOperario);}
-        
-    public List<String> ListarPermisosOperario(){
-        List<String> permisos = new ArrayList<>();
-        for(Permiso permiso : this.PermisosOperario){
-            permisos.add(permiso.getNombrePermiso());
-        }
-        return permisos;
-    }
-    
-    public boolean TienePermiso(String PermisoOperario){
-        for(Permiso permiso : this.PermisosOperario){
-            if (permiso.getNombrePermiso().equals(PermisoOperario)) {
-                return true;
-            }
-        }
-        return false;
-    }    
+      
 }

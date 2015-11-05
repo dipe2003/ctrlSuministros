@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://java.sun.com/jsf/passthrough"          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition >
+        <div id="header" class="fondo-azul">
+            <div id="iconContainer">
+                <img src="Resources/Images/MarfrigLogo.png" width="100" alt="logo marfrig"/>
+            </div>
+            <div id="divLogin">
+                <h:form id="frmLogin">
+                    <div>
+                        <h:panelGroup rendered="#{not loginBean.logueado}">
+                            <h:inputText id="inputOperario" p:placeholder="Numero de Operario" value="#{loginBean.idOperario}" class="input">
+                                <f:ajax render="frmLogin msjLogin" event="change" listener="#{loginBean.comprobarNumeroOperario(loginBean.idOperario)}"/>
+                            </h:inputText>
+                            <h:inputSecret id="inputPassword" p:placeholder="Contraseña" value="#{loginBean.password}" class="input" />
+                            <h:commandButton class="boton-input" value="Ingresar" action="#{loginBean.login()}"/>
+                            <h:messages for="inputOperario" id="msjLogin" class="error"/> 
+                        </h:panelGroup>
+                        <h:panelGroup class="titulo-grande" rendered="#{loginBean.logueado}">
+                            <div><h:outputText value="#{loginBean.nombreOperario} " /></div>
+                            <h:commandButton class="boton-input" value="Salir" action="#{loginBean.logout()}"/>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+            </div>
+            <div class="titulo-grande-header">CONTROL DE SUMINISTROS, MATERIALES, REACTIVOS Y MEDIOS DE CULTIVO</div>
+        </div>
+    </ui:composition>
+</html>
+
