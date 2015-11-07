@@ -1,5 +1,5 @@
 
-package web.interfaz.login;
+package web.interfaz.operario;
 
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.Operario;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Named
 @SessionScoped
-public class loginBean implements Serializable{
+public class LoginOperario implements Serializable{
     @EJB
     private FacadeManejoOperario fOperario;
     @EJB
@@ -61,6 +61,7 @@ public class loginBean implements Serializable{
                 Operario operario = fOperario.BuscarOperario(Integer.parseInt(this.IdOperario));
                 request.getSession().setAttribute("Operario", operario);
                 this.NombreOperario = operario.getNombreOperario() + " " + operario.getApellidoOperario();
+                PermisoOperario = operario.getPermisoOperario().getNombrePermiso();
                 Logueado = true;
                 context.addMessage("frmLogin:msjLogin", new FacesMessage("OK", "OK"));
             }else{
@@ -77,6 +78,7 @@ public class loginBean implements Serializable{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             request.getSession().invalidate();
             Logueado = false;
+            FacesContext.getCurrentInstance().getExternalContext().redirect("../Views/index.xhtml");
         }catch(Exception ex){}
     }
     
@@ -93,6 +95,10 @@ public class loginBean implements Serializable{
             fOperario.AgregarPermiso(idOp, idPermiso);
             
             idOp = fOperario.RegistrarOperario(3000952, "Lorena", "Peña", "labo.2015");
+            fOperario.AgregarPermiso(idOp, idPermiso);
+            
+            idPermiso = cPermiso.CrearPermiso("Jefecita");
+            idOp = fOperario.RegistrarOperario(3000042, "Cristina", "Caputi", "Marfrig2015");
             fOperario.AgregarPermiso(idOp, idPermiso);
             
             //  Suministros
@@ -122,18 +128,10 @@ public class loginBean implements Serializable{
             //  Salida
             fLote.CrearSalida(Calendar.getInstance().getTime(), 6.25f, fLote.BuscarLotePorNumeroLote("A001").getIdLote(), 300914);
             
-        }catch(NullPointerException ex){
+        }catch(Exception ex){
             System.out.print(Arrays.toString(ex.getStackTrace()));
         }
     }
     
-    public void comprobarNumeroOperario(String NumeroOperario){
-        try{
-            if (!fOperario.ExisteOperario(Integer.parseInt(NumeroOperario))){
-                FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No existe ese operario"));
-            }
-        }catch(NumberFormatException | NullPointerException e ){
-            FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No es un numero valido."));
-        }
-    }
+
 }

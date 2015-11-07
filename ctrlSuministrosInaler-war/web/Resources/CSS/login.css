@@ -1,0 +1,130 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 07/11/2015, 11:51:54 AM
+    Author     : dperez
+*/
+
+body{
+    margin: 0;
+}
+
+#linea{
+    top:50%;
+    position: absolute;
+    height: 300px;
+    margin-top: -250px;
+    width: 100%;
+    box-shadow: gray 0px 5px 5px;
+    background-color: #222933;
+}
+
+#titulo{
+    background-color: #222933;
+    color: #FFFFFF;
+    font-family: RobotoRegular;
+    font-size: 20px;
+    float: left;
+    top: 500px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#contenedor{
+    width: 900px;
+    text-align: center;
+    height: 175px;
+    background-color: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -450px;
+    border-radius: 20px 20px 20px 20px;
+    box-shadow: grey 5px 5px 15px;
+    border: grey solid 1px;
+}
+
+.Texto{
+    padding-left: 10px;
+    margin: 10px;
+    width: 80%;
+    height: 30px;
+    font-family: RobotoRegular;
+    color: #FFFFFF;
+    background-color: #222933;
+    border-color: #222933;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.Texto:focus{
+    color: #222933;
+    background-color: #FFFFFF;
+    outline: none;
+}
+
+#contenedorBotones{
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.menuOpcionLogin{
+    width: 200px;
+    height: 150px;
+    background-color: #263238;
+    margin: 5px;
+    display: inline-table;
+    margin: 0 auto;
+}
+
+.textoMenuOpcion{
+    font-family: RobotoRegular;
+    color: #FFFFFF;
+    margin-top: 15px;
+}
+
+.botonLogin{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 15px;
+    height: 50px;
+    top: 25px;
+    position: relative;
+    background-color: #222933;
+    line-height: 50px;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-family: RobotoRegular;
+}
+
+.botonLogin:hover{
+    background-color: #37474F;
+}
+
+.botonLogin:active{
+    outline: #222933 solid 2px;
+    background-color: #FFFFFF;
+    color: #222933;
+}
+
+.escondido{
+    visibility: hidden;
+}
+
+.clickeado{
+    background-color: #222933;
+}
+
+.corregirLinea{
+    text-decoration: none;
+}
