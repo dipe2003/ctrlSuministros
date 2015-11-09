@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition template="../index.xhtml" 
+<ui:composition template="../Views/index.xhtml" 
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -8,18 +8,22 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
-        <h:form>
-            <div class="titulo-fondo fondo-azul">Numero de Operario</div><h:inputText class="input" value="#{registrarOperario.idOperario}"/>
-            <div class="titulo-fondo fondo-azul">Nombre de Operario</div><h:inputText class="input" value="#{registrarOperario.nombreOperario}"/>
-            <div class="titulo-fondo fondo-azul">Contraseña</div><h:inputSecret class="input" value="#{registrarOperario.password}"/>
-            <div class="titulo-fondo fondo-azul">Confirmar Contraseña</div><h:inputSecret class="input" value="#{registrarOperario.repPassword}"/>
-            <div class="titulo-fondo fondo-azul">Permiso del Operario</div>
-            <h:selectOneRadio value="#{registrarOperario.permisoOperario}" >
-                <c:forEach var="permiso" items="#{registrarOperario.permisosOperarios.values}">
-                    <f:selectItems value="#{permiso}" /> 
-                </c:forEach>
-            </h:selectOneRadio>
-        </h:form>
+        <div class="contenido">            
+            <h:form>
+                <div class="label">Numero de Operario</div><h:inputText class="input" value="#{registrarOperario.idOperario}"/>
+                <div class="label">Nombre de Operario</div><h:inputText class="input" value="#{registrarOperario.nombreOperario}"/>
+                <div class="label">Contraseña</div><h:inputSecret class="input" value="#{registrarOperario.password}"/>
+                <div class="label">Confirmar Contraseña</div><h:inputSecret class="input" value="#{registrarOperario.repPassword}"/>
+                <div class="label">Permiso del Operario</div>
+                <h:selectOneRadio value="#{registrarOperario.permisoOperario}" >
+                    <c:forEach var="permiso" items="#{registrarOperario.permisosOperarios.values}">
+                        <f:selectItems value="#{permiso}" /> 
+                    </c:forEach>
+                </h:selectOneRadio>
+                 <h:commandButton type="submit" class="boton-input" value="Registrar" action="#{registrarOperario.registrarOperario()}"/>
+            </h:form>
+           
+        </div>
     </ui:define>
 </ui:composition>    
 

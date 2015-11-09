@@ -30,6 +30,15 @@ div {
     text-decoration: none;
 }
 
+.label {
+    font-size: 16px;
+    color: #FFF;
+    text-align: center;
+    font-weight: bold;
+    width: 100px;
+    margin-left: 10px;
+    background-color: #2c5697;
+}
 div .titulo-fondo{
     font-size: 16px;
     color: white;
@@ -48,7 +57,8 @@ div .sub-titulo-fondo{
     color: white;
 }
 .titulo-grande-header{
-    font-size: 16px;
+    font-size: 24px;
+    font-weight: bolder;
     color: white;
     text-align: center;
 }
@@ -68,7 +78,7 @@ div .sub-titulo-fondo{
 
 #iconContainer{
     margin-top: 12px;
-    margin-left: 20px;
+    margin-left: 40px;
     float:left;
 }
 .fondo-azul{
@@ -84,6 +94,7 @@ div .sub-titulo-fondo{
     border-color: #96c841;
     border-width: 1px;
     width: 97%;
+    margin: 5px 5px 5px 5px;
 }
 .input:focus{
     width: 97%;
@@ -92,7 +103,11 @@ div .sub-titulo-fondo{
 }
 
 .boton-input{
-    width: 100%;
+    width: 25%;
+    height: 40px;
+    font-family: LibreSans;
+    font-size: 16px;
+    font-weight: bold;
     border: 1px solid;
     border-color: #668CC8;
     background-color:#2c5697;
@@ -168,4 +183,15 @@ div .sub-titulo-fondo{
     border-color: red;
     background-color: #ff6666;
     padding-left: 10px;
+}
+
+.contenido{
+    margin-top: 5%;
+    margin-left:5%;
+    margin-right: 5%;
+}
+
+.posicion-boton-contenido{
+    text-align: right;
+    margin-right: 1%;
 }

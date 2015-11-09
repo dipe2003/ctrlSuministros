@@ -63,12 +63,11 @@ public class LoginOperario implements Serializable{
                 this.NombreOperario = operario.getNombreOperario() + " " + operario.getApellidoOperario();
                 PermisoOperario = operario.getPermisoOperario().getNombrePermiso();
                 Logueado = true;
-                context.addMessage("frmLogin:msjLogin", new FacesMessage("OK", "OK"));
             }else{
-                FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
+                FacesContext.getCurrentInstance().addMessage("login:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
             }            
         }catch(NullPointerException | NumberFormatException ex){
-            FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
+            FacesContext.getCurrentInstance().addMessage("login:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
         }
     }
     
@@ -78,7 +77,7 @@ public class LoginOperario implements Serializable{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             request.getSession().invalidate();
             Logueado = false;
-            FacesContext.getCurrentInstance().getExternalContext().redirect("../Views/index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("../login.xhtml");
         }catch(Exception ex){}
     }
     

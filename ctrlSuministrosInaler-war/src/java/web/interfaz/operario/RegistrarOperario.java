@@ -46,6 +46,11 @@ public class RegistrarOperario implements Serializable{
     public void setNombreOperario(String NombreOperario) {this.NombreOperario = NombreOperario;}
     public void setPermisoOperario(String PermisoOperario) {this.PermisoOperario = PermisoOperario;}
     
+    
+    public void registrarOperario(){
+        
+    }
+    
     @PostConstruct
     public void init(){
         PermisosOperarios = new HashMap<>();

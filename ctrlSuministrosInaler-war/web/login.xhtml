@@ -11,17 +11,17 @@
     <h:body>
         <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">
             <span style="text-align: center;">
-                <h:messages id="msj" class="error" />
+                <h:messages id="msjLogin" class="error" />
             </span>            
-            <div id="linea">
+            <div id="linea" class="fondo-azul">
                 <div id="titulo" class="fondo-azul">
-                    <img src="./Resources/Images/lock.png"/><br/>
-                    Login
+                    <img height="80px" src="./Resources/Images/lock_fixed.png"/><br/>
+                    Ingresar
                 </div>
                 <div id="contenedor" >
                     <h:inputText value="#{loginOperario.idOperario}" class="Texto" p:placeholder="Numero de Operario" required="true" requiredMessage="Debes ingresar un numero de operario"/><br/>
                     <h:inputSecret value="#{loginOperario.password}" class="Texto" p:placeholder="Password" required="true" requiredMessage="Debes ingresar una contraseña."/><br/>                    
-                    <h:commandButton type="submit" class="boton-input" value="Ingresar" action="#{loginOperario.login()}"/>
+                    <h:commandButton type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
                 </div>
             </div>
         </h:form>  

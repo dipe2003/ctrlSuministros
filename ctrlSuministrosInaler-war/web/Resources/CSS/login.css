@@ -18,14 +18,12 @@ body{
     height: 300px;
     margin-top: -250px;
     width: 100%;
-    box-shadow: gray 0px 5px 5px;
-    background-color: #222933;
+    box-shadow: 0px 5px 5px rgb(150, 200, 65);
 }
 
 #titulo{
-    background-color: #222933;
     color: #FFFFFF;
-    font-family: RobotoRegular;
+    font-family: LibreSans;
     font-size: 20px;
     float: left;
     top: 500px;
@@ -36,17 +34,17 @@ body{
 }
 
 #contenedor{
-    width: 900px;
+    width: 500px;
     text-align: center;
     height: 175px;
     background-color: #FFFFFF;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: -450px;
+    margin-left: -250px;
     border-radius: 20px 20px 20px 20px;
-    box-shadow: grey 5px 5px 15px;
-    border: grey solid 1px;
+    box-shadow: rgb(150, 200, 65) 5px 5px 15px;
+    border: rgb(150, 200, 65) solid 1px;
 }
 
 .Texto{
@@ -54,10 +52,10 @@ body{
     margin: 10px;
     width: 80%;
     height: 30px;
-    font-family: RobotoRegular;
+    font-family: LibreSans;
     color: #FFFFFF;
-    background-color: #222933;
-    border-color: #222933;
+    background-color: #2c5697;
+    border-color: #96C841;
     border-style: solid;
     border-width: 2px;
     border-radius: 5px;
@@ -66,8 +64,9 @@ body{
 
 .Texto:focus{
     color: #222933;
-    background-color: #FFFFFF;
+    background-color: rgb(150, 200, 65);
     outline: none;
+    box-shadow: 5px 5px 15px #96C841;
 }
 
 #contenedorBotones{
@@ -88,7 +87,7 @@ body{
 }
 
 .textoMenuOpcion{
-    font-family: RobotoRegular;
+    font-family: LibreSans;
     color: #FFFFFF;
     margin-top: 15px;
 }
@@ -104,7 +103,7 @@ body{
     line-height: 50px;
     color: #FFFFFF;
     font-size: 20px;
-    font-family: RobotoRegular;
+    font-family: LibreSans;
 }
 
 .botonLogin:hover{
