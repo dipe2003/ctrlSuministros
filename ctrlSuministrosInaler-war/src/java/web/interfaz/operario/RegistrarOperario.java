@@ -4,6 +4,7 @@ package web.interfaz.operario;
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import com.dperez.inalerlab.operario.permiso.Permiso;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +12,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 @Named
@@ -25,10 +26,12 @@ public class RegistrarOperario implements Serializable{
     
     private String IdOperario;
     private String Password;
-    private String RepPassword;    
+    private String RepPassword;
     private String NombreOperario;
-    private String PermisoOperario;
+    private String ApellidoOperario;    
+    private int PermisoOperario;
     private Map<String, Integer> PermisosOperarios;
+    List<Permiso> Permisos;
     
     //  getters
     public String getIdOperario() {return IdOperario;}
@@ -36,7 +39,9 @@ public class RegistrarOperario implements Serializable{
     public String getRepPassword() {return RepPassword;}
     public Map<String, Integer> getPermisosOperarios() {return PermisosOperarios;}
     public String getNombreOperario() {return NombreOperario;}
-    public String getPermisoOperario() {return PermisoOperario;}
+    public int getPermisoOperario() {return PermisoOperario;}
+    public List<Permiso> getPermisos() {return Permisos;}
+    public String getApellidoOperario() {return ApellidoOperario;}
     
     //  setters
     public void setIdOperario(String IdOperario) {this.IdOperario = IdOperario;}
@@ -44,29 +49,60 @@ public class RegistrarOperario implements Serializable{
     public void setRepPassword(String RepPassword) {this.RepPassword = RepPassword;}
     public void setPermisosOperarios(Map<String, Integer> PermisosOperarios) {this.PermisosOperarios = PermisosOperarios;}
     public void setNombreOperario(String NombreOperario) {this.NombreOperario = NombreOperario;}
-    public void setPermisoOperario(String PermisoOperario) {this.PermisoOperario = PermisoOperario;}
+    public void setPermisoOperario(int PermisoOperario) {this.PermisoOperario = PermisoOperario;}
+    public void setPermisos(List<Permiso> Permisos) {this.Permisos = Permisos;}
+    public void setApellidoOperario(String ApellidoOperario) {this.ApellidoOperario = ApellidoOperario;}
     
-    
-    public void registrarOperario(){
-        
+    public void registrarOperario() throws IOException{
+        String msj="";
+        if(comprobarDatosOperario().equals("ok")){
+            if((fOperario.RegistrarOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario, Password))!=-1){
+                fOperario.AgregarPermiso(Integer.parseInt(IdOperario), PermisoOperario);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            }else{
+                msj = "No se pudo registrar.";
+            }
+        }else{
+            FacesContext.getCurrentInstance().addMessage("frmRegOp:btnRegistrar", new FacesMessage(msj));
+        }
     }
     
     @PostConstruct
     public void init(){
         PermisosOperarios = new HashMap<>();
-        List<Permiso> permisos = cPermiso.ListarPermisos();
-        for(Permiso permiso: permisos){
+        Permisos = cPermiso.ListarPermisos();
+        for(Permiso permiso: Permisos){
             PermisosOperarios.put(permiso.getNombrePermiso(), permiso.getIdPermiso());
         }
     }
     
-    public void comprobarNumeroOperario(String NumeroOperario){
+    public String comprobarDatosOperario(){
         try{
-            if (!fOperario.ExisteOperario(Integer.parseInt(NumeroOperario))){
-                FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No existe ese operario"));
+            if (fOperario.ExisteOperario(Integer.parseInt(IdOperario))){
+                return "Ya existe ese operario";
+            }else{
+                if(!Password.equals(RepPassword)){
+                    return "Las contraseñas no coinciden.";
+                }
             }
         }catch(NumberFormatException | NullPointerException e ){
-            FacesContext.getCurrentInstance().addMessage("frmLogin:msjLogin", new FacesMessage("No es un numero valido."));
+            return "No es un numero de operario valido.";
         }
+        return "ok";
+    }
+    
+    public String getMensajePass(){
+        try{
+            if(Password.isEmpty() || RepPassword.isEmpty()){
+                return "Ingresa contraseñas.";
+            }else{
+                if(!Password.equals(RepPassword)){
+                    return "Las contraseñas no coinciden.";
+                }
+            }
+        }catch(NullPointerException ex){
+            return "Ingresa contraseñas.";
+        }
+        return "Ok";
     }
 }
