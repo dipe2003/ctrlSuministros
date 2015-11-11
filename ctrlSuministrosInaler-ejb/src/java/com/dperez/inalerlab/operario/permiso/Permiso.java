@@ -3,6 +3,7 @@ package com.dperez.inalerlab.operario.permiso;
 
 import com.dperez.inalerlab.operario.Operario;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,7 @@ public class Permiso implements Serializable{
     public Permiso() {}
     public Permiso(String NombrePermiso) {
         this.NombrePermiso = NombrePermiso;
+        this.OperariosPermiso = new ArrayList<>();
     }
     
     // getters

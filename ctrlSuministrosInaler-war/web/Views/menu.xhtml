@@ -10,17 +10,17 @@
                 <h:panelGroup class="titulo-grande" rendered="#{loginOperario.logueado}">
                     <div class="titulo-fondo"><h:outputText value="#{loginOperario.nombreOperario}" /></div>
                     <div class="sub-titulo-fondo">(<h:outputText value="#{loginOperario.permisoOperario}" />)</div>     
-                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Admin'}" outcome="/Views/Operario/AgregarOperario.xhtml">
+                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador'}" outcome="/Views/Operario/AgregarOperario.xhtml">
                         <div class="divMenuItem">                          
                             <div>Operarios</div>                            
                         </div>
                     </h:link>
-                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Admin'}" outcome="/Views/Proveedor/AgregarProveedor.xhtml">
+                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }" outcome="/Views/Proveedor/AgregarProveedor.xhtml">
                         <div class="divMenuItem">                          
                             <div>Proveedores</div>                            
                         </div>
                     </h:link>
-                    <h:link class="link">
+                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }" outcome="/Views/Suministro/AgregarSuministro.xhtml">
                         <div class="divMenuItem">                            
                             Adm. Suministros                            
                         </div>

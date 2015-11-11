@@ -71,9 +71,11 @@ public class ControladorOperario implements Serializable{
      */
     public int AgregarPermiso(int IdOperario, Permiso PermisoOperario){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
-        if (operario!=null) {
+        try{
             operario.setPermisosOperario(PermisoOperario);
             return mOperario.ActualizarOperario(operario);
+        }catch(NullPointerException ex){
+            System.out.println("Error: " + ex.getMessage());
         }
         return -1;
     }

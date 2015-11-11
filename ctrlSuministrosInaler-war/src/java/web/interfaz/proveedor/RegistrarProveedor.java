@@ -28,7 +28,6 @@ public class RegistrarProveedor implements Serializable{
     public void setContactoProveedor(String ContactoProveedor) {this.ContactoProveedor = ContactoProveedor;}
     
     public void registrarProveedor() throws IOException{
-        int IdProveedor = -1;
         if (fProveedor.RegistrarProveedor(NombreProveedor, ContactoProveedor)!=-1) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
         }else{

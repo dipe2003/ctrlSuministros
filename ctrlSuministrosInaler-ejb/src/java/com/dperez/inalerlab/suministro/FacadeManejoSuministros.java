@@ -1,6 +1,7 @@
 package com.dperez.inalerlab.suministro;
 
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
+import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -113,6 +114,14 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public int RegistrarUnidadSuministro(String NombreUnidad){
         return cUnidad.CrearUnidad(NombreUnidad);
+    }
+    
+    /**
+     * Lista todas las unidades registradas en la base de datos.
+     * @return Retorna una lista de unidades. Retorna una lista vacia si no hay unidades.
+     */
+    public List<Unidad> ListarUnidades(){
+        return cUnidad.ListarUnidades();
     }
 
      
