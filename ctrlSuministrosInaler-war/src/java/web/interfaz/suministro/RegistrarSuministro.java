@@ -1,19 +1,22 @@
 
 package web.interfaz.suministro;
 
-
-import com.dperez.inalerlab.operario.permiso.Permiso;
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -30,12 +33,13 @@ public class RegistrarSuministro implements Serializable{
     private String DescripcionSuministro;
     private String CodigoSAPSuministro;
     
-    //private List<StockMinimo> StocksMinimosSuministro;
-    
+    private float CantidadStockMinimo;
+    private Date FechaVigenteStock;
+    private String strFechaVigenteStock;
     private int IdUnidadSuministro;
     private Map<String, Integer> UnidadesSuministros;
     private int IdProveedor;
-    private Map<String, Integer> ProveedoresSuministros;    
+    private Map<String, Integer> ProveedoresSuministros;
     private String TipoSuministro;
     private String[] TiposSuministros;
     
@@ -47,9 +51,19 @@ public class RegistrarSuministro implements Serializable{
     public int getIdProveedor() {return IdProveedor;}
     public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
     public Map<String, Integer> getUnidadesSuministros() {return UnidadesSuministros;}
-    public int getIdUnidadSuministro() {return IdUnidadSuministro;}    
+    public int getIdUnidadSuministro() {return IdUnidadSuministro;}
     public String getTipoSuministro() {return TipoSuministro;}
     public String[] getTiposSuministros() {return TiposSuministros;}
+    public float getCantidadStockMinimo() {return CantidadStockMinimo;}
+    public Date getFechaVigenteStock() {return FechaVigenteStock;}
+    public String getStrFechaVigenteStock() {
+        SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
+        if (FechaVigenteStock == null) {
+            return this.strFechaVigenteStock;
+        }else{
+            return fDate.format(FechaVigenteStock);
+        }
+    }
     
     //  setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -62,17 +76,42 @@ public class RegistrarSuministro implements Serializable{
     public void setIdUnidadSuministro(int IdUnidadSuministro) {this.IdUnidadSuministro = IdUnidadSuministro;}
     public void setTipoSuministro(String TipoSuministro) {this.TipoSuministro = TipoSuministro;}
     public void setTiposSuministros(String[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
+    public void setCantidadStockMinimo(float CantidadStockMinimo) {this.CantidadStockMinimo = CantidadStockMinimo;}
+    public void setFechaVigenteStock(Date FechaVigenteStock) {this.FechaVigenteStock = FechaVigenteStock;}
+    public void setStrFechaVigenteStock(String strFechaVigenteStock) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            cal.setTime(sdf.parse(strFechaVigenteStock));
+        }catch(ParseException ex){}
+        this.strFechaVigenteStock = strFechaVigenteStock;
+        this.FechaVigenteStock = cal.getTime();
+    }
     
     public void registrarSuministro() throws IOException{
+        int idSuministro = -1;
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         switch(TipoSuministro){
             case "Reactivo Quimico":
+                if((idSuministro = fSuministro.RegistrarReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
+                }
                 break;
                 
             case "Medio de Ensayo":
+                if((idSuministro = fSuministro.RegistrarMedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
+                }
                 break;
                 
             default:
-                break;                
+                if((idSuministro = fSuministro.RegistrarMaterial(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
+                }
+                break;
         }
     }
     

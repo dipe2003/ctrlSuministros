@@ -4,14 +4,14 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://java.sun.com/jsf/passthrough"          
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"        
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegProv">
-                <div class="label">Nombre de Proveedor</div><h:inputText id="inputNombreProveedor" class="input" value="#{registrarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor."/>
-                <div class="label">Contacto</div><h:inputText id="inputContactoProveedor" class="input" value="#{registrarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto."/>
+                <div class="label">Nombre de Proveedor</div><h:inputText id="inputNombreProveedor" class="input" value="#{registrarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor." p:placeholder="Nombre del proveedor"/>
+                <div class="label">Contacto</div><h:inputText id="inputContactoProveedor" class="input" value="#{registrarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto." p:placeholder="Datos de contacto con el proveedor"/>
                  
                 <div class="div-boton">
                  <h:commandButton id="btnRegistrarProveedor" class="boton-input" value="Registrar" action="#{registrarProveedor.registrarProveedor()}"/>

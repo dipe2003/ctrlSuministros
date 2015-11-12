@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"        
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
+    <ui:define name="page_content">
+        <div class="contenido">            
+            <h:form id="frmRegUnidad">
+                <div class="label">Nombre de Unidad</div><h:inputText id="inputNombreUnidad" class="input" value="#{registrarUnidad.nombreUnidad}" required="true" requiredMessage="No se ingreso nombre de unidad." p:placeholder="Nombre de unidad"/>
+                
+                <div class="div-boton">
+                    <h:commandButton id="btnRegistrarUnidad" class="boton-input" value="Registrar" action="#{registrarUnidad.registrarUnidad()}"/>
+                </div>
+                
+                <div>
+                    <h:message for="inputNombreUnidad" class="error"/>
+                    <h:message for="btnRegistrarUnidad" class="error"/>                     
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>    

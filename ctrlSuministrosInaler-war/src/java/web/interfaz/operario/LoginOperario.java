@@ -66,7 +66,7 @@ public class LoginOperario implements Serializable{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             request.getSession().invalidate();
             Logueado = false;
-            FacesContext.getCurrentInstance().getExternalContext().redirect("../login.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/login.xhtml");
         }catch(Exception ex){}
     }
     

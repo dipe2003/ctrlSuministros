@@ -4,7 +4,7 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://java.sun.com/jsf/passthrough"          
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"          
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
@@ -12,37 +12,28 @@
             <h:form id="frmRegOp">
                 
                 <div class="label">Numero de Operario</div>
-                <div class="div-input">
-                <h:inputText id="inputIdOperario" class="input" value="#{registrarOperario.idOperario}" required="true" requiredMessage="No se ingreso numero de operario."/>
-                </div>
+                <h:inputText id="inputIdOperario" class="input" value="#{registrarOperario.idOperario}" required="true" requiredMessage="No se ingreso numero de operario." p:placeholder="Numero de operario de formato 300 (Inaler) + Padron (1234)"/>
                 
                 <div class="label">Nombre de Operario</div>
-                <div class="div-input">
-                <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario."/>
-                </div>
+                <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
                 
                 <div class="label">Apellido de Operario</div>
-                <div class="div-input">
-                <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario."/>
-                </div>
+                <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Apellido del operario"/>
                 
                 <div class="label">Contraseña</div>
-                <div class="div-input">
-                <h:inputSecret id="inputPassOperario" class="input" value="#{registrarOperario.password}" required="true" requiredMessage="No se ingreso contraseña"/>
-                </div>
+                <h:inputSecret id="inputPassOperario" class="input" value="#{registrarOperario.password}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Contraseña" />
                 
-                <div class="div-input">
                 <div class="label">Confirmar Contraseña</div>
-                <h:inputSecret id="inputRePassOperario" class="input" value="#{registrarOperario.repPassword}" required="true" requiredMessage="No se ingreso contraseña">
+                <h:inputSecret id="inputRePassOperario" class="input" value="#{registrarOperario.repPassword}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
                     <f:ajax execute="inputPassOperario inputRePassOperario" event="keyup" render="msjPass"/>
                 </h:inputSecret>
-                </div>
+
                 <c:catch var="catch_error">
                     <h:outputText id="msjPass" value="#{registrarOperario.mensajePass}" />
                 </c:catch>  
                 
                 <div class="label">Permiso del Operario</div>
-                <h:selectOneRadio value="#{registrarOperario.permisoOperario}" required="true" requiredMessage="No se selecciono permiso." >
+                <h:selectOneRadio value="#{registrarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
                     <f:selectItems value="#{registrarOperario.permisosOperarios}" />
                 </h:selectOneRadio>
                 
