@@ -24,6 +24,17 @@ div {
     text-decoration: none;
 }
 
+fieldset{
+    border-color: rgb(168, 207, 69);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+legend{
+    font-size: 16px;
+    font-weight: bold;
+}
 .div-boton {
     text-align: right;
     margin-right: 1%;
@@ -217,7 +228,7 @@ div .sub-titulo-fondo{
     width: 97%;
     margin: 10px 0px;
     height: 25px;
-     font-size: 16px;
+    font-size: 16px;
     font-family: LibreSans;
     border: 1px solid  #A8CF45;
 }

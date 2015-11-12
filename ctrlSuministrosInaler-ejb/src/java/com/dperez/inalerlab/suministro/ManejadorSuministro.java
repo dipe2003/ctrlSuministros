@@ -1,7 +1,9 @@
 package com.dperez.inalerlab.suministro;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -56,6 +58,23 @@ public class ManejadorSuministro {
         try{
             suministros = query.getResultList();
         }catch(Exception ex){}
+        return suministros;
+    }
+    
+    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
+        Map<String, Integer> suministros = new HashMap<>();
+        if(IdProveedor>0){
+            TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s, Proveedor p WHERE s.ProveedorSuministro.IdProveedor= :idProveedor", Suministro.class);
+            query.setParameter("idProveedor", IdProveedor);
+            try{
+                List<Suministro> list = query.getResultList();
+                for(Suministro suministro: list){
+                    suministros.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+                }
+            }catch(Exception ex){
+                System.out.println("Error: " + ex.getMessage());
+            }
+        }
         return suministros;
     }
 }

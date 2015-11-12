@@ -22,13 +22,15 @@ public class Salida implements Serializable{
     private Lote LoteSalida;
     @ManyToOne
     private Operario OperarioSalidaSuministro;
+    private String ObservacionesSalida;
     
     //	Constructores
     public Salida(){}
-    public Salida(Date FechaSalida, float CantidadSalida, Lote LoteSalida){
+    public Salida(Date FechaSalida, float CantidadSalida, Lote LoteSalida, String ObservacionesSalida){
         this.FechaSalida = FechaSalida;
         this.CantidadSalida = CantidadSalida;
         this.LoteSalida = LoteSalida;
+        this.ObservacionesSalida = ObservacionesSalida;
     }
     
     //	Getters
@@ -37,6 +39,7 @@ public class Salida implements Serializable{
     public float getCantidadSalida(){return this.CantidadSalida;}
     public Operario getOperarioSalidaSuministro(){return this.OperarioSalidaSuministro;}
     public Lote getLoteSalida() {return LoteSalida;}
+    public String getObservacionesSalida() {return ObservacionesSalida;}
     
     //	Setters
     public void setIdSalida(int IdSalida){this.IdSalida = IdSalida;}
@@ -54,5 +57,6 @@ public class Salida implements Serializable{
             LoteSalida.getSalidasLote().add(this);
         }
     }
+    public void setObservacionesSalida(String ObservacionesSalida) {this.ObservacionesSalida = ObservacionesSalida;}
     
 }

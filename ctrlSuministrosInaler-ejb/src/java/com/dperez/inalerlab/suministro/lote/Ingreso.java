@@ -23,14 +23,16 @@ public class Ingreso implements Serializable{
     private Lote LoteIngreso;
     @ManyToOne
     private Operario OperarioIngresoSuministro;
+    private String ObservacionesIngreso;
     
     //	Constructores
     public Ingreso(){}
-    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, Lote LoteIngreso){
+    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, Lote LoteIngreso, String Observaciones){
         this.FechaIngreso = FechaIngreso;
         this.CantidadIngreso = CantidadIngreso;
         this.NumeroFactura = NumeroFactura;
         this.LoteIngreso = LoteIngreso;
+        this.ObservacionesIngreso = Observaciones;
     }
     
     //	Getters
@@ -40,6 +42,7 @@ public class Ingreso implements Serializable{
     public Lote getLoteIngreso() {return LoteIngreso;}    
     public Operario getOperarioIngresoSuministro() {return OperarioIngresoSuministro;}
     public String getNumeroFactura() {return NumeroFactura;}
+    public String getObservacionesIngreso() {return ObservacionesIngreso;}
     
     //	Setters
     public void setIdIngreso(int IdIngreso){this.IdIngreso = IdIngreso;}
@@ -58,6 +61,7 @@ public class Ingreso implements Serializable{
         }
     }
     public void setNumeroFactura(String NumeroFactura) {this.NumeroFactura = NumeroFactura;}
+    public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
     
     
 }

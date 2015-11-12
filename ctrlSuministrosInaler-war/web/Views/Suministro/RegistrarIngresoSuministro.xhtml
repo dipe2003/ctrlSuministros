@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
+    <ui:define name="page_content">
+        <div class="contenido">            
+            <h:form id="frmRegIngresoSuministro">
+                <fieldset><legend>Suministro</legend>
+                    <div class="label">Proveedor</div>
+                    <h:selectOneMenu value="#{registrarIngresoSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo.">
+                        <f:selectItem itemValue="--Seleccionar Proveedor---" itemDisabled="true"/>
+                        <f:selectItems value="#{registrarIngresoSuministro.proveedoresSuministros}" />
+                        <f:ajax execute="@this" listener="#{registrarIngresoSuministro.cargarSuministros(registrarIngresoSuministro.idProveedor)}" render="selectSuministro" />
+                    </h:selectOneMenu>
+                    
+                    <div class="label">Suministro</div>
+                    <h:selectOneMenu id="selectSuministro" value="#{registrarIngresoSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
+                        <f:selectItem itemValue="--Seleccionar Suministro---" itemDisabled="true"  />
+                        <f:selectItems value="#{registrarIngresoSuministro.listaSuministros}" />
+                    </h:selectOneMenu>
+                </fieldset>
+                
+                <fieldset><legend>Lote</legend>
+                    <div class="label">Fecha de Ingreso</div>
+                    <h:inputText id="inputFechaIngresoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}" required="true" requiredMessage="No se ingreso descripcion de suministro." p:placeholder="Ingrese fecha de vigencia"/>
+                    
+                    <div class="label">Numero de Lote</div>
+                    <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
+                    
+                    <div class="label">Cantidad de Ingreso</div>
+                    <h:inputText id="inputCantidadIngresoSuministro" class="input" value="#{registrarIngresoSuministro.cantidadIngresoSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a ingresar"/>
+                           
+                    <div class="label">Fecha de Vencimiento</div>
+                    <h:inputText id="inputFechaVencimientoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
+                </fieldset>
+                
+                <div class="div-boton">
+                    <h:commandButton id="btnRegistrarIngresoSuministro" class="boton-input" value="Registrar" action="#{registrarIngresoSuministro.registrarIngresoSuministro()}"/>
+                </div>
+                
+                <div>                    
+                    <h:message for="inputCantidadIngresoSuministro" class="error"/>
+                    <h:message for="inputFechaIngresoSuministro" class="error"/>
+                    <h:message for="inputFechaVencimientoSuministro" class="error"/>
+                    <h:message for="btnRegistrarIngresoSuministro" class="error"/>                     
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>    

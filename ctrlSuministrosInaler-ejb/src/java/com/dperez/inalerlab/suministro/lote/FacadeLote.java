@@ -32,10 +32,11 @@ public class FacadeLote implements Serializable{
      * @param NumeroFactura
      * @param IdLoteIngreso
      * @param IdOperario
+     * @param Observaciones
      * @return 
      */
-    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario ){
-        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario);
+    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario, String Observaciones ){
+        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones);
     }
     
     /**
@@ -44,10 +45,11 @@ public class FacadeLote implements Serializable{
      * @param CantidadSalida
      * @param IdLoteSalida
      * @param IdOperario
+     * @param ObservacionesSalida
      * @return 
      */
-    public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario){
-        return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario);
+    public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario, String ObservacionesSalida){
+        return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario, ObservacionesSalida);
     }
     
     /**

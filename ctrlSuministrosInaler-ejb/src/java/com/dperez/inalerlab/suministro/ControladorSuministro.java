@@ -7,6 +7,7 @@ import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -94,4 +95,12 @@ public class ControladorSuministro implements Serializable{
         return mSuministro.ActualizarSuministro(suministro);
     }
     
+    /**
+     * Devuelve los suministros del proveedore especificado por su id.
+     * @param IdProveedor
+     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
+        return mSuministro.ListarSuministrosProveedor(IdProveedor);
+    }
 }	

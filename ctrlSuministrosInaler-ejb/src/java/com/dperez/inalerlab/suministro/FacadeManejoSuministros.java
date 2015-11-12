@@ -5,6 +5,7 @@ import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,7 +19,7 @@ public class FacadeManejoSuministros implements Serializable {
     private ControladorSuministro cSuministro;
     @Inject
     private ControladorUnidad cUnidad;
-
+    
     /**
      * Lista todos los suministros registrados en la base de datos.
      * @return Retorna una lista vacia si no existen operarios registrados.
@@ -31,10 +32,10 @@ public class FacadeManejoSuministros implements Serializable {
      * Busca un suministro registrado en la base de datos.
      * El suministro debe estar registrado previamente.
      * @param IdSuministro Numero de Suministro
-     * @return 
+     * @return
      */
     public Suministro BuscarSuministro(int IdSuministro){
-        return cSuministro.BuscarSuministro(IdSuministro); 
+        return cSuministro.BuscarSuministro(IdSuministro);
     }
     
     /**
@@ -44,8 +45,8 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public boolean ExisteSuministro(int IdSuministro){
         return cSuministro.BuscarSuministro(IdSuministro)!=null;
-    }    
-       
+    }
+    
     /**
      * Registra un material en la base de datos.
      * @param NombreSuministro
@@ -55,9 +56,9 @@ public class FacadeManejoSuministros implements Serializable {
      * @param IdProveedorSuministro
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
-    public int RegistrarMaterial(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro, 
-            int IdUnidadSuministro, int  IdProveedorSuministro){        
-        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, 
+    public int RegistrarMaterial(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
+            int IdUnidadSuministro, int  IdProveedorSuministro){
+        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
                 IdProveedorSuministro, EnumSuministro.Material);
     }
     /**
@@ -69,9 +70,9 @@ public class FacadeManejoSuministros implements Serializable {
      * @param IdProveedorSuministro
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
-    public int RegistrarMedioEnsayo(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro, 
-            int IdUnidadSuministro, int  IdProveedorSuministro){        
-       return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, 
+    public int RegistrarMedioEnsayo(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
+            int IdUnidadSuministro, int  IdProveedorSuministro){
+        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
                 IdProveedorSuministro, EnumSuministro.MedioEnsayo);
     }
     /**
@@ -83,15 +84,15 @@ public class FacadeManejoSuministros implements Serializable {
      * @param IdProveedorSuministro
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
-    public int RegistrarReactivoQuimico(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro, 
-            int IdUnidadSuministro, int  IdProveedorSuministro){        
-       return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, 
+    public int RegistrarReactivoQuimico(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
+            int IdUnidadSuministro, int  IdProveedorSuministro){
+        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
                 IdProveedorSuministro, EnumSuministro.ReactivoQuimico);
     }
     
     /*
-     *  Stock Minimo
-     */
+    *  Stock Minimo
+    */
     /**
      * Registra el stock minimo para el suministro indicado.
      * @param CantidadStockMinimo
@@ -110,7 +111,7 @@ public class FacadeManejoSuministros implements Serializable {
     /**
      * Registra la uindad definida en la base de datos.
      * @param NombreUnidad
-     * @return 
+     * @return
      */
     public int RegistrarUnidadSuministro(String NombreUnidad){
         return cUnidad.CrearUnidad(NombreUnidad);
@@ -123,6 +124,14 @@ public class FacadeManejoSuministros implements Serializable {
     public List<Unidad> ListarUnidades(){
         return cUnidad.ListarUnidades();
     }
-
-     
+    
+    /**
+     * Devuelve los suministros del proveedore especificado por su id.
+     * @param IdProveedor
+     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
+        return cSuministro.ListarSuministrosProveedor(IdProveedor);
+    }
+    
 }
