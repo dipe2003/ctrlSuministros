@@ -30,7 +30,7 @@
                             Ingreso Suministros                             
                         </div>
                     </h:link>
-                    <h:link  class="link">
+                    <h:link  class="link" rendered="#{loginOperario.permisoOperario != 'Lectura'}" outcome="/Views/Suministro/RegistrarSalidaSuministro.xhtml">
                         <div class="divMenuItem">
                             Salida Suministros                            
                         </div>

@@ -80,4 +80,14 @@ public class FacadeLote implements Serializable{
     public Lote BuscarLotePorIdLote(int IdLote){
         return cLote.BuscarLote(IdLote);
     }
+    
+    /**
+     * Comprueba la existencia del numero de lote para el suministro especificado.
+     * @param NumeroLote
+     * @param IdSuministro
+     * @return Retorna el id del suministro. Retorna 0 si no existe.
+     */
+    public int ExisteLoteSuministro(String NumeroLote, int IdSuministro){
+        return cLote.ExisteLoteSuministro(NumeroLote, IdSuministro);
+    }
 }

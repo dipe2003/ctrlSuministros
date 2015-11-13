@@ -59,7 +59,7 @@ legend{
     color: #FFF;
     text-align: center;
     font-weight: bold;
-    width: 100px;
+    width: 150px;
     margin-left: 10px;
     background-color: #2c5697;
 }
@@ -123,6 +123,7 @@ div .sub-titulo-fondo{
     font-family: LibreSans;
     font-size: 18px;
     color:#2c5697;
+    background-color: #F4FEE9;
 }
 .input:focus{
     width: 97%;

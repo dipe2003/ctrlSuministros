@@ -27,16 +27,34 @@
                 
                 <fieldset><legend>Lote</legend>
                     <div class="label">Fecha de Ingreso</div>
-                    <h:inputText id="inputFechaIngresoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}" required="true" requiredMessage="No se ingreso descripcion de suministro." p:placeholder="Ingrese fecha de vigencia"/>
+                    <h:inputText id="inputFechaIngresoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}" required="true" requiredMessage="No se ingreso fecha de ingreso de suministro." p:placeholder="Ingrese fecha de ingreso"/>
                     
                     <div class="label">Numero de Lote</div>
                     <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
                     
                     <div class="label">Cantidad de Ingreso</div>
                     <h:inputText id="inputCantidadIngresoSuministro" class="input" value="#{registrarIngresoSuministro.cantidadIngresoSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a ingresar"/>
-                           
-                    <div class="label">Fecha de Vencimiento</div>
-                    <h:inputText id="inputFechaVencimientoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
+                    
+                    <div class="label">Factura</div>
+                    <h:inputText id="inputFacturaIngresoSuministro" class="input" value="#{registrarIngresoSuministro.numeroFacturaSuministro}" required="true" requiredMessage="No se ingreso factura de suministro." p:placeholder="Cantidad a ingresar"/>
+                    
+                    
+                    <h:commandButton id="btnNumLote" style="display: none;" >
+                        <f:ajax event="click" execute="selectSuministro inputNumeroLoteSuministro" listener="#{registrarIngresoSuministro.comprobarLote(registrarIngresoSuministro.numeroLoteSuministro)}" render="grupoDatosLote"/>
+                    </h:commandButton>                    
+                    
+                    <h:panelGroup id="grupoDatosLote">
+                        <h:panelGroup rendered="#{!registrarIngresoSuministro.existeLote}">
+                            <div class="label">Fecha Produccion</div>
+                            <h:inputText id="inputFechaProduccionLote" class="datepicker input" value="#{registrarIngresoSuministro.strFechaProduccionSuministro}" p:placeholder="Ingrese fecha de produccion"/>
+                            <div class="label">Fecha de Vencimiento</div>
+                            <h:inputText id="inputFechaVencimientoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaVencimientoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
+                        </h:panelGroup>
+                    </h:panelGroup>                    
+                    
+                    <div class="label">Observaciones</div>
+                    <h:inputTextarea id="inputObservacionesIngresoSuministro" class="input" value="#{registrarIngresoSuministro.observacionesIngreso}" p:placeholder="Obesrvaciones para este ingreso"/>
+                    
                 </fieldset>
                 
                 <div class="div-boton">
@@ -45,8 +63,10 @@
                 
                 <div>                    
                     <h:message for="inputCantidadIngresoSuministro" class="error"/>
+                    <h:message for="inputFacturaIngresoSuministro" class="error"/>
                     <h:message for="inputFechaIngresoSuministro" class="error"/>
                     <h:message for="inputFechaVencimientoSuministro" class="error"/>
+                    <h:message for="inputNumeroLoteSuministro" class="error"/>                    
                     <h:message for="btnRegistrarIngresoSuministro" class="error"/>                     
                 </div>
             </h:form>

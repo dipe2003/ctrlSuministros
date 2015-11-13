@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Named
 @ViewScoped
-public class RegistrarIngresoSuministro implements Serializable{
+public class RegistrarSalidaSuministro implements Serializable{
     @EJB
     private FacadeManejoProveedor fProveedor;
     @EJB
@@ -33,121 +33,74 @@ public class RegistrarIngresoSuministro implements Serializable{
     @EJB
     private FacadeLote fLote;
     
-    private Date FechaIngresoSuministro;
-    private String strFechaIngresoSuministro;
+    private Date FechaSalidaSuministro;
+    private String strFechaSalidaSuministro;
     private int IdSuministro;
     private Map<String, Integer> listaSuministros;
     private List<Suministro> lstSuministros;
-    private float CantidadIngresoSuministro;
+    private float CantidadSalidaSuministro;
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
-    private String ObservacionesIngreso;
+    private String ObservacionesSalida;
     
     //  Proveedor
     private int idProveedor;
     private Map<String, Integer> ProveedoresSuministros;
     
     //  Lote
-    private Date FechaVencimientoSuministro;
-    private String strFechaVencimientoSuministro;
-    private Date FechaProduccionSuministro;
-    private String strFechaProduccionSuministro;
     private boolean existeLote;
     
     //  getters
-    public Date getFechaIngresoSuministro() {return FechaIngresoSuministro;}
-    public String getStrFechaIngresoSuministro() {
+    public Date getFechaSalidaSuministro() {return FechaSalidaSuministro;}
+    public String getStrFechaSalidaSuministro() {
         SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
-        if (FechaIngresoSuministro == null) {
-            return this.strFechaIngresoSuministro;
+        if (FechaSalidaSuministro == null) {
+            return this.strFechaSalidaSuministro;
         }else{
-            return fDate.format(FechaIngresoSuministro);
+            return fDate.format(FechaSalidaSuministro);
         }
     }
     public int getIdProveedor() {return idProveedor;}
     public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
     public int getIdSuministro() {return IdSuministro;}
     public Map<String, Integer> getListaSuministros() {return listaSuministros;}
-    public float getCantidadIngresoSuministro() {return CantidadIngresoSuministro;}
+    public float getCantidadSalidaSuministro() {return CantidadSalidaSuministro;}
     public String getNumeroLoteSuministro() {return NumeroLoteSuministro;}
-    public Date getFechaVencimientoSuministro() {return FechaVencimientoSuministro;}
-    public String getStrFechaVencimientoSuministro() {
-        SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
-        if (FechaVencimientoSuministro == null) {
-            return this.strFechaVencimientoSuministro;
-        }else{
-            return fDate.format(FechaVencimientoSuministro);
-        }
-    }
-    public Date getFechaProduccionSuministro() {return FechaProduccionSuministro;}
-    public String getStrFechaProduccionSuministro() {
-        SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
-        if (FechaProduccionSuministro == null) {
-            return this.strFechaProduccionSuministro;
-        }else{
-            return fDate.format(FechaProduccionSuministro);
-        }
-    }
+
     public List<Suministro> getLstSuministros() {return lstSuministros;}
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
-    public String getObservacionesIngreso() {return ObservacionesIngreso;}
+    public String getObservacionesSalida() {return ObservacionesSalida;}
     
     //  setters
-    public void setFechaIngresoSuministro(Date FechaIngresoSuministro) {this.FechaIngresoSuministro = FechaIngresoSuministro;}
-    public void setStrFechaIngresoSuministro(String strFechaIngresoSuministro) {
+    public void setFechaSalidaSuministro(Date FechaSalidaSuministro) {this.FechaSalidaSuministro = FechaSalidaSuministro;}
+    public void setStrFechaSalidaSuministro(String strFechaSalidaSuministro) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try{
-            cal.setTime(sdf.parse(strFechaIngresoSuministro));
+            cal.setTime(sdf.parse(strFechaSalidaSuministro));
         }catch(ParseException ex){}
-        this.strFechaIngresoSuministro = strFechaIngresoSuministro;
-        this.FechaIngresoSuministro = cal.getTime();
+        this.strFechaSalidaSuministro = strFechaSalidaSuministro;
+        this.FechaSalidaSuministro = cal.getTime();
     }
     public void setIdProveedor(int idProveedor) {this.idProveedor = idProveedor;}
     public void setProveedoresSuministros(Map<String, Integer> ProveedoresSuministros) {this.ProveedoresSuministros = ProveedoresSuministros;}
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
     public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
     public void setLstSuministros(List<Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
-    public void setCantidadIngresoSuministro(float CantidadIngresoSuministro) {this.CantidadIngresoSuministro = CantidadIngresoSuministro;}
+    public void setCantidadSalidaSuministro(float CantidadSalidaSuministro) {this.CantidadSalidaSuministro = CantidadSalidaSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
-    public void setFechaVencimientoSuministro(Date FechaVencimientoSuministro) {this.FechaVencimientoSuministro = FechaVencimientoSuministro;}
-    public void setStrFechaVencimientoSuministro(String strFechaVencimientoSuministro) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try{
-            cal.setTime(sdf.parse(strFechaVencimientoSuministro));
-        }catch(ParseException ex){}
-        this.strFechaVencimientoSuministro = strFechaVencimientoSuministro;
-        this.FechaVencimientoSuministro = cal.getTime();
-    }
-    public void setFechaProduccionSuministro(Date FechaProduccionSuministro) {this.FechaProduccionSuministro = FechaProduccionSuministro;}
-    public void setStrFechaProduccionSuministro(String strFechaProduccionSuministro) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try{
-            cal.setTime(sdf.parse(strFechaProduccionSuministro));
-        }catch(ParseException ex){}
-        this.strFechaProduccionSuministro = strFechaProduccionSuministro;
-        this.FechaProduccionSuministro = cal.getTime();
-    }
+
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
-    public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
+    public void setObservacionesSalida(String ObservacionesSalida) {this.ObservacionesSalida = ObservacionesSalida;}
     
-    public void registrarIngresoSuministro() throws IOException{
-        int idLote;
+    public void registrarSalidaSuministro() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         int  IdOperario = ((Operario)request.getSession().getAttribute("Usuario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))>0) {
-            fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso);
-        }else{
-            idLote = fLote.CrearLote(FechaIngresoSuministro, FechaVencimientoSuministro, NumeroLoteSuministro);
-            fLote.AgregarLoteSuministro(IdSuministro, idLote);
-            fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso);
-        }
+
         
     }
     

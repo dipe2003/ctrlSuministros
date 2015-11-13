@@ -8,6 +8,7 @@ import javax.ejb.TransactionManagementType;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 @Named
@@ -70,5 +71,16 @@ public class ManejadorLote {
         return suministros;
     }
     
+    public int ExisteNumeroLoteSuministro(String NumeroLote, int IdSuministro){
+        try{
+            Query query = em.createQuery("SELECT s.IdSuministro FROM Suministro s, Lote lot WHERE lot MEMBER OF s.LotesSuministros AND lot.NumeroLote= :numeroLote AND s.IdSuministro= :idSuministro");
+            query.setParameter("idSuministro", IdSuministro);
+            query.setParameter("numeroLote", NumeroLote);
+            return (int) query.getSingleResult();
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return 0;
+    }
     
 }

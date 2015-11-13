@@ -69,4 +69,16 @@ public class ControladorLote implements Serializable{
         return mLote.ActualizarLote(lote);
     }
     
+    /**
+     * Comprueba la existencia del numero de lote para el suministro especificado.
+     * @param NumeroLote
+     * @param IdSuministro
+     * @return Retorna el id del suministro. Retorna 0 si no existe.
+     */
+    public int ExisteLoteSuministro(String NumeroLote, int IdSuministro){
+        if(NumeroLote.isEmpty() || NumeroLote.equals("")){
+            return 0;
+        }
+        return mLote.ExisteNumeroLoteSuministro(NumeroLote, IdSuministro);
+    }
 }	
