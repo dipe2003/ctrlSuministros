@@ -1,7 +1,9 @@
 package com.dperez.inalerlab.suministro.lote;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -83,4 +85,18 @@ public class ManejadorLote {
         return 0;
     }
     
+    public Map<String, Integer> ListarMapLotes(int IdSuministro){
+     Map<String, Integer> map = new HashMap<>();
+     Query query = em.createQuery("SELECT lot.NumeroLote, lot.IdLote FROM Lote lot WHERE lot.SuministroLote.IdSuministro= :idSuministro");
+     query.setParameter("idSuministro", IdSuministro);
+     try{
+         List<Object[]> resultado = query.getResultList();
+         for(Object[] res: resultado){
+             map.put((String) res[0], (int) res[1]);
+         }
+     }catch(Exception ex){
+         System.out.println("Error: " + ex.getMessage());
+     }
+     return map;
+    }
 }

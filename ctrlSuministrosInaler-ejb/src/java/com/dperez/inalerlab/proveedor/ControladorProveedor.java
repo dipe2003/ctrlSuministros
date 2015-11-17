@@ -2,6 +2,7 @@ package com.dperez.inalerlab.proveedor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -54,5 +55,14 @@ public class ControladorProveedor implements Serializable{
         proveedor.setContactoProveedor(ContactoProveedor);
         return mProveedor.ActualizarProveedor(proveedor);
     }
+    
+    /**
+     * Devuelve un Map con los proveedores registrados en el sistema.
+     * @return Retorna un Map con los Nombres de los proveedores (key) y los id (value)
+     */
+    public Map<String, Integer> ListarMapProveedores(){
+        return mProveedor.ListarMapProveedores();
+    }
+    
     
 }	

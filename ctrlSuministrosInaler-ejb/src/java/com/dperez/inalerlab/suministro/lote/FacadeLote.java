@@ -2,6 +2,7 @@ package com.dperez.inalerlab.suministro.lote;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -56,7 +57,7 @@ public class FacadeLote implements Serializable{
      * Agrega un lote creado a un suministro especificado.
      * @param IdSuministro
      * @param IdLote
-     * @return 
+     * @return Retorna el id del lote. Retorna -1 si no se agrego.
      */
     public int AgregarLoteSuministro(int IdSuministro, int IdLote){
         return cLote.AgregarLoteSuministro(IdLote, IdSuministro);
@@ -90,4 +91,14 @@ public class FacadeLote implements Serializable{
     public int ExisteLoteSuministro(String NumeroLote, int IdSuministro){
         return cLote.ExisteLoteSuministro(NumeroLote, IdSuministro);
     }
+    
+    /**
+     * Devuelve un Map con los lotes registrados en el sistema.
+     * @param IdSuministro
+     * @return Retorna un Map con el numero de lote (key) e id (value)
+     */
+    public Map<String, Integer> ListarMapLotes(int IdSuministro){
+        return cLote.ListarMapLotes(IdSuministro);
+    }
+    
 }

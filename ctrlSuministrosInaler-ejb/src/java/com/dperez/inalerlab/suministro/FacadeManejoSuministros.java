@@ -126,6 +126,15 @@ public class FacadeManejoSuministros implements Serializable {
     }
     
     /**
+     * 
+     * @param IdSuministro
+     * @return 
+     */
+    public Unidad BuscarUnidadSuministro(int IdSuministro){
+       return cUnidad.BuscarUnidadSuministro(IdSuministro);
+    }
+    
+    /**
      * Devuelve los suministros del proveedore especificado por su id.
      * @param IdProveedor
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.

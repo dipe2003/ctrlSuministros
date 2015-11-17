@@ -4,6 +4,7 @@ import com.dperez.inalerlab.suministro.ControladorSuministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -80,5 +81,13 @@ public class ControladorLote implements Serializable{
             return 0;
         }
         return mLote.ExisteNumeroLoteSuministro(NumeroLote, IdSuministro);
+    }
+    
+        /**
+     * Devuelve un Map con los lotes registrados en el sistema.
+     * @return Retorna un Map con el numero de lote (key) e id (value)
+     */
+    public Map<String, Integer> ListarMapLotes(int IdSuministro){
+        return mLote.ListarMapLotes(IdSuministro);
     }
 }	

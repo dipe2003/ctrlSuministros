@@ -1,6 +1,7 @@
 package com.dperez.inalerlab.proveedor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -9,6 +10,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.Map;
+import javax.persistence.Query;
 
 @Named
 @Stateless
@@ -57,5 +60,19 @@ public class ManejadorProveedor {
             Proveedores = query.getResultList();
         }catch(Exception ex){}
         return Proveedores;
+    }
+    
+    public Map<String, Integer> ListarMapProveedores(){
+        Map<String, Integer> map = new HashMap<>();
+        Query query = em.createQuery("SELECT p.NombreProveedor, p.IdProveedor FROM Proveedor p");
+        try{
+            List<Object[]> resultado = query.getResultList();
+            for(Object[] res: resultado){
+                map.put((String) res[0], (int) res[1]);
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return map;
     }
 }

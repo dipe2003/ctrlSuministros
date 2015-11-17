@@ -139,26 +139,22 @@ public class RegistrarIngresoSuministro implements Serializable{
         int idLote;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        int  IdOperario = ((Operario)request.getSession().getAttribute("Usuario")).getIdOperario();
+        int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))>0) {
-            fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso);
-        }else{
+        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))<=0) {
             idLote = fLote.CrearLote(FechaIngresoSuministro, FechaVencimientoSuministro, NumeroLoteSuministro);
-            fLote.AgregarLoteSuministro(IdSuministro, idLote);
-            fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso);
+            idLote = fLote.AgregarLoteSuministro(IdSuministro, idLote);
         }
-        
+        if(idLote!=-1){
+            if((fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso))!=-1){
+                context.getExternalContext().redirect(url+"/Views/index.xhtml");
+            }
+        }
     }
     
     @PostConstruct
     public void init(){
-        ProveedoresSuministros = new HashMap<>();
-        List<Proveedor> Proveedores = fProveedor.ListarProveedores();
-        for(Proveedor proveedor: Proveedores){
-            ProveedoresSuministros.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
-        }
-        
+        ProveedoresSuministros = fProveedor.ListarMapProveedores();
         listaSuministros = fSuministro.ListarSuministrosProveedor(idProveedor);
         existeLote = false;
     }

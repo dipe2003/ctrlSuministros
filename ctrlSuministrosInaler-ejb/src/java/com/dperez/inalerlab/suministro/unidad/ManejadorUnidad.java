@@ -58,4 +58,15 @@ public class ManejadorUnidad {
         }catch(Exception ex){}
         return Unidades;
     }
+    
+    public Unidad ObtenerUnidadSuministro(int IdSuministro){
+        TypedQuery<Unidad> query = em.createQuery("SELECT u FROM Unidad u, Suministro s WHERE s.IdSuministro= :idSuministro AND s.UnidadSuministro.IdUnidad = u.IdUnidad", Unidad.class);
+        query.setParameter("idSuministro", IdSuministro);
+        try{
+            return query.getSingleResult();
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return null;
+    }
 }

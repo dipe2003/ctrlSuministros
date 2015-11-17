@@ -25,4 +25,8 @@ public class ControladorUnidad implements Serializable{
         return mUnidad.ListarUnidades();
     }
     
+    public Unidad BuscarUnidadSuministro(int IdSuministro){
+        return mUnidad.ObtenerUnidadSuministro(IdSuministro);
+    }
+    
 }	

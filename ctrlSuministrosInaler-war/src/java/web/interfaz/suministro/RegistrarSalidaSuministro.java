@@ -3,7 +3,6 @@ package web.interfaz.suministro;
 
 import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
-import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.FacadeLote;
@@ -13,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -41,7 +39,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     private float CantidadSalidaSuministro;
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
-    private String ObservacionesSalida;
+    private String ObservacionesSalida;    
     
     //  Proveedor
     private int idProveedor;
@@ -49,6 +47,11 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     //  Lote
     private boolean existeLote;
+    private int IdLoteSuministro;
+    private Map<String, Integer> listaNumerosLoteSuministro;
+    private float CantidadStockLote;
+    private String UnidadCantidad;
+    private float StockSuministro;
     
     //  getters
     public Date getFechaSalidaSuministro() {return FechaSalidaSuministro;}
@@ -66,11 +69,30 @@ public class RegistrarSalidaSuministro implements Serializable{
     public Map<String, Integer> getListaSuministros() {return listaSuministros;}
     public float getCantidadSalidaSuministro() {return CantidadSalidaSuministro;}
     public String getNumeroLoteSuministro() {return NumeroLoteSuministro;}
-
+    
     public List<Suministro> getLstSuministros() {return lstSuministros;}
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
     public String getObservacionesSalida() {return ObservacionesSalida;}
+
+    public int getIdLoteSuministro() {return IdLoteSuministro;}
+    public Map<String, Integer> getListaNumerosLoteSuministro() {return listaNumerosLoteSuministro;}
+    public float getCantidadStockLote() {
+        try{
+            CantidadStockLote  = fLote.BuscarLotePorIdLote(IdLoteSuministro).getCantidadStock();
+        }catch(NullPointerException ex){
+            CantidadStockLote = 0f;
+        }
+        return CantidadStockLote;
+    }
+    public String getUnidadCantidad() {return UnidadCantidad;}
+    public float getNuevoStock(){
+        try{
+            return CantidadStockLote - CantidadSalidaSuministro;
+        }catch(Exception ex){}
+        return CantidadStockLote;
+    }    
+    public float getStockSuministro() {return StockSuministro;}
     
     //  setters
     public void setFechaSalidaSuministro(Date FechaSalidaSuministro) {this.FechaSalidaSuministro = FechaSalidaSuministro;}
@@ -90,28 +112,30 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void setLstSuministros(List<Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
     public void setCantidadSalidaSuministro(float CantidadSalidaSuministro) {this.CantidadSalidaSuministro = CantidadSalidaSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
-
+    
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
     public void setObservacionesSalida(String ObservacionesSalida) {this.ObservacionesSalida = ObservacionesSalida;}
+
+    public void setIdLoteSuministro(int IdLoteSuministro) {this.IdLoteSuministro = IdLoteSuministro;}
+    public void setListaNumerosLoteSuministro(Map<String, Integer> listaNumerosLoteSuministro) {this.listaNumerosLoteSuministro = listaNumerosLoteSuministro;}
+    public void setCantidadStockLote(float CantidadStockLote) {this.CantidadStockLote = CantidadStockLote;}
+    public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
+    public void setStockSuministro(float StockSuministro) {this.StockSuministro = StockSuministro;}
     
     public void registrarSalidaSuministro() throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        int  IdOperario = ((Operario)request.getSession().getAttribute("Usuario")).getIdOperario();
+        int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-
-        
+        if(fLote.CrearSalida(FechaSalidaSuministro, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
+            context.getExternalContext().redirect(url+"/Views/index.xhtml");
+        }        
     }
     
     @PostConstruct
     public void init(){
-        ProveedoresSuministros = new HashMap<>();
-        List<Proveedor> Proveedores = fProveedor.ListarProveedores();
-        for(Proveedor proveedor: Proveedores){
-            ProveedoresSuministros.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
-        }
-        
+        ProveedoresSuministros = fProveedor.ListarMapProveedores();               
         listaSuministros = fSuministro.ListarSuministrosProveedor(idProveedor);
         existeLote = false;
     }
@@ -123,19 +147,14 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void cargarSuministros(int IdProveedor){
         listaSuministros = fSuministro.ListarSuministrosProveedor(IdProveedor);
     }
-    
+        
     /**
-     * Comprueba la existencia del numero de lote para el suministro.
-     * @param NumeroLote
-     * @return
+     * 
+     * @param IdSuministro 
      */
-    public void comprobarLote(String NumeroLote){
-        existeLote = false;
-        try{
-            if(fLote.ExisteLoteSuministro(NumeroLote, IdSuministro)>0){
-                existeLote = true;
-            }
-        }catch(NullPointerException ex){}
+    public void cargarNumerosLoteSuministro(int IdSuministro){
+        listaNumerosLoteSuministro = fLote.ListarMapLotes(IdSuministro);
+        UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
+        StockSuministro = fSuministro.BuscarSuministro(IdSuministro).getStock();
     }
-    
 }

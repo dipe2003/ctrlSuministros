@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ abstract public class Suministro implements Serializable{
     private String CodigoSAPSuministro;
     @ManyToOne
     private Unidad UnidadSuministro;
-    @OneToMany(mappedBy = "SuministroLote")
+    @OneToMany(mappedBy = "SuministroLote", fetch = FetchType.EAGER)
     private List<Lote> LotesSuministros;
     @OneToMany
     private List<StockMinimo> StocksMinimosSuministro;
@@ -86,6 +87,14 @@ abstract public class Suministro implements Serializable{
         if(!LoteSuministro.getSuministroLote().equals(this)){
             LoteSuministro.setSuministroLote(this);
         }
+    }
+    
+    public float getStock(){
+        float stock = 0f;
+        for(Lote lote: this.LotesSuministros){
+            stock += lote.getCantidadStock();
+        }
+        return stock;
     }
     
 }

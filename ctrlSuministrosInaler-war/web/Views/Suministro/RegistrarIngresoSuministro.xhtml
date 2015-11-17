@@ -13,14 +13,14 @@
                 <fieldset><legend>Suministro</legend>
                     <div class="label">Proveedor</div>
                     <h:selectOneMenu value="#{registrarIngresoSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo.">
-                        <f:selectItem itemValue="--Seleccionar Proveedor---" itemDisabled="true"/>
+                        <f:selectItem itemValue="--Seleccionar Proveedor---" itemDisabled="false"  noSelectionOption="true"/>
                         <f:selectItems value="#{registrarIngresoSuministro.proveedoresSuministros}" />
                         <f:ajax execute="@this" listener="#{registrarIngresoSuministro.cargarSuministros(registrarIngresoSuministro.idProveedor)}" render="selectSuministro" />
                     </h:selectOneMenu>
                     
                     <div class="label">Suministro</div>
                     <h:selectOneMenu id="selectSuministro" value="#{registrarIngresoSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
-                        <f:selectItem itemValue="--Seleccionar Suministro---" itemDisabled="true"  />
+                        <f:selectItem itemValue="--Seleccionar Suministro---" itemDisabled="false"  noSelectionOption="true" />
                         <f:selectItems value="#{registrarIngresoSuministro.listaSuministros}" />
                     </h:selectOneMenu>
                 </fieldset>
