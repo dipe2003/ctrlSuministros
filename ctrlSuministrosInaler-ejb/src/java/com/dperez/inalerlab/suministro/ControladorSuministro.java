@@ -103,4 +103,12 @@ public class ControladorSuministro implements Serializable{
     public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
         return mSuministro.ListarSuministrosProveedor(IdProveedor);
     }
+    
+    /**
+     * Devuelve los suministros registrados en la base de datos..
+     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<String, Integer> ListarMapSuministros(){
+        return mSuministro.ListarMapSuministros();
+    }
 }	

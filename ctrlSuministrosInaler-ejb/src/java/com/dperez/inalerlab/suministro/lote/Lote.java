@@ -4,6 +4,7 @@ package com.dperez.inalerlab.suministro.lote;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -107,5 +108,17 @@ public class Lote implements Serializable{
         if (!SalidaLote.getLoteSalida().equals(this)) {
             SalidaLote.setLoteSalida(this);
         }
+    }
+    
+    public Ingreso getUltimoIngreso(){
+        int max = 0;
+        int index = 0;
+        for (int i = 0; i < IngresosLote.size(); i++) {
+            if(IngresosLote.get(i).getIdIngreso() > max){
+                max = IngresosLote.get(i).getIdIngreso();
+                index = i;
+            }
+        }
+        return IngresosLote.get(index);
     }
 }

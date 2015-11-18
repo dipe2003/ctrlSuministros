@@ -2,6 +2,7 @@ package com.dperez.inalerlab.suministro;
 
 import com.dperez.inalerlab.suministro.stockminimo.StockMinimo;
 import com.dperez.inalerlab.proveedor.Proveedor;
+import com.dperez.inalerlab.suministro.lote.Ingreso;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
@@ -95,6 +96,18 @@ abstract public class Suministro implements Serializable{
             stock += lote.getCantidadStock();
         }
         return stock;
+    }
+    
+    public Ingreso getUltimoIngreso(){
+        int max = 0;
+        int index = 0;
+        for (int i = 0; i < this.LotesSuministros.size(); i++) {
+            if(this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso()>max){
+                max = this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso();
+                index = i;
+            }
+        }
+        return this.LotesSuministros.get(index).getUltimoIngreso();
     }
     
 }

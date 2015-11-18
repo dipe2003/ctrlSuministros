@@ -3,26 +3,12 @@
 <ui:composition template="../../Views/index.xhtml" 
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"          
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" 
-                    
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"                    
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="page_content">
         <div class="contenido">
-            <f:view>
-                <h:form>
-                    <p:dataTable emptyMessage="No hay datos para mostrar" value="#{listadoSuministros.listaSuministros}" var="suministro" >
-                        <p:column headerText="Suministro">
-                            #{suministro.nombreSuministro}
-                        </p:column>
-                        <p:column headerText="Proveedor" >
-                            #{suministro.nombreSuministro}
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-            </f:view>            
+
         </div>
     </ui:define>
 </ui:composition>    

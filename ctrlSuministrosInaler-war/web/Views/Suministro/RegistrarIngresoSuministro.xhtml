@@ -27,7 +27,7 @@
                 
                 <fieldset><legend>Lote</legend>
                     <div class="label">Fecha de Ingreso</div>
-                    <h:inputText id="inputFechaIngresoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}" required="true" requiredMessage="No se ingreso fecha de ingreso de suministro." p:placeholder="Ingrese fecha de ingreso"/>
+                    <h:inputText id="inputFechaIngresoSuministro" class="calendario input" value="#{registrarIngresoSuministro.strFechaIngresoSuministro}" required="true" requiredMessage="No se ingreso fecha de ingreso de suministro." p:placeholder="Ingrese fecha de ingreso"/>
                     
                     <div class="label">Numero de Lote</div>
                     <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
@@ -46,9 +46,9 @@
                     <h:panelGroup id="grupoDatosLote">
                         <h:panelGroup rendered="#{!registrarIngresoSuministro.existeLote}">
                             <div class="label">Fecha Produccion</div>
-                            <h:inputText id="inputFechaProduccionLote" class="datepicker input" value="#{registrarIngresoSuministro.strFechaProduccionSuministro}" p:placeholder="Ingrese fecha de produccion"/>
+                            <h:inputText id="inputFechaProduccionLote" class="calendario input" value="#{registrarIngresoSuministro.strFechaProduccionSuministro}" p:placeholder="Ingrese fecha de produccion"/>
                             <div class="label">Fecha de Vencimiento</div>
-                            <h:inputText id="inputFechaVencimientoSuministro" class="datepicker input" value="#{registrarIngresoSuministro.strFechaVencimientoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
+                            <h:inputText id="inputFechaVencimientoSuministro" class="calendario input" value="#{registrarIngresoSuministro.strFechaVencimientoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
                         </h:panelGroup>
                     </h:panelGroup>                    
                     

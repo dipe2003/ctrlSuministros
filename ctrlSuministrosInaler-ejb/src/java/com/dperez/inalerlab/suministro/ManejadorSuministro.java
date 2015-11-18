@@ -77,4 +77,18 @@ public class ManejadorSuministro {
         }
         return suministros;
     }
+    
+    public Map<String, Integer> ListarMapSuministros(){
+        Map<String, Integer> suministros = new HashMap<>();
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s", Suministro.class);
+        try{
+            List<Suministro> list = query.getResultList();
+            for(Suministro suministro: list){
+                suministros.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return suministros;
+    }
 }

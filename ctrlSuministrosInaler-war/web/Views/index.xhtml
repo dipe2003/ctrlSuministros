@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" >
     <h:head>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/base.css"/>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/jquery-ui.css"/>
@@ -25,7 +26,31 @@
         </div>
         <div class="contentBody">
             <ui:insert name="page_content">
-                Bienvenido
+                <div class="contenido">
+                    <h:form id="frmIndexSuministro">
+                        <fieldset><legend>Resumen</legend>
+                            <div class="label">Suministro</div>
+                            <h:selectOneMenu id="selectSuministroIndex" value="#{datosIndex.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
+                                <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
+                                <f:selectItems value="#{datosIndex.mapSuministros}" />
+                                <f:ajax listener="#{datosIndex.cargarDatosSuministro()}" render="outputCantidadStockLoteIndex outputUltimoIngresoIndex outputUltimoIngresoCantidadIndex" />
+                            </h:selectOneMenu>
+                            
+                            <div class="label">Stock Actual</div>
+                            <h:inputText id="outputCantidadStockLoteIndex" class="output" value="#{datosIndex.stockSuministro} #{datosIndex.unidadCantidad}" pt:disabled="true" />
+                            
+                            <div class="label">Ultimo Ingreso</div>
+                            <h:inputText id="outputUltimoIngresoIndex" class="output" value="El #{datosIndex.suministro.ultimoIngreso.fechaIngreso} / Numero de Lote: #{datosIndex.suministro.ultimoIngreso.loteIngreso.numeroLote}" pt:disabled="true" />
+                            <h:inputText id="outputUltimoIngresoCantidadIndex" class="output" value="#{datosIndex.suministro.ultimoIngreso.cantidadIngreso} #{datosIndex.unidadCantidad}" pt:disabled="true" />
+                            
+                        </fieldset>
+                        
+                        <fieldset><legend>Graficos</legend>
+                            <div class="label">Stock</div>
+                            
+                        </fieldset>
+                    </h:form>
+                </div>
             </ui:insert>
         </div>
     </h:body>

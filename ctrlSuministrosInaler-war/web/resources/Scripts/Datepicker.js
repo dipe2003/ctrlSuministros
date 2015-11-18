@@ -1,5 +1,5 @@
 $(document).ready(function() {
- $(".datepicker").datepicker({
+ $(".calendario").datepicker({
 dateFormat:'dd/mm/yy',
 showOtherMonths: true,
 selectOtherMonths: true,
