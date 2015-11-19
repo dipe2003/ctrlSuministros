@@ -98,6 +98,10 @@ abstract public class Suministro implements Serializable{
         return stock;
     }
     
+    /**
+     * Retorna el ultimo ingreso del suministro.
+     * @return Retorna null si no hay ingresos.
+     */
     public Ingreso getUltimoIngreso(){
         int max = 0;
         int index = 0;
@@ -107,7 +111,11 @@ abstract public class Suministro implements Serializable{
                 index = i;
             }
         }
-        return this.LotesSuministros.get(index).getUltimoIngreso();
+        try{
+            return this.LotesSuministros.get(index).getUltimoIngreso();
+        }catch(IndexOutOfBoundsException ex){
+            return null;
+        }
     }
     
 }

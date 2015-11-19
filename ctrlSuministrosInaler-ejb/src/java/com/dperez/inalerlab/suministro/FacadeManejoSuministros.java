@@ -126,12 +126,12 @@ public class FacadeManejoSuministros implements Serializable {
     }
     
     /**
-     * 
+     *
      * @param IdSuministro
-     * @return 
+     * @return
      */
     public Unidad BuscarUnidadSuministro(int IdSuministro){
-       return cUnidad.BuscarUnidadSuministro(IdSuministro);
+        return cUnidad.BuscarUnidadSuministro(IdSuministro);
     }
     
     /**
@@ -149,6 +149,14 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public Map<String, Integer> ListarMapSuministros(){
         return cSuministro.ListarMapSuministros();
+    }
+    
+    /**
+     * Calcula la cantidad de suministros que están por debajo de su stock minimo.
+     * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
+     */
+    public int[] GetTotalSuministrosDebajoStockMinimo(){
+        return cSuministro.GetTotalSuministrosDebajoStockMinimo();
     }
     
 }

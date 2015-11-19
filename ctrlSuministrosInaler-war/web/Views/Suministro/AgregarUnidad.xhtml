@@ -10,16 +10,18 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegUnidad">
-                <div class="label">Nombre de Unidad</div><h:inputText id="inputNombreUnidad" class="input" value="#{registrarUnidad.nombreUnidad}" required="true" requiredMessage="No se ingreso nombre de unidad." p:placeholder="Nombre de unidad"/>
-                
-                <div class="div-boton">
-                    <h:commandButton id="btnRegistrarUnidad" class="boton-input" value="Registrar" action="#{registrarUnidad.registrarUnidad()}"/>
-                </div>
-                
-                <div>
-                    <h:message for="inputNombreUnidad" class="error"/>
-                    <h:message for="btnRegistrarUnidad" class="error"/>                     
-                </div>
+                <fieldset><legend>Agregar Unidad</legend>
+                    <div class="label">Nombre de Unidad</div><h:inputText id="inputNombreUnidad" class="input" value="#{registrarUnidad.nombreUnidad}" required="true" requiredMessage="No se ingreso nombre de unidad." p:placeholder="Nombre de unidad"/>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnRegistrarUnidad" class="boton-input" value="Registrar" action="#{registrarUnidad.registrarUnidad()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="inputNombreUnidad" class="error"/>
+                        <h:message for="btnRegistrarUnidad" class="error"/>                     
+                    </div>
+                </fieldset>
             </h:form>
         </div>
     </ui:define>

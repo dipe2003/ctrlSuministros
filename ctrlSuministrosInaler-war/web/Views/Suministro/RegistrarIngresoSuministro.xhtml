@@ -22,6 +22,7 @@
                     <h:selectOneMenu id="selectSuministro" value="#{registrarIngresoSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
                         <f:selectItem itemValue="--Seleccionar Suministro---" itemDisabled="false"  noSelectionOption="true" />
                         <f:selectItems value="#{registrarIngresoSuministro.listaSuministros}" />
+                        <f:ajax listener="#{registrarIngresoSuministro.cargarUnidad()}" render="ouputUnidadIngresoSuministro"/>
                     </h:selectOneMenu>
                 </fieldset>
                 
@@ -33,8 +34,10 @@
                     <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
                     
                     <div class="label">Cantidad de Ingreso</div>
-                    <h:inputText id="inputCantidadIngresoSuministro" class="input" value="#{registrarIngresoSuministro.cantidadIngresoSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a ingresar"/>
-                    
+                    <div style="text-align: left;">
+                        <h:inputText id="inputCantidadIngresoSuministro" style="width: 50%" class="input" value="#{registrarIngresoSuministro.cantidadIngresoSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a ingresar"/>
+                        <h:inputText id="ouputUnidadIngresoSuministro" style="width: 20%" class="output" value="#{registrarIngresoSuministro.unidadCantidad}" />
+                    </div>
                     <div class="label">Factura</div>
                     <h:inputText id="inputFacturaIngresoSuministro" class="input" value="#{registrarIngresoSuministro.numeroFacturaSuministro}" required="true" requiredMessage="No se ingreso factura de suministro." p:placeholder="Cantidad a ingresar"/>
                     

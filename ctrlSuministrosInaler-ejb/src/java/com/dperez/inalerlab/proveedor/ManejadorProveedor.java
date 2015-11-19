@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.persistence.Query;
 
 @Named
@@ -73,6 +74,6 @@ public class ManejadorProveedor {
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }
-        return map;
+        return new TreeMap<>(map);
     }
 }

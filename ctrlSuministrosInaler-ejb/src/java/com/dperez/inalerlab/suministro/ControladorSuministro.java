@@ -111,4 +111,21 @@ public class ControladorSuministro implements Serializable{
     public Map<String, Integer> ListarMapSuministros(){
         return mSuministro.ListarMapSuministros();
     }
+    
+    /**
+     * Calcula la cantidad de suministros que están por debajo de su stock minimo.
+     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0).
+     * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
+     */
+    public int[] GetTotalSuministrosDebajoStockMinimo(){
+        List<Suministro> suministros = mSuministro.ListarSuministros();
+        int cantidad = 0;
+        for(Suministro suministro: suministros){
+            if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
+                cantidad ++;
+            }
+        }
+        return new int[]{suministros.size(), cantidad};
+    }
 }	

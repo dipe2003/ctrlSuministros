@@ -10,19 +10,21 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegProv">
-                <div class="label">Nombre de Proveedor</div><h:inputText id="inputNombreProveedor" class="input" value="#{registrarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor." p:placeholder="Nombre del proveedor"/>
-                <div class="label">Contacto</div><h:inputText id="inputContactoProveedor" class="input" value="#{registrarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto." p:placeholder="Datos de contacto con el proveedor"/>
-                 
-                <div class="div-boton">
-                 <h:commandButton id="btnRegistrarProveedor" class="boton-input" value="Registrar" action="#{registrarProveedor.registrarProveedor()}"/>
-                </div>
-                
-                 <div>
-                     <h:message for="inputNombreProveedor" class="error"/>
-                     <h:message for="inputContactoProveedor" class="error"/>
-                     <h:message for="btnRegistrarProveedor" class="error"/>                     
-                 </div>
+                <fieldset><legend>Agregar Proveedor</legend>
+                    <div class="label">Nombre de Proveedor</div><h:inputText id="inputNombreProveedor" class="input" value="#{registrarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor." p:placeholder="Nombre del proveedor"/>
+                    <div class="label">Contacto</div><h:inputText id="inputContactoProveedor" class="input" value="#{registrarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto." p:placeholder="Datos de contacto con el proveedor"/>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnRegistrarProveedor" class="boton-input" value="Registrar" action="#{registrarProveedor.registrarProveedor()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="inputNombreProveedor" class="error"/>
+                        <h:message for="inputContactoProveedor" class="error"/>
+                        <h:message for="btnRegistrarProveedor" class="error"/>                     
+                    </div>
+                </fieldset>
             </h:form>
-           </div>
+        </div>
     </ui:define>
 </ui:composition>    

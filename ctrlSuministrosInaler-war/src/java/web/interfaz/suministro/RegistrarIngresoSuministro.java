@@ -42,6 +42,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
     private String ObservacionesIngreso;
+    private String UnidadCantidad;
     
     //  Proveedor
     private int idProveedor;
@@ -92,6 +93,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
     public String getObservacionesIngreso() {return ObservacionesIngreso;}
+    public String getUnidadCantidad() {return UnidadCantidad;}
     
     //  setters
     public void setFechaIngresoSuministro(Date FechaIngresoSuministro) {this.FechaIngresoSuministro = FechaIngresoSuministro;}
@@ -134,6 +136,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
     public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
+    public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     
     public void registrarIngresoSuministro() throws IOException{
         int idLote;
@@ -170,7 +173,6 @@ public class RegistrarIngresoSuministro implements Serializable{
     /**
      * Comprueba la existencia del numero de lote para el suministro.
      * @param NumeroLote
-     * @return
      */
     public void comprobarLote(String NumeroLote){
         existeLote = false;
@@ -179,6 +181,10 @@ public class RegistrarIngresoSuministro implements Serializable{
                 existeLote = true;
             }
         }catch(NullPointerException ex){}
+    }
+    
+    public void cargarUnidad(){
+        UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
     }
     
 }

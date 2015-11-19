@@ -10,46 +10,47 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegOp">
-                
-                <div class="label">Numero de Operario</div>
-                <h:inputText id="inputIdOperario" class="input" value="#{registrarOperario.idOperario}" required="true" requiredMessage="No se ingreso numero de operario." p:placeholder="Numero de operario de formato 300 (Inaler) + Padron (1234)"/>
-                
-                <div class="label">Nombre de Operario</div>
-                <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
-                
-                <div class="label">Apellido de Operario</div>
-                <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Apellido del operario"/>
-                
-                <div class="label">Contraseña</div>
-                <h:inputSecret id="inputPassOperario" class="input" value="#{registrarOperario.password}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Contraseña" />
-                
-                <div class="label">Confirmar Contraseña</div>
-                <h:inputSecret id="inputRePassOperario" class="input" value="#{registrarOperario.repPassword}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
-                    <f:ajax execute="inputPassOperario inputRePassOperario" event="keyup" render="msjPass"/>
-                </h:inputSecret>
-
-                <c:catch var="catch_error">
-                    <h:outputText id="msjPass" value="#{registrarOperario.mensajePass}" />
-                </c:catch>  
-                
-                <div class="label">Permiso del Operario</div>
-                <h:selectOneRadio value="#{registrarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
-                    <f:selectItems value="#{registrarOperario.permisosOperarios}" />
-                </h:selectOneRadio>
-                
-                <div class="div-boton">
-                 <h:commandButton id="btnRegistrar" class="boton-input" value="Registrar" action="#{registrarOperario.registrarOperario()}"/>
-                </div>
-                
-                 <div>
-                     <h:message for="inputIdOperario" class="error"/>
-                     <h:message for="inputNombreOperario" class="error"/>
-                     <h:message for="inputApellidoOperario" class="error"/>                     
-                     <h:message for="inputPassOperario" class="error"/>
-                     <h:message for="inputRePassOperario" class="error"/>
-                     <h:message for="btnRegistrar" class="error"/>                     
-                 </div>
+                <fieldset><legend>Agregar Operario</legend>
+                    <div class="label">Numero de Operario</div>
+                    <h:inputText id="inputIdOperario" class="input" value="#{registrarOperario.idOperario}" required="true" requiredMessage="No se ingreso numero de operario." p:placeholder="Numero de operario de formato 300 (Inaler) + Padron (1234)"/>
+                    
+                    <div class="label">Nombre de Operario</div>
+                    <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
+                    
+                    <div class="label">Apellido de Operario</div>
+                    <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Apellido del operario"/>
+                    
+                    <div class="label">Contraseña</div>
+                    <h:inputSecret id="inputPassOperario" class="input" value="#{registrarOperario.password}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Contraseña" />
+                    
+                    <div class="label">Confirmar Contraseña</div>
+                    <h:inputSecret id="inputRePassOperario" class="input" value="#{registrarOperario.repPassword}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
+                        <f:ajax execute="inputPassOperario inputRePassOperario" event="keyup" render="msjPass"/>
+                    </h:inputSecret>
+                    
+                    <c:catch var="catch_error">
+                        <h:outputText id="msjPass" value="#{registrarOperario.mensajePass}" />
+                    </c:catch>  
+                    
+                    <div class="label">Permiso del Operario</div>
+                    <h:selectOneRadio value="#{registrarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                        <f:selectItems value="#{registrarOperario.permisosOperarios}" />
+                    </h:selectOneRadio>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnRegistrar" class="boton-input" value="Registrar" action="#{registrarOperario.registrarOperario()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="inputIdOperario" class="error"/>
+                        <h:message for="inputNombreOperario" class="error"/>
+                        <h:message for="inputApellidoOperario" class="error"/>                     
+                        <h:message for="inputPassOperario" class="error"/>
+                        <h:message for="inputRePassOperario" class="error"/>
+                        <h:message for="btnRegistrar" class="error"/>                     
+                    </div>
+                </fieldset>
             </h:form>
-           </div>
+        </div>
     </ui:define>
 </ui:composition>    

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -75,7 +76,7 @@ public class ManejadorSuministro {
                 System.out.println("Error: " + ex.getMessage());
             }
         }
-        return suministros;
+        return new TreeMap<>(suministros);
     }
     
     public Map<String, Integer> ListarMapSuministros(){
@@ -89,6 +90,6 @@ public class ManejadorSuministro {
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }
-        return suministros;
+        return new TreeMap<>(suministros);
     }
 }

@@ -118,7 +118,7 @@ div .sub-titulo-fondo{
     border-color: #96c841;
     border-width: 1px;
     width: 97%;
-    margin: 5px 5px 5px 5px;
+    margin: 1% 1% 1% 1%;
     height:25px;
     font-family: LibreSans;
     font-size: 18px;
@@ -222,6 +222,17 @@ div .sub-titulo-fondo{
     border-color: red;
     background-color: #ff6666;
     padding-left: 10px;
+    margin-bottom: 1%;
+}
+
+.info {
+    flex: auto;
+    border: solid;
+    border-width: 1px;
+    border-color: green;
+    background-color: #84F951;
+    padding-left: 10px;
+    margin-bottom: 1%;
 }
 
 .contenido{

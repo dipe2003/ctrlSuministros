@@ -10,47 +10,48 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegSuministro">
-                
-                <div class="label">Tipo de Suministro</div>
-                <h:selectOneRadio value="#{registrarSuministro.tipoSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
-                    <f:selectItems value="#{registrarSuministro.tiposSuministros}" />
-                </h:selectOneRadio>
-                
-                <div class="label">Nombre de Suministro</div>
-                <h:inputText id="inputNombreSuministro" class="input" value="#{registrarSuministro.nombreSuministro}" required="true" requiredMessage="No se ingreso nombre de suministro." p:placeholder="Nombre del suministro."/>
-                
-                <div class="label">Descripcion de Suministro</div>
-                <h:inputText id="inputDescripcionSuministro" class="input" value="#{registrarSuministro.descripcionSuministro}" required="true" requiredMessage="No se ingreso descripcion de suministro." p:placeholder="Descripcion del suministro."/>
-                
-                <div class="label">Codigo SAP</div>
-                <h:inputText id="inputCodigoSAPSuministro" class="input" value="#{registrarSuministro.codigoSAPSuministro}" required="true" requiredMessage="No se ingreso codigo de suministro." p:placeholder="Codigo de suministro en sistema SAP"/>
-                
-                <div class="label">Unidad</div>
-                <h:selectOneRadio value="#{registrarSuministro.idUnidadSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
-                    <f:selectItems value="#{registrarSuministro.unidadesSuministros}" />
-                </h:selectOneRadio>
-                
-                <div class="label">Sotck Minimo</div>
-                <h:inputText id="inputCantidadStockMinimo" class="input" value="#{registrarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>
-                <h:inputText id="inputFechaVigenteStockMinimo" class="datepicker input" value="#{registrarSuministro.strFechaVigenteStock}" required="true" requiredMessage="No se ingreso fecha de vigencia de stock minimo de suministro." p:placeholder="Ingrese fecha de vigencia"/>
-                
-                <div class="label">Proveedor</div>
-                <h:selectOneMenu value="#{registrarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
-                    <f:selectItems value="#{registrarSuministro.proveedoresSuministros}" />
-                </h:selectOneMenu>
-                
-                <div class="div-boton">
-                    <h:commandButton id="btnRegistrarSuministro" class="boton-input" value="Registrar" action="#{registrarSuministro.registrarSuministro()}"/>
-                </div>
-                
-                <div>
-                    <h:message for="inputNombreSuministro" class="error"/>
-                    <h:message for="inputDescripcionSuministro" class="error"/>
-                    <h:message for="inputCodigoSAPSuministro" class="error"/>
-                    <h:message for="inputCantidadStockMinimo" class="error"/>
-                    <h:message for="inputFechaVigenteStockMinimo" class="error"/>
-                    <h:message for="btnRegistrarSuministro" class="error"/>                     
-                </div>
+                <fieldset><legend>Agregar Suministro</legend>
+                    <div class="label">Tipo de Suministro</div>
+                    <h:selectOneRadio value="#{registrarSuministro.tipoSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
+                        <f:selectItems value="#{registrarSuministro.tiposSuministros}" />
+                    </h:selectOneRadio>
+                    
+                    <div class="label">Nombre de Suministro</div>
+                    <h:inputText id="inputNombreSuministro" class="input" value="#{registrarSuministro.nombreSuministro}" required="true" requiredMessage="No se ingreso nombre de suministro." p:placeholder="Nombre del suministro."/>
+                    
+                    <div class="label">Descripcion de Suministro</div>
+                    <h:inputText id="inputDescripcionSuministro" class="input" value="#{registrarSuministro.descripcionSuministro}" required="true" requiredMessage="No se ingreso descripcion de suministro." p:placeholder="Descripcion del suministro."/>
+                    
+                    <div class="label">Codigo SAP</div>
+                    <h:inputText id="inputCodigoSAPSuministro" class="input" value="#{registrarSuministro.codigoSAPSuministro}" required="true" requiredMessage="No se ingreso codigo de suministro." p:placeholder="Codigo de suministro en sistema SAP"/>
+                    
+                    <div class="label">Unidad</div>
+                    <h:selectOneRadio value="#{registrarSuministro.idUnidadSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
+                        <f:selectItems value="#{registrarSuministro.unidadesSuministros}" />
+                    </h:selectOneRadio>
+                    
+                    <div class="label">Sotck Minimo</div>
+                    <h:inputText id="inputCantidadStockMinimo" class="input" value="#{registrarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>
+                    <h:inputText id="inputFechaVigenteStockMinimo" class="datepicker input" value="#{registrarSuministro.strFechaVigenteStock}" required="true" requiredMessage="No se ingreso fecha de vigencia de stock minimo de suministro." p:placeholder="Ingrese fecha de vigencia"/>
+                    
+                    <div class="label">Proveedor</div>
+                    <h:selectOneMenu value="#{registrarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
+                        <f:selectItems value="#{registrarSuministro.proveedoresSuministros}" />
+                    </h:selectOneMenu>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnRegistrarSuministro" class="boton-input" value="Registrar" action="#{registrarSuministro.registrarSuministro()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="inputNombreSuministro" class="error"/>
+                        <h:message for="inputDescripcionSuministro" class="error"/>
+                        <h:message for="inputCodigoSAPSuministro" class="error"/>
+                        <h:message for="inputCantidadStockMinimo" class="error"/>
+                        <h:message for="inputFechaVigenteStockMinimo" class="error"/>
+                        <h:message for="btnRegistrarSuministro" class="error"/>                     
+                    </div>
+                </fieldset>
             </h:form>
         </div>
     </ui:define>
