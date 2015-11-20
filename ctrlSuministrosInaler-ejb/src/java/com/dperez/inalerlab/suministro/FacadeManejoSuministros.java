@@ -159,4 +159,20 @@ public class FacadeManejoSuministros implements Serializable {
         return cSuministro.GetTotalSuministrosDebajoStockMinimo();
     }
     
+    /**
+     * Devuelve un map con los suministros vencidos en stock
+     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<String, Integer> getMapSuministrosConLotesVencidosEnStock(){
+        return cSuministro.getMapSuministrosConLotesVencidos(true);
+    }
+    
+    /**
+     * Devuelve un map con los suministros vencidos.
+     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<String, Integer> getMapSuministrosConLotesVencidos(){
+        return cSuministro.getMapSuministrosConLotesVencidos(false);
+    }
+    
 }

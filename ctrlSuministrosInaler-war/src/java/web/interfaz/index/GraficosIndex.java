@@ -17,31 +17,26 @@ public class GraficosIndex implements Serializable {
    private int TotalSuministrosDebajoStockMinimo;
    private int TotalSuministrosRegistrados;
    
-   private float PorcientoSuministroDebajoStock;
-   private float PorcientoSuministrosSobreStock;
+   private int TotalSuministrosLotesVencidosStock;
    
    //   Getters
     public int getTotalSuministrosDebajoStockMinimo() {return TotalSuministrosDebajoStockMinimo;}
     public int getTotalSuministrosRegistrados() {return TotalSuministrosRegistrados;}
-
-    public float getPorcientoSuministroDebajoStock() {return PorcientoSuministroDebajoStock;}
-    public float getPorcientoSuministrosSobreStock() {return PorcientoSuministrosSobreStock;}   
+    public int getTotalSuministrosLotesVencidosStock() {return TotalSuministrosLotesVencidosStock;}
     
     //  Setters
     public void setTotalSuministrosDebajoStockMinimo(int TotalSuministrosDebajoStockMinimo) {this.TotalSuministrosDebajoStockMinimo = TotalSuministrosDebajoStockMinimo;}
     public void setTotalSuministrosRegistrados(int TotalSuministrosRegistrados) {this.TotalSuministrosRegistrados = TotalSuministrosRegistrados;}
-
-    public void setPorcientoSuministroDebajoStock(float PorcientoSuministroDebajoStock) {this.PorcientoSuministroDebajoStock = PorcientoSuministroDebajoStock;}
-    public void setPorcientoSuministrosSobreStock(float PorcientoSuministrosSobreStock) {this.PorcientoSuministrosSobreStock = PorcientoSuministrosSobreStock;}
-        
+    public void setTotalSuministrosLotesVencidosStock(int TotalSuministrosLotesVencidosStock) {this.TotalSuministrosLotesVencidosStock = TotalSuministrosLotesVencidosStock;}
+    
     @PostConstruct
     public void init(){
         int[] arr = fSuministro.GetTotalSuministrosDebajoStockMinimo();
         TotalSuministrosRegistrados = arr[0];
         TotalSuministrosDebajoStockMinimo = arr[1];
         
-        PorcientoSuministroDebajoStock = ((float)TotalSuministrosDebajoStockMinimo/(float)TotalSuministrosRegistrados)*100;
-        PorcientoSuministrosSobreStock = (((float)TotalSuministrosRegistrados-(float)TotalSuministrosDebajoStockMinimo)/(float)TotalSuministrosRegistrados)*100;
+        TotalSuministrosLotesVencidosStock = fSuministro.getMapSuministrosConLotesVencidos().size();
+        
     }
     
     

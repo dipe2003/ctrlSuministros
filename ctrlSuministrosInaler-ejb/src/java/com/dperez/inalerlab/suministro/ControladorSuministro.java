@@ -6,8 +6,10 @@ import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -128,4 +130,23 @@ public class ControladorSuministro implements Serializable{
         }
         return new int[]{suministros.size(), cantidad};
     }
+    
+    /**
+     * Devuelve los suministros con lotes vencidos.
+     * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
+     * @return 
+     */
+    public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock){
+        List<Suministro> suministros = mSuministro.ListarSuministros();
+        Map<String, Integer> map = new HashMap<>();
+        if(ConStock){
+            for(Suministro suministro: suministros){
+                if(suministro.getLotesVencidosEnStock().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+            }
+            return new TreeMap<>(map);
+        }
+        for(Suministro suministro: suministros){
+            if(suministro.getLotesVencidos().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+        }
+        return new TreeMap<>(map);    }
 }	

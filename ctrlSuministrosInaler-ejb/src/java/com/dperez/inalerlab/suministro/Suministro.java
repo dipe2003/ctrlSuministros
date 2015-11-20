@@ -7,6 +7,8 @@ import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -96,6 +98,33 @@ abstract public class Suministro implements Serializable{
             stock += lote.getCantidadStock();
         }
         return stock;
+    }
+    
+    /**
+     * Devuelve los lotes vencidos.
+     * No se tiene en cuenta si existe en stock o se dio de baja.
+     * @return 
+     */
+    public List<Lote> getLotesVencidos(){
+        List<Lote> lotes = new ArrayList<>();
+        Date hoy = Calendar.getInstance().getTime();
+        for(Lote lote: this.LotesSuministros){
+            if(lote.getVencimientoLote().before(hoy)) lotes.add(lote);
+        }
+        return lotes;
+    }
+    /**
+     * Devuelve los lotes vencidos.
+     * Solo se devuelven los que existan en stock.
+     * @return 
+     */
+    public List<Lote> getLotesVencidosEnStock(){
+        List<Lote> lotes = new ArrayList<>();
+        Date hoy = Calendar.getInstance().getTime();
+        for(Lote lote: this.LotesSuministros){
+            if(lote.getVencimientoLote().before(hoy) && lote.getCantidadStock()>0) lotes.add(lote);
+        }
+        return lotes;
     }
     
     /**

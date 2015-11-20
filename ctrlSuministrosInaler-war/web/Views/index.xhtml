@@ -16,6 +16,46 @@
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/AgregarSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarIngresoSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarSalidaSuministro.js"/>
+        <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/highcharts.js"/>
+        <Script>
+            $(document).ready(function() {
+                var opcionesStock= {
+                    chart: {
+                        type: 'pie',
+                        renderTo: 'grafStock'
+                    },title: {
+                        text: 'Stocks Minimos'
+                    },
+                    plotOptions: {
+                        pie: {
+                            colors:['#45A232','#CD0000'],
+                            allowPointSelect: true
+                        }},
+                    series: [{
+                            name: 'Total',
+                            data: [{name:'Con Stock', y: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosDebajoStockMinimo}},{name:'Debajo Stock Minimo', y: #{graficosIndex.totalSuministrosDebajoStockMinimo}}]
+                        }]
+                };
+                var chartStock = new Highcharts.Chart(opcionesStock);
+                var opcionesVencimiento= {
+                    chart: {
+                        type: 'pie',
+                        renderTo: 'grafVencimiento'
+                    },title: {
+                        text: 'Vencimiento de Stock'
+                    },
+                    plotOptions: {
+                        pie: {
+                            colors:['#45A232','#CD0000']
+                        }},
+                    series: [{
+                            name: 'Total',
+                            data: [{name:'Vigentes', y: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosLotesVencidosStock}},{name:'Vencidos', y: #{graficosIndex.totalSuministrosLotesVencidosStock}}]
+                        }]
+                };
+                var chartVencimiento = new Highcharts.Chart(opcionesVencimiento);                
+            });
+        </Script>
         <title>Inicio</title>
     </h:head>
     <h:body>
@@ -53,12 +93,10 @@
                         </fieldset>
                         
                         <fieldset><legend>Graficos</legend>
-                            <div class="label">Stock</div>
-                            <div class="label">Debajo de Stock</div>
-                            <div style="width: #{graficosIndex.porcientoSuministroDebajoStock}%; background-color: red; color:white;">#{graficosIndex.porcientoSuministroDebajoStock}%</div>
-                              <div class="label">Con Stock</div>
-                            <div style="width: #{graficosIndex.porcientoSuministrosSobreStock}%; background-color: green; color:white;">#{graficosIndex.porcientoSuministrosSobreStock}%</div>
-                            
+                                <div style="width:98%;display: inline-flex;">
+                                    <div id="grafStock" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></div>
+                                    <div id="grafVencimiento" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></div>
+                                </div>
                         </fieldset>
                     </h:form>
                 </div>
