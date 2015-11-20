@@ -22,8 +22,6 @@ public class Lote implements Serializable{
     @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private int IdLote;
     @Temporal(TemporalType.DATE)
-    private Date ProduccionLote;
-    @Temporal(TemporalType.DATE)
     private Date VencimientoLote;
     @Column(unique = true)
     private String NumeroLote;
@@ -36,15 +34,13 @@ public class Lote implements Serializable{
     
     //	Constructores
     public Lote(){}
-    public Lote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
-        this.ProduccionLote = ProduccionLote;
+    public Lote(Date VencimientoLote, String NumeroLote){
         this.VencimientoLote = VencimientoLote;
         this.NumeroLote = NumeroLote;
     }
     
     //	Getters
-    public int getIdLote(){return this.IdLote;}
-    public Date getProduccionLote() {return ProduccionLote;}    
+    public int getIdLote(){return this.IdLote;} 
     public Date getVencimientoLote(){return this.VencimientoLote;}
     public Suministro getSuministroLote(){return this.SuministroLote;}
     public List<Ingreso> getIngresosLote(){return this.IngresosLote;}
@@ -52,8 +48,7 @@ public class Lote implements Serializable{
     public String getNumeroLote() {return NumeroLote;}
     
     //	Setters
-    public void setIdLote(int IdLote){this.IdLote = IdLote;}
-    public void setProduccionLote(Date ProduccionLote) {this.ProduccionLote = ProduccionLote;}    
+    public void setIdLote(int IdLote){this.IdLote = IdLote;}   
     public void setVencimientoLote(Date VencimientoLote){this.VencimientoLote = VencimientoLote;}
     public void setSuministroLote(Suministro SuministroLote){
         this.SuministroLote = SuministroLote;

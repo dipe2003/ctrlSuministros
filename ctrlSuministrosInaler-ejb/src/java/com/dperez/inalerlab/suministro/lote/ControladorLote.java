@@ -26,8 +26,8 @@ public class ControladorLote implements Serializable{
      * @param NumeroLote
      * @return Retorna el id del lote creado. Retorna -1 si no se creo.
      */
-    public int CrearLote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
-        Lote lote = new Lote(ProduccionLote, VencimientoLote, NumeroLote);
+    public int CrearLote(Date VencimientoLote, String NumeroLote){
+        Lote lote = new Lote(VencimientoLote, NumeroLote);
         return mLote.CrearLote(lote);
     }
     
@@ -85,6 +85,7 @@ public class ControladorLote implements Serializable{
     
         /**
      * Devuelve un Map con los lotes registrados en el sistema.
+     * @param IdSuministro
      * @return Retorna un Map con el numero de lote (key) e id (value)
      */
     public Map<String, Integer> ListarMapLotes(int IdSuministro){

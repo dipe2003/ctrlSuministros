@@ -37,7 +37,7 @@ abstract public class Suministro implements Serializable{
     
     //	Constructores
     public Suministro(){}
-    public Suministro(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro, 
+    public Suministro(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             Unidad UnidadSuministro, Proveedor ProveedorSuministro){
         this.NombreSuministro = NombreSuministro;
         this.DescripcionSuministro = DescripcionSuministro;
@@ -66,7 +66,7 @@ abstract public class Suministro implements Serializable{
     public void setUnidadSuministro(Unidad UnidadSuministro) {this.UnidadSuministro = UnidadSuministro;}
     public void setLotesSuministros(List<Lote> LotesSuministros) {this.LotesSuministros = LotesSuministros;}
     public void setStocksMinimosSuministro(List<StockMinimo> StocksMinimosSuministro) {this.StocksMinimosSuministro = StocksMinimosSuministro;}
-    public void setProveedorSuministro(Proveedor ProveedorSuministro) {this.ProveedorSuministro = ProveedorSuministro;}    
+    public void setProveedorSuministro(Proveedor ProveedorSuministro) {this.ProveedorSuministro = ProveedorSuministro;}
     
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){
@@ -103,26 +103,30 @@ abstract public class Suministro implements Serializable{
     /**
      * Devuelve los lotes vencidos.
      * No se tiene en cuenta si existe en stock o se dio de baja.
-     * @return 
+     * @return
      */
     public List<Lote> getLotesVencidos(){
         List<Lote> lotes = new ArrayList<>();
         Date hoy = Calendar.getInstance().getTime();
         for(Lote lote: this.LotesSuministros){
-            if(lote.getVencimientoLote().before(hoy)) lotes.add(lote);
+            try{
+                if(lote.getVencimientoLote().before(hoy)) lotes.add(lote);
+            }catch(NullPointerException ex){}
         }
         return lotes;
     }
     /**
      * Devuelve los lotes vencidos.
      * Solo se devuelven los que existan en stock.
-     * @return 
+     * @return
      */
     public List<Lote> getLotesVencidosEnStock(){
         List<Lote> lotes = new ArrayList<>();
         Date hoy = Calendar.getInstance().getTime();
         for(Lote lote: this.LotesSuministros){
-            if(lote.getVencimientoLote().before(hoy) && lote.getCantidadStock()>0) lotes.add(lote);
+            try{
+                if(lote.getVencimientoLote().before(hoy) && lote.getCantidadStock()>0) lotes.add(lote);
+            }catch(NullPointerException ex){}
         }
         return lotes;
     }

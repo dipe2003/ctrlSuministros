@@ -47,9 +47,7 @@
                     </h:commandButton>                    
                     
                     <h:panelGroup id="grupoDatosLote">
-                        <h:panelGroup rendered="#{!registrarIngresoSuministro.existeLote}">
-                            <div class="label">Fecha Produccion</div>
-                            <h:inputText id="inputFechaProduccionLote" class="calendario input" value="#{registrarIngresoSuministro.strFechaProduccionSuministro}" p:placeholder="Ingrese fecha de produccion"/>
+                        <h:panelGroup rendered="#{!registrarIngresoSuministro.existeLote}">                          
                             <div class="label">Fecha de Vencimiento</div>
                             <h:inputText id="inputFechaVencimientoSuministro" class="calendario input" value="#{registrarIngresoSuministro.strFechaVencimientoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
                         </h:panelGroup>

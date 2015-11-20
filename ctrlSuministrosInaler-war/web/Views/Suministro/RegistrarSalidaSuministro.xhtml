@@ -32,10 +32,7 @@
                         <f:selectItem itemValue="--Seleccionar Numero Lote---" itemDisabled="false"  noSelectionOption="true" />
                         <f:selectItems value="#{registrarSalidaSuministro.listaNumerosLoteSuministro}" />
                         <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote" />
-                    </h:selectOneMenu>                    
-
-                    <div class="label">Fecha de Salida</div>
-                    <h:inputText id="inputFechaSalidaSuministro" class="calendario input" value="#{registrarSalidaSuministro.strFechaSalidaSuministro}" required="true" requiredMessage="No se ingreso fecha de ingreso de suministro." p:placeholder="Ingrese fecha de salida"/>
+                    </h:selectOneMenu>
                     
                     <div class="label">Cantidad de Salida</div>
                     <h:inputText id="inputCantidadSalidaSuministro" class="input" value="#{registrarSalidaSuministro.cantidadSalidaSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a bajar de stock">
@@ -57,7 +54,6 @@
                 
                 <div>                    
                     <h:message for="inputCantidadSalidaSuministro" class="error"/>
-                    <h:message for="inputFechaSalidaSuministro" class="error"/>
                     <h:message for="selectNumeroLoteSuministroSalida" class="error"/>                    
                     <h:message for="btnRegistrarSalidaSuministro" class="error"/>                     
                 </div>

@@ -51,8 +51,6 @@ public class RegistrarIngresoSuministro implements Serializable{
     //  Lote
     private Date FechaVencimientoSuministro;
     private String strFechaVencimientoSuministro;
-    private Date FechaProduccionSuministro;
-    private String strFechaProduccionSuministro;
     private boolean existeLote;
     
     //  getters
@@ -78,15 +76,6 @@ public class RegistrarIngresoSuministro implements Serializable{
             return this.strFechaVencimientoSuministro;
         }else{
             return fDate.format(FechaVencimientoSuministro);
-        }
-    }
-    public Date getFechaProduccionSuministro() {return FechaProduccionSuministro;}
-    public String getStrFechaProduccionSuministro() {
-        SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
-        if (FechaProduccionSuministro == null) {
-            return this.strFechaProduccionSuministro;
-        }else{
-            return fDate.format(FechaProduccionSuministro);
         }
     }
     public List<Suministro> getLstSuministros() {return lstSuministros;}
@@ -123,16 +112,6 @@ public class RegistrarIngresoSuministro implements Serializable{
         this.strFechaVencimientoSuministro = strFechaVencimientoSuministro;
         this.FechaVencimientoSuministro = cal.getTime();
     }
-    public void setFechaProduccionSuministro(Date FechaProduccionSuministro) {this.FechaProduccionSuministro = FechaProduccionSuministro;}
-    public void setStrFechaProduccionSuministro(String strFechaProduccionSuministro) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try{
-            cal.setTime(sdf.parse(strFechaProduccionSuministro));
-        }catch(ParseException ex){}
-        this.strFechaProduccionSuministro = strFechaProduccionSuministro;
-        this.FechaProduccionSuministro = cal.getTime();
-    }
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
     public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
@@ -145,7 +124,7 @@ public class RegistrarIngresoSuministro implements Serializable{
         int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))<=0) {
-            idLote = fLote.CrearLote(FechaIngresoSuministro, FechaVencimientoSuministro, NumeroLoteSuministro);
+            idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro);
             idLote = fLote.AgregarLoteSuministro(IdSuministro, idLote);
         }
         if(idLote!=-1){

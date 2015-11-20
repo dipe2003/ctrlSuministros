@@ -30,9 +30,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     private FacadeManejoSuministros fSuministro;
     @EJB
     private FacadeLote fLote;
-    
-    private Date FechaSalidaSuministro;
-    private String strFechaSalidaSuministro;
+
     private int IdSuministro;
     private Map<String, Integer> listaSuministros;
     private List<Suministro> lstSuministros;
@@ -54,15 +52,6 @@ public class RegistrarSalidaSuministro implements Serializable{
     private float StockSuministro;
     
     //  getters
-    public Date getFechaSalidaSuministro() {return FechaSalidaSuministro;}
-    public String getStrFechaSalidaSuministro() {
-        SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
-        if (FechaSalidaSuministro == null) {
-            return this.strFechaSalidaSuministro;
-        }else{
-            return fDate.format(FechaSalidaSuministro);
-        }
-    }
     public int getIdProveedor() {return idProveedor;}
     public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
     public int getIdSuministro() {return IdSuministro;}
@@ -95,16 +84,6 @@ public class RegistrarSalidaSuministro implements Serializable{
     public float getStockSuministro() {return StockSuministro;}
     
     //  setters
-    public void setFechaSalidaSuministro(Date FechaSalidaSuministro) {this.FechaSalidaSuministro = FechaSalidaSuministro;}
-    public void setStrFechaSalidaSuministro(String strFechaSalidaSuministro) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try{
-            cal.setTime(sdf.parse(strFechaSalidaSuministro));
-        }catch(ParseException ex){}
-        this.strFechaSalidaSuministro = strFechaSalidaSuministro;
-        this.FechaSalidaSuministro = cal.getTime();
-    }
     public void setIdProveedor(int idProveedor) {this.idProveedor = idProveedor;}
     public void setProveedoresSuministros(Map<String, Integer> ProveedoresSuministros) {this.ProveedoresSuministros = ProveedoresSuministros;}
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -128,7 +107,7 @@ public class RegistrarSalidaSuministro implements Serializable{
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if(fLote.CrearSalida(FechaSalidaSuministro, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
+        if(fLote.CrearSalida(Calendar.getInstance().getTime(), CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
             context.getExternalContext().redirect(url+"/Views/index.xhtml");
         }        
     }

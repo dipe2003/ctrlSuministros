@@ -17,13 +17,12 @@ public class FacadeLote implements Serializable{
     
     /**
      * Crea un lote.
-     * @param ProduccionLote
      * @param VencimientoLote
      * @param NumeroLote
      * @return Retorna el id del lote. Retorna -1 si no se pudo crear.
      */
-    public int CrearLote(Date ProduccionLote, Date VencimientoLote, String NumeroLote){
-        return cLote.CrearLote(ProduccionLote, VencimientoLote, NumeroLote);
+    public int CrearLote(Date VencimientoLote, String NumeroLote){
+        return cLote.CrearLote(VencimientoLote, NumeroLote);
     }
     
     /**
