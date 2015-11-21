@@ -16,44 +16,55 @@
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/AgregarSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarIngresoSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarSalidaSuministro.js"/>
-        <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/highcharts.js"/>
+        
+        <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/Chart.js"/>
+        
         <Script>
             $(document).ready(function() {
-                var opcionesStock= {
-                    chart: {
-                        type: 'pie',
-                        renderTo: 'grafStock'
-                    },title: {
-                        text: 'Stocks Minimos'
+                var datosStock = [
+                    {
+                        value: #{graficosIndex.totalSuministrosDebajoStockMinimo},
+                        color:"#F7464A",
+                        highlight: "#FF5A5E",
+                        label: "Debajo Stock Minimo"
                     },
-                    plotOptions: {
-                        pie: {
-                            colors:['#45A232','#CD0000'],
-                            allowPointSelect: true
-                        }},
-                    series: [{
-                            name: 'Total',
-                            data: [{name:'Con Stock', y: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosDebajoStockMinimo}},{name:'Debajo Stock Minimo', y: #{graficosIndex.totalSuministrosDebajoStockMinimo}}]
-                        }]
-                };
-                var chartStock = new Highcharts.Chart(opcionesStock);
-                var opcionesVencimiento= {
-                    chart: {
-                        type: 'pie',
-                        renderTo: 'grafVencimiento'
-                    },title: {
-                        text: 'Vencimiento de Stock'
+                    {
+                        value: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosDebajoStockMinimo},
+                        color: "#46BFBD",
+                        highlight: "#5AD3D1",
+                        label: "Con Stock"
+                    }                    
+                ];
+                var datosVencimiento = [
+                    {
+                        value: #{graficosIndex.totalSuministrosLotesVencidosStock},
+                        color:"#F7464A",
+                        highlight: "#FF5A5E",
+                        label: "Vencidos"
                     },
-                    plotOptions: {
-                        pie: {
-                            colors:['#45A232','#CD0000']
-                        }},
-                    series: [{
-                            name: 'Total',
-                            data: [{name:'Vigentes', y: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosLotesVencidosStock}},{name:'Vencidos', y: #{graficosIndex.totalSuministrosLotesVencidosStock}}]
-                        }]
-                };
-                var chartVencimiento = new Highcharts.Chart(opcionesVencimiento);                
+                    {
+                        value: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosLotesVencidosStock},
+                        color: "#46BFBD",
+                        highlight: "#5AD3D1",
+                        label: "Vigentes"
+                    }                    
+                ];
+
+                /*
+                 * myDoughnutChart.addData({
+                    value: 130,
+                    color: "#B48EAD",
+                    highlight: "#C69CBE",
+                    label: "Purple"
+                });
+                 */
+                // Get context with jQuery - using jQuery's .get() method.
+                var ctx = $("#myChart").get(0).getContext("2d");
+                var ctx2 = $("#myChartVenc").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var StockChart = new Chart(ctx).Pie(datosStock);
+                var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento);
+
             });
         </Script>
         <title>Inicio</title>
@@ -93,10 +104,10 @@
                         </fieldset>
                         
                         <fieldset><legend>Graficos</legend>
-                                <div style="width:98%;display: inline-flex;">
-                                    <div id="grafStock" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></div>
-                                    <div id="grafVencimiento" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></div>
-                                </div>
+                            <div style="width:98%;display: inline-flex;">
+                                <canvas id="myChart" width="300" height="300" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></canvas>                                   
+                                <canvas id="myChartVenc" width="300" height="300" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></canvas>                                   
+                            </div>
                         </fieldset>
                     </h:form>
                 </div>
