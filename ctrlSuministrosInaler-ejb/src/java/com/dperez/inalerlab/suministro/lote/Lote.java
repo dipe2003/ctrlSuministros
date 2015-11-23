@@ -23,7 +23,6 @@ public class Lote implements Serializable{
     private int IdLote;
     @Temporal(TemporalType.DATE)
     private Date VencimientoLote;
-    @Column(unique = true)
     private String NumeroLote;
     @ManyToOne
     private Suministro SuministroLote;

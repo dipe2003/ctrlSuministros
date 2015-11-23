@@ -45,18 +45,20 @@ public class ManejadorLote {
     }
     
     public Lote ObtenerLote(int IdLote){
-        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.IdLote= :idLote", Lote.class);
-        query.setParameter("idLote", IdLote);
         try{
+            TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.IdLote= :idLote", Lote.class);
+            query.setParameter("idLote", IdLote);
             return (Lote) query.getSingleResult();
-        }catch(Exception ex){}
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
         return null;
     }
     
     public Lote ObtenerLote(String NumeroLote){
-        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.NumeroLote= :numeroLote", Lote.class);
-        query.setParameter("numeroLote", NumeroLote);
         try{
+            TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l WHERE l.NumeroLote= :numeroLote", Lote.class);
+            query.setParameter("numeroLote", NumeroLote);
             return (Lote) query.getSingleResult();
         }catch(Exception ex){
             System.out.println("Error: "+ ex.getMessage());
@@ -66,8 +68,8 @@ public class ManejadorLote {
     
     public List<Lote> ListarLotes(){
         List<Lote> suministros = new ArrayList<>();
-        TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l", Lote.class);
         try{
+            TypedQuery<Lote> query = em.createQuery("SELECT l FROM Lote l", Lote.class);
             suministros = query.getResultList();
         }catch(Exception ex){}
         return suministros;
@@ -86,17 +88,17 @@ public class ManejadorLote {
     }
     
     public Map<String, Integer> ListarMapLotes(int IdSuministro){
-     Map<String, Integer> map = new HashMap<>();
-     Query query = em.createQuery("SELECT lot.NumeroLote, lot.IdLote FROM Lote lot WHERE lot.SuministroLote.IdSuministro= :idSuministro");
-     query.setParameter("idSuministro", IdSuministro);
-     try{
-         List<Object[]> resultado = query.getResultList();
-         for(Object[] res: resultado){
-             map.put((String) res[0], (int) res[1]);
-         }
-     }catch(Exception ex){
-         System.out.println("Error: " + ex.getMessage());
-     }
-     return map;
+        Map<String, Integer> map = new HashMap<>();        
+        try{
+            Query query = em.createQuery("SELECT lot.NumeroLote, lot.IdLote FROM Lote lot WHERE lot.SuministroLote.IdSuministro= :idSuministro");
+            query.setParameter("idSuministro", IdSuministro);
+            List<Object[]> resultado = query.getResultList();
+            for(Object[] res: resultado){
+                map.put((String) res[0], (int) res[1]);
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return map;
     }
 }
