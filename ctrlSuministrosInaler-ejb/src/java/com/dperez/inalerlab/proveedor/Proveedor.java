@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ public class Proveedor implements Serializable{
     private int IdProveedor;
     private String NombreProveedor;
     private String ContactoProveedor;
-    @OneToMany(mappedBy = "ProveedorSuministro")
+    @OneToMany(mappedBy = "ProveedorSuministro", fetch = FetchType.EAGER)
     private List<Suministro> SuministrosProveedor;
     
     //	Constructores
