@@ -30,8 +30,8 @@
                     },
                     {
                         value: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosDebajoStockMinimo},
-                        color: "#46BFBD",
-                        highlight: "#5AD3D1",
+                        color: "#86B559",
+                        highlight: "#9AC949",
                         label: "Con Stock"
                     }                    
                 ];
@@ -44,12 +44,14 @@
                     },
                     {
                         value: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosLotesVencidosStock},
-                        color: "#46BFBD",
-                        highlight: "#5AD3D1",
+                        color: "#86B559",
+                        highlight: "#9AC949",
                         label: "Vigentes"
                     }                    
                 ];
-
+                var opciones = {
+                    animationSteps : 200
+                };
                 /*
                  * myDoughnutChart.addData({
                     value: 130,
@@ -62,8 +64,8 @@
                 var ctx = $("#myChart").get(0).getContext("2d");
                 var ctx2 = $("#myChartVenc").get(0).getContext("2d");
                 // This will get the first returned node in the jQuery collection.
-                var StockChart = new Chart(ctx).Pie(datosStock);
-                var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento);
+                var StockChart = new Chart(ctx).Pie(datosStock, opciones);
+                var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento, opciones);
 
             });
         </Script>
@@ -82,17 +84,17 @@
                     <h:form id="frmIndexSuministro">
                         <fieldset><legend>Resumen</legend>
                             <div class="label">Suministro</div>
-                            <h:selectOneMenu id="selectSuministroIndex" value="#{datosIndex.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
+                            <h:selectOneMenu id="selectSuministroIndex" value="#{datosIndex.idSuministroSeleccionado}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
                                 <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
                                 <f:selectItems value="#{datosIndex.mapSuministros}" />
                                 <f:ajax listener="#{datosIndex.cargarDatosSuministro()}" render="outputCantidadStockLoteIndex outputUltimoIngresoIndex outputUltimoIngresoCantidadIndex contenedorInfoIndex" />
                             </h:selectOneMenu>
                             <h:panelGroup id="contenedorInfoIndex">
-                                <h:panelGroup rendered="#{datosIndex.idSuministro != 0 and (datosIndex.suministro.ultimoIngreso == null)}">
+                                <h:panelGroup rendered="#{datosIndex.idSuministroSeleccionado != 0 and (datosIndex.suministro.ultimoIngreso == null)}">
                                     <div class="info">Todavía no hay registro de ingresos de este suministro.</div>
                                 </h:panelGroup>
                                 
-                                <h:panelGroup id="infoIndex" rendered="#{datosIndex.idSuministro != 0 and not (datosIndex.suministro.ultimoIngreso == null)}">                                   
+                                <h:panelGroup id="infoIndex" rendered="#{datosIndex.idSuministroSeleccionado != 0 and not (datosIndex.suministro.ultimoIngreso == null)}">                                   
                                     <div class="label">Stock Actual</div>
                                     <h:inputText id="outputCantidadStockLoteIndex" class="output" value="#{datosIndex.stockSuministro} #{datosIndex.unidadCantidad}" pt:disabled="true" />
                                     
@@ -104,9 +106,48 @@
                         </fieldset>
                         
                         <fieldset><legend>Graficos</legend>
-                            <div style="width:98%;display: inline-flex;">
-                                <canvas id="myChart" width="300" height="300" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></canvas>                                   
-                                <canvas id="myChartVenc" width="300" height="300" style="width:50%; height:30%;padding: .5% .5% .5% .5%"></canvas>                                   
+                            <div class="contenedor-5050">
+                                <canvas id="myChart" width="300" height="200" class="contenedor-50"></canvas>                                   
+                                <canvas id="myChartVenc" width="300" height="200" class="contenedor-50"></canvas>                                   
+                            </div>
+                        </fieldset>
+                        <fieldset><legend>Detalles</legend>
+                            <div class="contenedor-5050">
+                                <div class="contenedor-50">
+                                    <div class="label">Detalles Stock</div>
+                                    <f:view>
+                                        <h:form>
+                                            <h:dataTable value="#{datosIndex.listSuministrosDebajoStock}" var="SuministroStock" style="text-align: left;">
+                                                <h:column >
+                                                    <f:facet name="header">Suministro</f:facet>    	
+                                                    <h:outputText value="#{SuministroStock.nombreSuministro}" />
+                                                </h:column>                                                
+                                                <h:column >
+                                                    <f:facet name="header">Stock</f:facet> 
+                                                    <h:outputText value="#{SuministroStock.stock} #{SuministroStock.unidadSuministro.nombreUnidad}"/>
+                                                </h:column>                                                
+                                            </h:dataTable>
+                                        </h:form>
+                                    </f:view>                                    
+                                </div>                                   
+                                <div class="contenedor-50">
+                                    <div class="label">Detalles Vencimiento</div>
+                                    <f:view>
+                                        <h:form>
+                                            <h:dataTable value="#{datosIndex.listSuministrosVencidos}" var="item" style="text-align: left;">
+                                                <h:column >
+                                                     <f:facet name="header">Suministro</f:facet>
+                                                    <h:outputText value="#{item.nombreSuministro}" />
+                                                  </h:column>                                                
+                                                <h:column >
+                                                     <f:facet name="header">Fecha</f:facet>                                                     
+                                                    FechaVencimiento
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:form>
+                                    </f:view>
+                                    
+                                </div>                                   
                             </div>
                         </fieldset>
                     </h:form>

@@ -1,11 +1,9 @@
 
 package web.interfaz.operario;
 
-import cargainicial.carga;
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.Operario;
 import java.io.Serializable;
-import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -19,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginOperario implements Serializable{
     @EJB
     private FacadeManejoOperario fOperario;
-    @EJB
-    private carga cargaDatos;
    
     private String IdOperario;
     private String Password;
@@ -72,11 +68,7 @@ public class LoginOperario implements Serializable{
     
     @PostConstruct
     public void init(){
-        try{
-            cargaDatos.cargar();
-        }catch(Exception ex){
-            System.out.print(Arrays.toString(ex.getStackTrace()));
-        }
+
     }
     
 

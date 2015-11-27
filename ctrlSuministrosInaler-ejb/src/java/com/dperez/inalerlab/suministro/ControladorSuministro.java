@@ -5,6 +5,7 @@ import com.dperez.inalerlab.proveedor.ControladorProveedor;
 import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,32 +40,32 @@ public class ControladorSuministro implements Serializable{
      * @param TipoSuministro
      * @return Devuelve el Id del suministro creado. Devuelve -1 cuando no se guardo el suministro.
      */
-    public int CrearSuministro(String NombreSuministro, String DescripcionSuministro, 
+    public int CrearSuministro(String NombreSuministro, String DescripcionSuministro,
             String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro){
         Suministro suministro = null;
         switch(TipoSuministro.toString()){
             case  "Material":
-                suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
                 break;
                 
             case "MedioEnsayo":
-                suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
                 break;
                 
             case "ReactivoQuimico":
-                suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
+                suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
                 break;
         }
         return mSuministro.CrearSuministro(suministro);
-    }    
-       
+    }
+    
     /**
      * Busca un suministro segun el id especificado.
      * @param IdSuministro
-     * @return 
+     * @return
      */
     public Suministro BuscarSuministro(int IdSuministro){
         return mSuministro.ObtenerSuministro(IdSuministro);
@@ -73,7 +74,7 @@ public class ControladorSuministro implements Serializable{
     /**
      * Devuelve todos los suministros registrados en la base de datos.
      * Si no hay suministros devuelve una lista vacia.
-     * @return 
+     * @return
      */
     public List<Suministro> ListarSuministros(){
         return mSuministro.ListarSuministros();
@@ -88,7 +89,7 @@ public class ControladorSuministro implements Serializable{
      * @param CantidadStockMinimo cantidad de suministro
      * @param FechaVigenteStockMinimo fecha de entrada en vigencia
      * @param IdSuministro id del suministro
-     * @return 
+     * @return
      */
     public int RegistrarStockMinimoSuministro(float CantidadStockMinimo, Date FechaVigenteStockMinimo, int IdSuministro){
         StockMinimo stockMinimo = cStock.CrearStockMinimo(CantidadStockMinimo, FechaVigenteStockMinimo);
@@ -113,6 +114,13 @@ public class ControladorSuministro implements Serializable{
     public Map<String, Integer> ListarMapSuministros(){
         return mSuministro.ListarMapSuministros();
     }
+    /**
+     * Devuelve los suministros registrados en la base de datos.
+     * @return Retorna un map con los ids de suministros (key) y los suministros (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<Integer, Suministro> ListarMapSuministrosFull(){
+        return mSuministro.ListarMapSuministrosFull();
+    }
     
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock minimo.
@@ -132,9 +140,27 @@ public class ControladorSuministro implements Serializable{
     }
     
     /**
+     * Devuelve los suministros que están por debajo de su stock minimo.
+     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0).
+     * @return Retorna una lista con los ids de suministros debajo de stock minimo, retorna una lista vacia si no los hay.
+     */
+    public List<Integer> GetIdsSuministrosDebajoStockMinimo(){
+        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Integer> lista = new ArrayList<>();
+        for(Suministro suministro: suministros){
+            if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
+                lista.add(suministro.getIdSuministro());
+            }
+        }
+        return lista;
+    }
+    
+    
+    /**
      * Devuelve los suministros con lotes vencidos.
      * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
-     * @return 
+     * @return Map: key: idSuministros, value: nombreSuministro
      */
     public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock){
         List<Suministro> suministros = mSuministro.ListarSuministros();
@@ -148,5 +174,25 @@ public class ControladorSuministro implements Serializable{
         for(Suministro suministro: suministros){
             if(suministro.getLotesVencidos().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
         }
-        return new TreeMap<>(map);    }
+        return new TreeMap<>(map);
+    }
+    /**
+     * Devuelve los suministros con lotes vencidos.
+     * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
+     * @return Retorna una lista con los ids de los suministros.
+     */
+    public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock){
+        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Integer> lista = new ArrayList<>();
+        if(ConStock){
+            for(Suministro suministro: suministros){
+                if(suministro.getLotesVencidosEnStock().size()>0) lista.add(suministro.getIdSuministro());
+            }
+            return lista;
+        }
+        for(Suministro suministro: suministros){
+            if(suministro.getLotesVencidos().size()>0) lista.add(suministro.getIdSuministro());
+        }
+        return lista;
+    }
 }	

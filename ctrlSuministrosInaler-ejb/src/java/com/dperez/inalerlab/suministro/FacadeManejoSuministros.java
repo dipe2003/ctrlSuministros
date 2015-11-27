@@ -150,6 +150,13 @@ public class FacadeManejoSuministros implements Serializable {
     public Map<String, Integer> ListarMapSuministros(){
         return cSuministro.ListarMapSuministros();
     }
+    /**
+     * Devuelve los suministros registrados en la base de datos.
+     * @return Retorna un map con los ids de suministros (key) y los suministros (value). Retorna un map vacio si no hay suministros registrados.
+     */
+    public Map<Integer, Suministro> ListarMapSuministrosFull(){
+        return cSuministro.ListarMapSuministrosFull();
+    }
     
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock minimo.
@@ -157,6 +164,15 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public int[] GetTotalSuministrosDebajoStockMinimo(){
         return cSuministro.GetTotalSuministrosDebajoStockMinimo();
+    }
+    
+    /**
+     * Devuelve los suministros que están por debajo de su stock minimo.
+     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0).
+     * @return Retorna una lista con los ids de suministros debajo de stock minimo, retorna una lista vacia si no los hay.
+     */
+    public List<Integer> GetIdsSuministrosDebajoStockMinimo(){
+        return cSuministro.GetIdsSuministrosDebajoStockMinimo();
     }
     
     /**
@@ -173,6 +189,14 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public Map<String, Integer> getMapSuministrosConLotesVencidos(){
         return cSuministro.getMapSuministrosConLotesVencidos(false);
+    }
+    
+    /**
+     * Devuelve los suministros con lotes vencidos en stock.
+     * @return Retorna una lista con los ids de los suministros.
+     */
+    public List<Integer> getIdsSuministrosConLotesVencidos(){
+        return cSuministro.getIdsSuministrosConLotesVencidos(true);
     }
     
 }

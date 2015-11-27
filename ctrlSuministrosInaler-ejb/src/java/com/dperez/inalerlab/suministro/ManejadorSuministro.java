@@ -92,4 +92,18 @@ public class ManejadorSuministro {
         }
         return new TreeMap<>(suministros);
     }
+    
+    public Map<Integer, Suministro> ListarMapSuministrosFull(){
+        Map<Integer, Suministro> suministros = new HashMap<>();
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s", Suministro.class);
+        try{
+            List<Suministro> lista = query.getResultList();
+            for(Suministro suministro: lista){
+                suministros.put(suministro.getIdSuministro(),suministro);
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return new TreeMap<>(suministros);
+    }
 }
