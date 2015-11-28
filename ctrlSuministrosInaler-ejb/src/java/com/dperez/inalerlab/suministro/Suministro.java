@@ -30,7 +30,7 @@ abstract public class Suministro implements Serializable{
     private Unidad UnidadSuministro;
     @OneToMany(mappedBy = "SuministroLote", fetch = FetchType.EAGER)
     private List<Lote> LotesSuministros;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<StockMinimo> StocksMinimosSuministro;
     @ManyToOne
     private Proveedor ProveedorSuministro;
