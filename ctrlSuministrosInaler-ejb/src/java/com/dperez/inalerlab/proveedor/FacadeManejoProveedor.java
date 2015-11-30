@@ -70,4 +70,13 @@ public class FacadeManejoProveedor implements Serializable {
     public Map<String, Integer> ListarMapProveedores(){
         return cProveedor.ListarMapProveedores();
     }
+    
+    /**
+     * Devuelve un Map con el proveedor del suministro.
+     * @param IdSuministro
+     * @return Retorna un Map con los nombres de los proveedores (key) y sus id(values).
+     */
+    public Map<String, Integer> BuscarProveedorSuministro(int IdSuministro){
+        return cProveedor.MapProveedorSuministro(IdSuministro);
+    }
 }

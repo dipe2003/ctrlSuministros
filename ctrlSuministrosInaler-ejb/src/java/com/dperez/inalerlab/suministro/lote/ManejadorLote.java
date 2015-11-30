@@ -101,4 +101,19 @@ public class ManejadorLote {
         }
         return map;
     }
+    
+    public Map<Integer, Lote> ListarMapLotesFull(int IdSuministro){
+        Map<Integer, Lote> map = new HashMap<>();        
+        try{
+            Query query = em.createQuery("SELECT lot FROM Lote lot WHERE lot.SuministroLote.IdSuministro= :idSuministro");
+            query.setParameter("idSuministro", IdSuministro);
+            List<Lote> resultado = query.getResultList();
+            for(Lote res: resultado){
+                map.put(res.getIdLote(), res);
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return map;
+    }
 }

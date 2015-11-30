@@ -3,6 +3,7 @@ package com.dperez.inalerlab.suministro.lote;
 import com.dperez.inalerlab.suministro.ControladorSuministro;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -83,12 +84,27 @@ public class ControladorLote implements Serializable{
         return mLote.ExisteNumeroLoteSuministro(NumeroLote, IdSuministro);
     }
     
-        /**
-     * Devuelve un Map con los lotes registrados en el sistema.
+    /**
+     * Devuelve un Map con los lotes registrados de un suministro en el sistema.
      * @param IdSuministro
      * @return Retorna un Map con el numero de lote (key) e id (value)
      */
     public Map<String, Integer> ListarMapLotes(int IdSuministro){
         return mLote.ListarMapLotes(IdSuministro);
+    }
+    /**
+     * Devuelve un Map con los lotes con stock registrados de un suministro en el sistema.
+     * @param IdSuministro
+     * @return Retorna un Map con el numero de lote (key) e id (value)
+     */
+    public Map<String, Integer> ListarMapLotesStock(int IdSuministro){
+        Map<String, Integer> strLotes = new HashMap<>();
+        Map<Integer, Lote> lotes = mLote.ListarMapLotesFull(IdSuministro);
+        for(Lote lote: lotes.values()){
+            if(lote.getCantidadStock()==0) {
+                strLotes.put(lote.getNumeroLote(), lote.getIdLote());
+            }
+        }
+        return strLotes;
     }
 }	

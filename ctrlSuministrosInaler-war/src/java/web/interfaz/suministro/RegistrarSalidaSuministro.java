@@ -3,15 +3,13 @@ package web.interfaz.suministro;
 
 import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
+import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.FacadeLote;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -41,7 +39,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     //  Proveedor
     private int idProveedor;
-    private Map<String, Integer> ProveedoresSuministros;
+    private String NombreProveedor;
+    List<Proveedor> Proveedores;
     
     //  Lote
     private boolean existeLote;
@@ -53,7 +52,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     //  getters
     public int getIdProveedor() {return idProveedor;}
-    public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
+    public String getNombreProveedor() {return NombreProveedor;}    
+    public List<Proveedor> getProveedores() {return Proveedores;}
     public int getIdSuministro() {return IdSuministro;}
     public Map<String, Integer> getListaSuministros() {return listaSuministros;}
     public float getCantidadSalidaSuministro() {return CantidadSalidaSuministro;}
@@ -85,7 +85,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     //  setters
     public void setIdProveedor(int idProveedor) {this.idProveedor = idProveedor;}
-    public void setProveedoresSuministros(Map<String, Integer> ProveedoresSuministros) {this.ProveedoresSuministros = ProveedoresSuministros;}
+    public void setNombreProveedor(String NombreProveedor) {this.NombreProveedor = NombreProveedor;}    
+    public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}    
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
     public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
     public void setLstSuministros(List<Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
@@ -113,27 +114,28 @@ public class RegistrarSalidaSuministro implements Serializable{
     }
     
     @PostConstruct
-    public void init(){
-        ProveedoresSuministros = fProveedor.ListarMapProveedores();               
-        listaSuministros = fSuministro.ListarSuministrosProveedor(idProveedor);
+    public void init(){             
+        listaSuministros = fSuministro.ListarMapSuministros();
         existeLote = false;
+        Proveedores = fProveedor.ListarProveedores();
     }
-    
-    /**
-     * Carga la lista de suministros pertenecientes al proveedor especificado.
-     * @param IdProveedor
-     */
-    public void cargarSuministros(int IdProveedor){
-        listaSuministros = fSuministro.ListarSuministrosProveedor(IdProveedor);
-    }
-        
+            
     /**
      * 
      * @param IdSuministro 
      */
     public void cargarNumerosLoteSuministro(int IdSuministro){
-        listaNumerosLoteSuministro = fLote.ListarMapLotes(IdSuministro);
+        listaNumerosLoteSuministro = fLote.ListarMapLotesConStock(IdSuministro);
         UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
         StockSuministro = fSuministro.BuscarSuministro(IdSuministro).getStock();
+    }
+    
+    public void cargarProveedoresSuministro(int IdSuministro){
+        for(Proveedor proveedor: Proveedores){
+            if(proveedor.esProveedorSuministro(IdSuministro)) {
+                NombreProveedor = proveedor.getNombreProveedor();
+                idProveedor = proveedor.getIdProveedor();
+            }
+        }
     }
 }

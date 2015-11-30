@@ -99,5 +99,13 @@ public class FacadeLote implements Serializable{
     public Map<String, Integer> ListarMapLotes(int IdSuministro){
         return cLote.ListarMapLotes(IdSuministro);
     }
+    /**
+     * Devuelve un Map con los lotes con stock registrados en el sistema.
+     * @param IdSuministro
+     * @return Retorna un Map con el numero de lote (key) e id (value)
+     */
+    public Map<String, Integer> ListarMapLotesConStock(int IdSuministro){
+        return cLote.ListarMapLotes(IdSuministro);
+    }
     
 }

@@ -28,10 +28,11 @@ public class RegistrarProveedor implements Serializable{
     public void setContactoProveedor(String ContactoProveedor) {this.ContactoProveedor = ContactoProveedor;}
     
     public void registrarProveedor() throws IOException{
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         if (fProveedor.RegistrarProveedor(NombreProveedor, ContactoProveedor)!=-1) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
         }else{
-            String msj="No se pudo registrar.";
+            String msj="No se pudo registrar.";            
             FacesContext.getCurrentInstance().addMessage("frmRegProv:btnRegistrarProveedor", new FacesMessage(msj));
         }
     }

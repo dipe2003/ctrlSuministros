@@ -1,8 +1,10 @@
 package com.dperez.inalerlab.proveedor;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,6 +15,8 @@ public class ControladorProveedor implements Serializable{
     @Inject
     private ManejadorProveedor mProveedor;
     
+    @Inject
+    private BufferProveedores buffer;
     /**
      * Crea un proveedor en la base de datos.
      * @param NombreProveedor
@@ -21,7 +25,11 @@ public class ControladorProveedor implements Serializable{
      */
     public int CrearProveedor(String NombreProveedor, String ContactoProveedor){
         Proveedor proveedor = new Proveedor(NombreProveedor, ContactoProveedor);
-        return mProveedor.CrearProveedor(proveedor);
+        int id = mProveedor.CrearProveedor(proveedor);
+        if(id!=-1){
+            buffer.putProveedor(proveedor);
+        }
+        return id;
     }
     
     /**
@@ -30,6 +38,7 @@ public class ControladorProveedor implements Serializable{
      * @return 
      */
     public Proveedor BuscarProveedor(int IdProveedor){
+        if(buffer.containsProveedor(IdProveedor)) return buffer.getProveedor(IdProveedor);
         return mProveedor.ObtenerProveedor(IdProveedor);
     }
     
@@ -39,6 +48,7 @@ public class ControladorProveedor implements Serializable{
      * @return 
      */
     public List<Proveedor> ListarProveedores(){
+        if(buffer.bufferSize()>0)return buffer.getListaProveedors();
         return mProveedor.ListarProveedores();
     }
     
@@ -53,7 +63,11 @@ public class ControladorProveedor implements Serializable{
         Proveedor proveedor = mProveedor.ObtenerProveedor(IdProveedor);
         proveedor.setNombreProveedor(NombreProveedor);
         proveedor.setContactoProveedor(ContactoProveedor);
-        return mProveedor.ActualizarProveedor(proveedor);
+        int id = mProveedor.ActualizarProveedor(proveedor);
+        if(id!=-1){
+            buffer.updateProveedor(proveedor);
+        }
+        return id;
     }
     
     /**
@@ -61,7 +75,27 @@ public class ControladorProveedor implements Serializable{
      * @return Retorna un Map con los Nombres de los proveedores (key) y los id (value)
      */
     public Map<String, Integer> ListarMapProveedores(){
+        if(buffer.bufferSize()>0) return buffer.getMapNombreProveedors();
         return mProveedor.ListarMapProveedores();
+    }
+    
+    /**
+     * Crea y devuelve un Map con el proveedor del suministro.
+     * @param IdSuministro
+     * @return Retorna un Map con los nombres de los proveedores (key) y sus id(values).
+     */
+    public Map<String, Integer>MapProveedorSuministro(int IdSuministro){
+        List<Proveedor> proveedores;
+        if(buffer.bufferSize()>=0){
+            proveedores = buffer.getListaProveedors();
+        }else{
+            proveedores = mProveedor.ListarProveedores();
+        }
+        Map<String, Integer> map = new HashMap<>();
+        for(Proveedor proveedor: proveedores){
+            if(proveedor.esProveedorSuministro(IdSuministro)) map.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
+        }
+        return new TreeMap<> (map);
     }
     
     

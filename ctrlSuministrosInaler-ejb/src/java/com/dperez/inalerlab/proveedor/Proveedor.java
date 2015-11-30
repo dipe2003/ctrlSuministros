@@ -43,4 +43,10 @@ public class Proveedor implements Serializable{
     //	SuministrosProveedor
     public void addSuministroProveedor(Suministro SuministroProveedor){this.SuministrosProveedor.add(SuministroProveedor);}
     public void removeSuministroProveedor(Suministro SuministroProveedor){this.SuministrosProveedor.remove(SuministroProveedor);}
+    public boolean esProveedorSuministro(int IdSuministro){
+        for(Suministro suministro: this.SuministrosProveedor){
+            if(suministro.getIdSuministro()==IdSuministro) return true;
+        }
+        return false;
+    }
 }

@@ -76,4 +76,18 @@ public class ManejadorProveedor {
         }
         return new TreeMap<>(map);
     }
+    
+    public  Map<Integer, Proveedor> ListarMapProveedoresFull(){
+        Map<Integer, Proveedor> map = new HashMap<>();
+        Query query = em.createQuery("SELECT p FROM Proveedor p");
+        try{
+            List<Proveedor> resultado = query.getResultList();
+            for(Proveedor proveedor: resultado){
+                map.put(proveedor.getIdProveedor(), proveedor);
+            }
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return new TreeMap<>(map);
+    }
 }

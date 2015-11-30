@@ -30,6 +30,9 @@ public class ControladorSuministro implements Serializable{
     @Inject
     private ControladorStockMinimo cStock;
     
+    @Inject
+    private BufferSuministros buffer;
+    
     /**
      * Crea un Crea un Reactivo Quimico en la base de datos.
      * @param NombreSuministro
@@ -59,7 +62,11 @@ public class ControladorSuministro implements Serializable{
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
                 break;
         }
-        return mSuministro.CrearSuministro(suministro);
+        int id = mSuministro.CrearSuministro(suministro);
+        if(id!=-1){
+            buffer.putSuministro(suministro);
+        }
+        return id;
     }
     
     /**
@@ -68,6 +75,7 @@ public class ControladorSuministro implements Serializable{
      * @return
      */
     public Suministro BuscarSuministro(int IdSuministro){
+        if(buffer.containsSuministro(IdSuministro)) return buffer.getSuministro(IdSuministro);
         return mSuministro.ObtenerSuministro(IdSuministro);
     }
     
@@ -77,6 +85,7 @@ public class ControladorSuministro implements Serializable{
      * @return
      */
     public List<Suministro> ListarSuministros(){
+        if(buffer.bufferSize()>0) return buffer.getListaSuministros();
         return mSuministro.ListarSuministros();
     }
     
@@ -95,7 +104,11 @@ public class ControladorSuministro implements Serializable{
         StockMinimo stockMinimo = cStock.CrearStockMinimo(CantidadStockMinimo, FechaVigenteStockMinimo);
         Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
         suministro.addStockMinimoSuministro(stockMinimo);
-        return mSuministro.ActualizarSuministro(suministro);
+        int id = mSuministro.ActualizarSuministro(suministro);
+        if(id!=-1){
+            buffer.updateSuministro(suministro);
+        }
+        return id;
     }
     
     /**
@@ -104,6 +117,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
+        if(buffer.bufferSize()>0) return buffer.getMapSuministrosPorProveedor(IdProveedor);
         return mSuministro.ListarSuministrosProveedor(IdProveedor);
     }
     
@@ -112,6 +126,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<String, Integer> ListarMapSuministros(){
+        if(buffer.bufferSize()>0) return buffer.getMapNombreSuministros();
         return mSuministro.ListarMapSuministros();
     }
     /**
@@ -119,6 +134,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna un map con los ids de suministros (key) y los suministros (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<Integer, Suministro> ListarMapSuministrosFull(){
+        if(buffer.bufferSize()>0) return buffer.getMapSuministros();
         return mSuministro.ListarMapSuministrosFull();
     }
     
@@ -128,7 +144,12 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
      */
     public int[] GetTotalSuministrosDebajoStockMinimo(){
-        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros();
+        }else{
+            suministros = mSuministro.ListarSuministros();
+        }
         int cantidad = 0;
         for(Suministro suministro: suministros){
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
@@ -145,7 +166,12 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna una lista con los ids de suministros debajo de stock minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo(){
-        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros();
+        }else{
+            suministros = mSuministro.ListarSuministros();
+        }
         List<Integer> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
@@ -163,7 +189,12 @@ public class ControladorSuministro implements Serializable{
      * @return Map: key: idSuministros, value: nombreSuministro
      */
     public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock){
-        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros();
+        }else{
+            suministros = mSuministro.ListarSuministros();
+        }
         Map<String, Integer> map = new HashMap<>();
         if(ConStock){
             for(Suministro suministro: suministros){
@@ -182,7 +213,12 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock){
-        List<Suministro> suministros = mSuministro.ListarSuministros();
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros();
+        }else{
+            suministros = mSuministro.ListarSuministros();
+        }
         List<Integer> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){

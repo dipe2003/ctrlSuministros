@@ -12,18 +12,16 @@
             <h:form id="frmRegIngresoSuministro">
                 <fieldset><legend>Suministro</legend>
                     <div class="label">Proveedor</div>
-                    <h:selectOneMenu value="#{registrarIngresoSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo.">
-                        <f:selectItem itemValue="--Seleccionar Proveedor---" itemDisabled="false"  noSelectionOption="true"/>
-                        <f:selectItems value="#{registrarIngresoSuministro.proveedoresSuministros}" />
-                        <f:ajax execute="@this" listener="#{registrarIngresoSuministro.cargarSuministros(registrarIngresoSuministro.idProveedor)}" render="selectSuministro" />
-                    </h:selectOneMenu>
-                    
-                    <div class="label">Suministro</div>
-                    <h:selectOneMenu id="selectSuministro" value="#{registrarIngresoSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
-                        <f:selectItem itemValue="--Seleccionar Suministro---" itemDisabled="false"  noSelectionOption="true" />
+                                        <div class="label">Suministro</div>
+                    <h:selectOneMenu id="selectSuministroIngreso" value="#{registrarIngresoSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
+                        <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
                         <f:selectItems value="#{registrarIngresoSuministro.listaSuministros}" />
+                        <f:ajax execute="@this" listener="#{registrarIngresoSuministro.cargarProveedoresSuministro(registrarIngresoSuministro.idSuministro)}" render="selectProveedorIngreso" />
                         <f:ajax listener="#{registrarIngresoSuministro.cargarUnidad()}" render="ouputUnidadIngresoSuministro"/>
                     </h:selectOneMenu>
+                    
+                    <div class="label">Proveedor</div>
+                    <h:outputText id="selectProveedorIngreso" value="#{registrarIngresoSuministro.nombreProveedor}" class="output" />            
                 </fieldset>
                 
                 <fieldset><legend>Lote</legend>
@@ -43,7 +41,7 @@
                     
                     
                     <h:commandButton id="btnNumLote" style="display: none;" >
-                        <f:ajax event="click" execute="selectSuministro inputNumeroLoteSuministro" listener="#{registrarIngresoSuministro.comprobarLote(registrarIngresoSuministro.numeroLoteSuministro)}" render="grupoDatosLote"/>
+                        <f:ajax event="click" execute="selectSuministroIngreso inputNumeroLoteSuministro" listener="#{registrarIngresoSuministro.comprobarLote(registrarIngresoSuministro.numeroLoteSuministro)}" render="grupoDatosLote"/>
                     </h:commandButton>                    
                     
                     <h:panelGroup id="grupoDatosLote">
