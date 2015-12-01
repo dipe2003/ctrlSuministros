@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"                    
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="page_content">
+        <div class="contenido">
+            <fieldset><legend>#{infoSuministro.suministroSeleccionado.nombreSuministro} (#{infoSuministro.suministroSeleccionado.proveedorSuministro.nombreProveedor})</legend>
+                <div style="text-align: left;"><ouputText class="output">Movimientos de Stock</ouputText></div><br/>
+                <div class="contenedor-5050">                    
+                    <div class="contenedor-50">
+                        <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
+                        <table bgcolor="#EBEDF2">
+                            <th class="label" style="width: 20%">Lote</th>
+                            <th class="label" style="width: 10%">Fecha</th>
+                            <th class="label" style="width: 10%">Cantidad</th>
+                            <th class="label" style="width: 20%">Vencimiento</th>
+                            <th class="label" style="width: 20%">Operario</th>
+                            <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
+                                <c:forEach items="#{infoSuministro.ingresosSuministro.get(lot.idLote)}" var="entry">
+                                    <tr>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{lot.numeroLote}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{entry.fechaIngreso}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{entry.cantidadIngreso}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{lot.vencimientoLote}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{entry.operarioIngresoSuministro.idOperario}</div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:forEach>
+                        </table>
+                        
+                    </div>
+                    <div class="contenedor-50">
+                        <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
+                        <table bgcolor="#EBEDF2" style="text-align: center;">
+                            <th class="label" style="width: 20%">Lote</th>
+                            <th class="label" style="width: 10%">Cantidad</th>
+                            <th class="label" style="width: 10%">Operario</th>                            
+                            <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">  
+                                <c:forEach items="#{infoSuministro.salidasSuministro.get(lote.idLote)}" var="salida">
+                                    <tr>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{lote.numeroLote}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{salida.cantidadSalida}</div>
+                                        </td>
+                                        <td class="div-output" style="text-align: left;">
+                                            <div>#{salida.operarioSalidaSuministro.idOperario}</div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:forEach>
+                        </table>
+                    </div>                    
+                </div>
+                <br/>
+                <div class="output">Stock Actual</div><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.stock} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}"/>
+            </fieldset>
+        </div>
+    </ui:define>
+</ui:composition>    

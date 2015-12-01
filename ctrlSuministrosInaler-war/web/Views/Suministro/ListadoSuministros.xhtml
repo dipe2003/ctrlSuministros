@@ -17,6 +17,7 @@
                             <th class="label" style="width: 10%">Codigo SAP</th>
                             <th class="label" style="width: 10%">Ultimo Ingreso</th>
                             <th class="label" style="width: 10%">Stock Actual</th>
+                            <th class="label" style="width: 10%; display: none">IdSuministro</th>
                             <th class="label" style="width: 5%">Mas Info</th>
                             <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
                                 <tr>
@@ -35,8 +36,11 @@
                                     <td class="div-output">
                                         #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
                                     </td>
+                                    <td class="div-output" style="display: none;">
+                                        #{sum.idSuministro}
+                                    </td>
                                     <td class="div-output">
-                                        <h:commandButton value="..." class="boton-input boton-tabla" />
+                                        <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
                                     </td>
                                 </tr>
                             </c:forEach>                                

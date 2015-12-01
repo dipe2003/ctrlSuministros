@@ -121,8 +121,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     }
             
     /**
-     * 
-     * @param IdSuministro 
+     * carga los numeros de lote del suministro seleccionado.
+     * @param IdSuministro id de suministro seleccionado.
      */
     public void cargarNumerosLoteSuministro(int IdSuministro){
         listaNumerosLoteSuministro = fLote.ListarMapLotesConStock(IdSuministro);
@@ -130,7 +130,11 @@ public class RegistrarSalidaSuministro implements Serializable{
         StockSuministro = fSuministro.BuscarSuministro(IdSuministro).getStock();
     }
     
-    public void cargarProveedoresSuministro(int IdSuministro){
+    /**
+     * carga el proveedor del suministro seleccionado.
+     * @param IdSuministro 
+     */
+    public void cargarProveedorSuministro(int IdSuministro){
         for(Proveedor proveedor: Proveedores){
             if(proveedor.esProveedorSuministro(IdSuministro)) {
                 NombreProveedor = proveedor.getNombreProveedor();

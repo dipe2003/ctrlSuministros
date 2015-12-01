@@ -101,7 +101,7 @@ public class ControladorLote implements Serializable{
         Map<String, Integer> strLotes = new HashMap<>();
         Map<Integer, Lote> lotes = mLote.ListarMapLotesFull(IdSuministro);
         for(Lote lote: lotes.values()){
-            if(lote.getCantidadStock()==0) {
+            if(lote.getCantidadStock()!=0) {
                 strLotes.put(lote.getNumeroLote(), lote.getIdLote());
             }
         }

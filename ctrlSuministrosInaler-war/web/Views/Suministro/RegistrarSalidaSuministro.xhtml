@@ -15,7 +15,7 @@
                     <h:selectOneMenu id="selectSuministroSalida" value="#{registrarSalidaSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
                         <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
                         <f:selectItems value="#{registrarSalidaSuministro.listaSuministros}" />
-                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedoresSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" />
+                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" />
                         <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" />
                     </h:selectOneMenu>
                     

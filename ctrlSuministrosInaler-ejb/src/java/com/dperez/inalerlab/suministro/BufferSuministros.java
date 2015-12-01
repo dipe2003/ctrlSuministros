@@ -10,7 +10,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
-
+/**
+ * Manejo intermedio de coleccion de datos para acceso de lectura sin llegar a base de datos.
+ * @author dperez
+ */
 @Singleton
 public class BufferSuministros {
 

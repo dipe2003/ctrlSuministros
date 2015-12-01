@@ -76,6 +76,10 @@ div .sub-titulo-fondo{
     font-weight: normal;
 }
 
+ td{
+    text-align: center;
+}
+
 .titulo-grande{
     font-size: 16px;
     color: white;
