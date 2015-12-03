@@ -3,9 +3,11 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -114,5 +116,14 @@ public class Lote implements Serializable{
             }
         }
         return IngresosLote.get(index);
+    }
+    
+    public boolean EstaVencido(){
+        Date hoy = Calendar.getInstance().getTime();
+        boolean vencido = false;
+        try{
+            vencido = VencimientoLote.before(hoy);
+        }catch(NullPointerException ex){}
+        return vencido;
     }
 }

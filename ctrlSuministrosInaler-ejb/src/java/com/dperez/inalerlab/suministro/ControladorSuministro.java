@@ -231,4 +231,30 @@ public class ControladorSuministro implements Serializable{
         }
         return lista;
     }
+    /**
+     * Devuelve los suministros con lotes vencidos.
+     * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
+     * @return Retorna una lista con los suministros. Retorna una lista vacia si no existen lotes vencidos en stock
+     */
+    public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock){
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros();
+        }else{
+            suministros = mSuministro.ListarSuministros();
+        }
+        List<Suministro> lista = new ArrayList<>();
+        if(ConStock){
+            for(Suministro suministro: suministros){
+                if(suministro.getLotesVencidosEnStock().size()>0) lista.add(suministro);
+            }
+            return lista;
+        }
+        for(Suministro suministro: suministros){
+            if(suministro.getLotesVencidos().size()>0) lista.add(suministro);
+        }
+        return lista;
+    }
+    
+    
 }	

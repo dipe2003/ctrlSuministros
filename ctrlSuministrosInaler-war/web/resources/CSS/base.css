@@ -76,9 +76,7 @@ div .sub-titulo-fondo{
     font-weight: normal;
 }
 
- td{
-    text-align: center;
-}
+
 
 .titulo-grande{
     font-size: 16px;
@@ -109,8 +107,18 @@ div .sub-titulo-fondo{
     display: inline-flex;
 }
 
+.contenedor-40{
+    width:40%; 
+    height:30%;
+    padding: .5% .5% .5% .5%;
+}
 .contenedor-50{
     width:50%; 
+    height:30%;
+    padding: .5% .5% .5% .5%;
+}
+.contenedor-60{
+    width:60%; 
     height:30%;
     padding: .5% .5% .5% .5%;
 }

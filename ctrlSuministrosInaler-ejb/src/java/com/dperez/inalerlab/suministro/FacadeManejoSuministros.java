@@ -198,5 +198,12 @@ public class FacadeManejoSuministros implements Serializable {
     public List<Integer> getIdsSuministrosConLotesVencidos(){
         return cSuministro.getIdsSuministrosConLotesVencidos(true);
     }
+    /**
+     * Devuelve los suministros con lotes vencidos.
+     * @return Retorna una lista con los suministros. Retorna una lista vacia si no existen lotes vencidos en stock
+     */
+    public List<Suministro> getSuministrosConLotesVencidos(){
+        return cSuministro.getSuministrosConLotesVencidos(true);
+    }
     
 }

@@ -8,6 +8,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/base.css"/>
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/tablas.css"/>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/jquery-ui.css"/>
         
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/jquery-1.11.3.min.js"/>
@@ -51,7 +52,7 @@
                 ];
                 var opciones = {
                     animationSteps : 200
-                };
+                };                                
                 /*
                  * myDoughnutChart.addData({
                     value: 130,
@@ -72,6 +73,7 @@
         <title>Inicio</title>
     </h:head>
     <h:body>
+        
         <div>
             <ui:include src="header.xhtml"/>
         </div>
@@ -107,44 +109,43 @@
                         
                         <fieldset><legend>Graficos</legend>
                             <div class="contenedor-5050">
-                                <canvas id="myChart" width="300" height="200" class="contenedor-50"></canvas>                                   
+                                <canvas id="myChart" width="300" height="200" class="contenedor-50"></canvas>
                                 <canvas id="myChartVenc" width="300" height="200" class="contenedor-50"></canvas>                                   
                             </div>
                         </fieldset>
                         <fieldset><legend>Detalles</legend>
                             <div class="contenedor-5050">
                                 <div class="contenedor-50">
-                                    <div class="label">Detalles Stock</div>
+                                    <div class="label">Stocks</div><br/>
                                     <f:view>
-                                        <h:form>
-                                            <h:dataTable value="#{datosIndex.listSuministrosDebajoStock}" var="SuministroStock" style="text-align: left;">
-                                                <h:column >
-                                                    <f:facet name="header">Suministro</f:facet>    	
-                                                    <h:outputText value="#{SuministroStock.nombreSuministro}" />
-                                                </h:column>                                                
-                                                <h:column >
-                                                    <f:facet name="header">Stock</f:facet> 
-                                                    <h:outputText value="#{SuministroStock.stock} #{SuministroStock.unidadSuministro.nombreUnidad}"/>
-                                                </h:column>                                                
-                                            </h:dataTable>
-                                        </h:form>
+                                        <table class="tabla-listaSuministro">
+                                            <th class="label" style="width: 79%;">Suministro</th>
+                                            <th class="label" style='width: 20%;'>Stock</th>
+                                            <c:forEach items="#{datosIndex.listSuministrosDebajoStock}" var="SuministroStock" >
+                                                <tr>
+                                                    <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
+                                                    <td><h:outputText value="#{SuministroStock.stock} #{SuministroStock.unidadSuministro.nombreUnidad}"/></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
                                     </f:view>                                    
                                 </div>                                   
                                 <div class="contenedor-50">
-                                    <div class="label">Detalles Vencimiento</div>
+                                    <div class="label">Vencimientos</div><br/>
                                     <f:view>
-                                        <h:form>
-                                            <h:dataTable value="#{datosIndex.listSuministrosVencidos}" var="item" style="text-align: left;">
-                                                <h:column >
-                                                     <f:facet name="header">Suministro</f:facet>
-                                                    <h:outputText value="#{item.nombreSuministro}" />
-                                                  </h:column>                                                
-                                                <h:column >
-                                                     <f:facet name="header">Fecha</f:facet>                                                     
-                                                    FechaVencimiento
-                                                </h:column>
-                                            </h:dataTable>
-                                        </h:form>
+                                        <table class="tabla-listaSuministro">
+                                            <th class="label" style="width: 79%;">Suministro</th>
+                                            <th class="label" style='width: 20%;'>Vencimiento</th>
+                                            <c:forEach items="#{datosIndex.listSuministrosVencidos}" var="SuministroStock" >
+                                                <c:forEach items="#{datosIndex.mapLotesVencidos.get(SuministroStock.idSuministro)}" var ="lote">
+                                                <tr>
+                                                    <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
+                                                    <td><h:outputText value="#{lote.vencimientoLote}" /></td>
+                                                </tr>
+                                                </c:forEach>          
+                                            </c:forEach>
+                                        </table>
+                                        
                                     </f:view>
                                     
                                 </div>                                   

@@ -26,20 +26,22 @@ public class InfoSuministro implements Serializable{
     private List<Lote> LotesSuministro;
     private Map<Integer, List<Ingreso>> IngresosSuministro;
     private Map<Integer, List<Salida>> SalidasSuministro;
+    private Map<Integer, Boolean> LotesVencido;
     
     //  Getters
     public List<Lote> getLotesSuministro() {return LotesSuministro;}
     public Map<Integer, List<Ingreso>> getIngresosSuministro() {return IngresosSuministro;}
     public Map<Integer, List<Salida>> getSalidasSuministro() {return SalidasSuministro;}
     public Suministro getSuministroSeleccionado() {return SuministroSeleccionado;}
+    public Map<Integer, Boolean> getLotesVencido() {return LotesVencido;}
         
     //  Setters
     public void setLotesSuministro(List<Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}
     public void setIngresosSuministro(Map<Integer, List<Ingreso>> IngresosSuministro) {this.IngresosSuministro = IngresosSuministro;}
     public void setSalidasSuministro(Map<Integer, List<Salida>> SalidasSuministro) {this.SalidasSuministro = SalidasSuministro;}    
     public void setSuministroSeleccionado(Suministro SuministroSeleccionado) {this.SuministroSeleccionado = SuministroSeleccionado;}
-    
-    
+    public void setLotesVencido(Map<Integer, Boolean> LotesVencido) {this.LotesVencido = LotesVencido;}
+        
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -48,9 +50,11 @@ public class InfoSuministro implements Serializable{
         LotesSuministro = SuministroSeleccionado.getLotesSuministros();
         IngresosSuministro = new HashMap<>();
         SalidasSuministro = new HashMap<>();
+        LotesVencido = new HashMap<>();
         for(Lote lote: LotesSuministro){
             IngresosSuministro.put(lote.getIdLote(), lote.getIngresosLote());
             SalidasSuministro.put(lote.getIdLote(), lote.getSalidasLote());
+            LotesVencido.put(lote.getIdLote(), lote.EstaVencido());
         }
     }
 }

@@ -3,8 +3,10 @@ package web.interfaz.index;
 
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
+import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -29,6 +31,7 @@ public class DatosIndex implements Serializable{
     
     //  detalles vencimiento
     private List<Suministro> ListSuministrosVencidos;
+    private Map<Integer, List<Lote>> MapLotesVencidos;
     
     //  Getters
     public float getStockSuministro(){return StockSuministro;}
@@ -40,6 +43,7 @@ public class DatosIndex implements Serializable{
 
     public List<Suministro> getListSuministrosDebajoStock() {return ListSuministrosDebajoStock;}
     public List<Suministro> getListSuministrosVencidos() {return ListSuministrosVencidos;}
+    public Map<Integer, List<Lote>> getMapLotesVencidos() {return MapLotesVencidos;}
     
     //  Setters
     public void setStockSuministro(float StockSuministro){this.StockSuministro = StockSuministro;}
@@ -51,6 +55,7 @@ public class DatosIndex implements Serializable{
 
     public void setListSuministrosDebajoStock(List<Suministro> ListSuministrosDebajoStock) {this.ListSuministrosDebajoStock = ListSuministrosDebajoStock;}
     public void setListSuministrosVencidos(List<Suministro> ListSuministrosVencidos) {this.ListSuministrosVencidos = ListSuministrosVencidos;    }
+    public void setMapLotesVencidos(Map<Integer, List<Lote>> MapLotesVencidos) {this.MapLotesVencidos = MapLotesVencidos;}
             
     public void cargarDatosSuministro(){
         try{            
@@ -68,10 +73,14 @@ public class DatosIndex implements Serializable{
         MapSuministrosFull = fSuministro.ListarMapSuministrosFull();
         MapSuministros = fSuministro.ListarMapSuministros();
         List<Integer> idsStockBajo = fSuministro.GetIdsSuministrosDebajoStockMinimo();
-        ListSuministrosVencidos = new ArrayList<>();
+        ListSuministrosVencidos = fSuministro.getSuministrosConLotesVencidos();
         ListSuministrosDebajoStock = new ArrayList<>();
+        MapLotesVencidos = new HashMap<>();
         for(Integer id: idsStockBajo){
             ListSuministrosDebajoStock.add(MapSuministrosFull.get(id));
+        }
+        for(Suministro sum: ListSuministrosVencidos){
+            MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
         }
     }
     
