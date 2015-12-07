@@ -62,7 +62,7 @@ public class BufferProveedores {
     }
     
     
-    public Map<String, Integer> getMapNombreProveedors(){
+    public Map<String, Integer> getMapNombreProveedores(){
         Map<String, Integer> map = new HashMap<>();
         for(Proveedor proveedor: MapProveedores.values()){
             map.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());

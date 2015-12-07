@@ -2,6 +2,7 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
+import com.dperez.inalerlab.suministro.BufferSuministros;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,8 @@ public class ControladorIngresoSalida implements Serializable{
     private ControladorLote cLote;
     @Inject
     private ControladorOperario cOp;
+    @Inject
+    private BufferSuministros buffer;
     
     /**
      * Crea un ingreso en la base de datos.
@@ -30,13 +33,15 @@ public class ControladorIngresoSalida implements Serializable{
      * @return Retorna el id del ingreso creada. Retorna -1 si no se crea.
      */
     public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperarioIngreso, String ObservacionesIngreso){
+        int id = -1;
         try{
             Operario operario = cOp.BuscarOperario(IdOperarioIngreso);
             Ingreso ingreso = new Ingreso(FechaIngreso, CantidadIngreso, NumeroFactura, cLote.BuscarLote(IdLoteIngreso), ObservacionesIngreso );
             ingreso.setOperarioIngresoSuministro(operario);
-            return mInSal.CrearIngreso(ingreso);
+            id= mInSal.CrearIngreso(ingreso);
+            if(id!=-1) buffer.updateSuministro(ingreso.getLoteIngreso().getSuministroLote());
         }catch(NullPointerException ex){}
-        return -1;        
+        return id;        
     }
     
     /**
@@ -71,13 +76,15 @@ public class ControladorIngresoSalida implements Serializable{
      * @return Retorna el id de la salida creada. Retorna -1 si no se crea.
      */
     public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperarioSalida, String ObservacionesSalida){
+        int id=-1;
         try{
             Operario Operario = cOp.BuscarOperario(IdOperarioSalida);
             Salida salida = new Salida(FechaSalida, CantidadSalida, cLote.BuscarLote(IdLoteSalida), ObservacionesSalida);
             salida.setOperarioSalidaSuministro(Operario);
-            return mInSal.CrearSalida(salida);
+            id = mInSal.CrearSalida(salida);
+            if(id!=-1) buffer.updateSuministro(salida.getLoteSalida().getSuministroLote());
         }catch(NullPointerException ex){}
-        return -1;
+        return id;
     }
     
     /**

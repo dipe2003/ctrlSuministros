@@ -78,6 +78,6 @@ public class BufferSuministros {
     }
     
     public Map<Integer, Suministro> getMapSuministros(){
-        return MapSuministros;
+        return new TreeMap<>(MapSuministros);
     }
 }

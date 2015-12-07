@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"        
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
+    <ui:define name="page_content">
+        <div class="contenido">            
+            <h:form id="frmEditProv">
+                <fieldset><legend>Editar Proveedor</legend>
+                    <div class="label">Proveedor</div>
+                    <h:selectOneMenu id="selectEditarProveedor" value="#{editarProveedor.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono Proveedor." >
+                        <f:selectItem itemValue="--Seleccionar Proveedor---"  itemDisabled="false"  noSelectionOption="true"  />
+                        <f:selectItems value="#{editarProveedor.mapProveedores}" />
+                        <f:ajax execute="@this" listener="#{editarProveedor.cargarDatosProveedor()}" render="editNombreProveedor editContactoProveedor" />
+                    </h:selectOneMenu>
+                    
+                    <div class="label">Nombre de Proveedor</div><h:inputText id="editNombreProveedor" class="input" value="#{editarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor."/>
+                    <div class="label">Contacto</div><h:inputText id="editContactoProveedor" class="input" value="#{editarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto." />
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnEditarProveedor" class="boton-input" value="Guardar" action="#{editarProveedor.editarProveedor()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="editNombreProveedor" class="error"/>
+                        <h:message for="editContactoProveedor" class="error"/>
+                        <h:message for="btnEditarProveedor" class="error"/>                     
+                    </div>
+                </fieldset>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>    

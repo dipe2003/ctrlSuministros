@@ -35,7 +35,7 @@ public class GraficosIndex implements Serializable {
         TotalSuministrosRegistrados = arr[0];
         TotalSuministrosDebajoStockMinimo = arr[1];
         
-        TotalSuministrosLotesVencidosStock = fSuministro.getMapSuministrosConLotesVencidos().size();
+        TotalSuministrosLotesVencidosStock = fSuministro.getSuministrosConLotesVencidos().size();
         
     }
     

@@ -75,7 +75,7 @@ public class ControladorProveedor implements Serializable{
      * @return Retorna un Map con los Nombres de los proveedores (key) y los id (value)
      */
     public Map<String, Integer> ListarMapProveedores(){
-        if(buffer.bufferSize()>0) return buffer.getMapNombreProveedors();
+        if(buffer.bufferSize()>0) return buffer.getMapNombreProveedores();
         return mProveedor.ListarMapProveedores();
     }
     

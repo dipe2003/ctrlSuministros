@@ -18,3 +18,9 @@ and open the template in the editor.
     text-align: left !important;
     border-color: #668CC8
 }
+
+.boton-tabla{
+    width: 100%;
+    height: 30px;
+    border-radius: 15px 0px;
+}

@@ -3,7 +3,9 @@ package com.dperez.inalerlab.operario;
 import com.dperez.inalerlab.operario.seguridad.ControladorSeguridad;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -95,18 +97,28 @@ public class ControladorOperario implements Serializable{
     }
     
     /**
-     * Modifica el password del usuario si PasswordActual coincide con el password del operario.
+     * Modifica el password del usuario.
      * @param IdOperario
-     * @param PasswordActual Password asociado al operario en la base de datos.
      * @param PasswordNuevo Password que se asociara al operario.
      * @return Retorna el id del operario se se actualizo. Retorna -1 si no se pudo actualizar.
      */
-//    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
-//        try{
-//            Operario operario = mOperario.ObtenerOperario(IdOperario);
-//            operario.setPassword(PasswordActual, PasswordNuevo);
-//            return mOperario.ActualizarOperario(operario);
-//        }catch(IllegalArgumentException ex){}
-//        return -1;
-//    }
+    public int ModificarPassword(int IdOperario, String PasswordNuevo){
+        try{
+            Operario operario = mOperario.ObtenerOperario(IdOperario);
+            String[] pass = cSeg.getPasswordSeguro(PasswordNuevo);
+            operario.setPasswordOperario(pass[1]);
+            operario.setPasswordKeyOperario(pass[0]);
+            return mOperario.ActualizarOperario(operario);
+        }catch(IllegalArgumentException ex){}
+        return -1;
+    }
+    
+    public Map<String, Integer> GetMapNombresOperarios(){
+      Map<String, Integer> nombres = new HashMap<>();
+      List<Operario> operarios = mOperario.ListarOperarios();
+      for(Operario operario: operarios){
+          nombres.put(operario.getNombreOperario() + " " + operario.getApellidoOperario(), operario.getIdOperario());
+      }
+      return nombres;
+    }
 }	

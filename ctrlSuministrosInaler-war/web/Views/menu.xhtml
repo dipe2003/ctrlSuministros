@@ -5,7 +5,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:composition>
-        <div id="menu" class="fondo-azul">
+        <script>
+            $(document).ready(function(){
+                var item = $('#divMenuItemSinAccion');
+                item.on(click, function(){
+                    alert("aaa");
+                });
+            });
+        </script>
+            
+        <div id="menuApp" class="fondo-azul">
             <h:form id="frmMenu">
                 <h:panelGroup class="titulo-grande" rendered="#{loginOperario.logueado}">
                     <div class="titulo-fondo"><h:outputText value="#{loginOperario.nombreOperario}" /></div>
@@ -15,21 +24,27 @@
                             <div>Inicio</div>                            
                         </div>
                     </h:link>
-                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador'}" outcome="/Views/Operario/AgregarOperario.xhtml">
-                        <div class="divMenuItem">                          
-                            <div>Operarios</div>                            
+                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador'}" >
+                        <div class="divMenuItem">
+                            <h:link class="link" outcome="/Views/Operario/AgregarOperario.xhtml">
+                                <div>Adm. Operarios</div>
+                            </h:link>                                     
                         </div>
-                    </h:link>
-                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }" outcome="/Views/Proveedor/AgregarProveedor.xhtml">
-                        <div class="divMenuItem">                          
-                            <div>Proveedores</div>                            
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }">
+                        <div class="divMenuItem">
+                            <h:link class="link" outcome="/Views/Proveedor/AgregarProveedor.xhtml">
+                                <div>Adm. Proveedores</div>
+                            </h:link>                            
                         </div>
-                    </h:link>
-                    <h:link class="link" rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }" outcome="/Views/Suministro/AgregarSuministro.xhtml">
-                        <div class="divMenuItem">                            
-                            Adm. Suministros                            
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }">
+                        <h:link class="link" outcome="/Views/Suministro/AgregarSuministro.xhtml">
+                            <div class="divMenuItem">                            
+                                <div>Adm. Suministros</div>                                                       
                         </div>
-                    </h:link>
+                        </h:link>
+                    </h:panelGroup>
                     <h:link  class="link" rendered="#{loginOperario.permisoOperario != 'Lectura'}" outcome="/Views/Suministro/RegistrarIngresoSuministro.xhtml">
                         <div class="divMenuItem">                                
                             Ingreso Suministros                             

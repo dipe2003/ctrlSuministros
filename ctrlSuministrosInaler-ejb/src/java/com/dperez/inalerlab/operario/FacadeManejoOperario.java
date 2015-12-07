@@ -5,6 +5,7 @@ import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -105,13 +106,21 @@ public class FacadeManejoOperario implements Serializable {
     }
     
     /**
-     * Modifica el password del usuario si PasswordActual coincide con el password del operario.
+     * Modifica el password del usuario
+     * PRE: Se realizaron los controles pertinentes de password actual.
      * @param IdOperario
-     * @param PasswordActual Password asociado al operario en la base de datos.
      * @param PasswordNuevo Password que se asociara al operario.
      * @return Retorna el id del operario se se actualizo. Retorna -1 si no se pudo actualizar.
      */
-//    public int ModificarPassword(int IdOperario, String PasswordActual, String PasswordNuevo){
-//        return cOperario.ModificarPassword(IdOperario, PasswordActual, PasswordNuevo);
-//    }
+    public int ModificarPassword(int IdOperario, String PasswordNuevo){
+        return cOperario.ModificarPassword(IdOperario,PasswordNuevo);
+    }
+    
+    /**
+     * Devuelve los nombres de los operarios registrados
+     * @return Retorna un Map con los nombres completos de los operarios (key) y sus id (value).
+     */
+    public Map<String, Integer> GetNombresOperarios(){
+        return cOperario.GetMapNombresOperarios();
+    }
 }

@@ -44,6 +44,15 @@ legend{
     border-right: 1px solid #96c841;
     border-radius: 0px 0px 4px;
 }
+.div-boton-left {
+    text-align: left;
+    margin-right: 1%;
+    margin-left: 1%;
+    width: 50%;
+    border-bottom: 1px solid #96c841;
+    border-left: 1px solid #96c841;
+    border-radius: 0px 0px 4px;
+}
 .div-input {
     height: 20px;
 }
@@ -176,10 +185,6 @@ div .sub-titulo-fondo{
     box-shadow: #999 1px 1px 1px 1px;
 }
 
-.boton-tabla{
-    width: 100%;
-    height: 30px;
-}
 
 .output {
     border: none;
@@ -205,7 +210,7 @@ div .sub-titulo-fondo{
     -moz-box-shadow: #999999 0px 10px 5px;;
     box-shadow: #999999 0px 10px 5px;
 }
-#menu{
+#menuApp{
     width: 15%;
     box-shadow: 5px 10px 5px #999;
     height: 100%;
@@ -239,7 +244,7 @@ div .sub-titulo-fondo{
 .divMenuItem:hover{
     background-color: #96c841;
     border-color: white;
-    color: #2c5697;
+    color: white;
     box-shadow: #999 1px 1px 1px 1px;
 }
 

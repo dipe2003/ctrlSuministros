@@ -100,6 +100,10 @@ abstract public class Suministro implements Serializable{
         return stock;
     }
     
+    public boolean isDebajoStockMinimo(){
+        return getStockMinimoSuministro().getCantidadStockMinimo() > getStock();
+    }
+    
     /**
      * Devuelve los lotes vencidos.
      * No se tiene en cuenta si existe en stock o se dio de baja.

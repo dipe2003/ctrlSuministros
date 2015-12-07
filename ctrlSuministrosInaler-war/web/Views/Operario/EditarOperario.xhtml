@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
+    <ui:define name="page_content">
+        <div class="contenido">            
+            <h:form id="frmEditOp">
+                <fieldset><legend>Editar Operario</legend>
+                    <div class="label">Operario</div>
+                    <h:selectOneMenu id="selectEditarOperario" value="#{editarOperario.idOperario}" class="select-opt-menu" required="true" requiredMessage="No se selecciono Operario." >
+                        <f:selectItem itemValue="--Seleccionar Operario---"  itemDisabled="false"  noSelectionOption="true"  />
+                        <f:selectItems value="#{editarOperario.nombresCompletosOperarios}" />
+                        <f:ajax execute="@this" listener="#{editarOperario.cargarDatosOperario()}" render="editNombreOperario editApellidoOperario selectEditarPermiso" />
+                    </h:selectOneMenu>               
+                    
+                    <div class="label">Nombre de Operario</div>
+                    <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
+                    
+                    <div class="label">Apellido de Operario</div>
+                    <h:inputText id="editApellidoOperario" class="input" value="#{editarOperario.apellidoOperario}" p:placeholder="Apellido del operario"/>
+                    
+                    <div class="label">Contraseña Actual</div>
+                    <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
+                    
+                    <div class="label">Contraseña Nueva</div>
+                    <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
+                    
+                    <div class="label">Confirmar Contraseña</div>
+                    <h:inputSecret id="editRePassOperario" class="input" value="#{editarOperario.repPassword}" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
+                        <f:ajax execute="editPassOperario editRePassOperario" event="keyup" render="editmsjPass"/>
+                    </h:inputSecret>
+                    
+                    <c:catch var="catch_error">
+                        <h:outputText id="editmsjPass" value="#{editarOperario.mensajePass}" />
+                    </c:catch>  
+                    
+                    <div class="label">Permiso del Operario</div>
+                    <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                        <f:selectItems value="#{editarOperario.permisosOperarios}" />
+                    </h:selectOneRadio>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" action="#{editarOperario.editarOperario()}"/>
+                    </div>
+                    
+                    <div>
+                        <h:message for="editIdOperario" class="error"/>
+                        <h:message for="editNombreOperario" class="error"/>
+                        <h:message for="editApellidoOperario" class="error"/>                     
+                        <h:message for="editPassOperario" class="error"/>
+                        <h:message for="editRePassOperario" class="error"/>
+                        <h:message for="btnEditarOperario" class="error"/>                     
+                    </div>
+                </fieldset>
+                <div class="div-boton-left">
+                    <h:link class="boton-input" outcome="AgregarOperario.xhtml">
+                        <div>Ir a Agregar Operario</div>
+                    </h:link>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>    

@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -128,6 +129,7 @@ public class RegistrarSuministro implements Serializable{
         for(Proveedor proveedor: Proveedores){
             ProveedoresSuministros.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
         }
+        ProveedoresSuministros = new TreeMap<>(ProveedoresSuministros);
         
         TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};
         TipoSuministro = TiposSuministros[0];

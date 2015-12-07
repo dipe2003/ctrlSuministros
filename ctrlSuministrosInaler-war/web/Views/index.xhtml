@@ -51,7 +51,10 @@
                     }                    
                 ];
                 var opciones = {
-                    animationSteps : 200
+                    animationSteps : 200,
+                    //<![CDATA[
+                    legendTemplate:"<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>" 
+                    ////]]>              
                 };                                
                 /*
                  * myDoughnutChart.addData({
@@ -61,12 +64,14 @@
                     label: "Purple"
                 });
                  */
-                // Get context with jQuery - using jQuery's .get() method.
-                var ctx = $("#myChart").get(0).getContext("2d");
-                var ctx2 = $("#myChartVenc").get(0).getContext("2d");
-                // This will get the first returned node in the jQuery collection.
-                var StockChart = new Chart(ctx).Pie(datosStock, opciones);
-                var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento, opciones);
+                try{
+                    // Get context with jQuery - using jQuery's .get() method.
+                    var ctx = $("#myChart").get(0).getContext("2d");
+                    var ctx2 = $("#myChartVenc").get(0).getContext("2d");
+                    // This will get the first returned node in the jQuery collection.
+                    var StockChart = new Chart(ctx).Pie(datosStock, opciones);
+                    var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento, opciones);
+                }catch(ex){}
 
             });
         </Script>
@@ -82,7 +87,7 @@
         </div>
         <div class="contentBody">
             <ui:insert name="page_content">
-                <div class="contenido">
+                <div class="contenido">                 
                     <h:form id="frmIndexSuministro">
                         <fieldset><legend>Resumen</legend>
                             <div class="label">Suministro</div>
@@ -138,10 +143,10 @@
                                             <th class="label" style='width: 20%;'>Vencimiento</th>
                                             <c:forEach items="#{datosIndex.listSuministrosVencidos}" var="SuministroStock" >
                                                 <c:forEach items="#{datosIndex.mapLotesVencidos.get(SuministroStock.idSuministro)}" var ="lote">
-                                                <tr>
-                                                    <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
-                                                    <td><h:outputText value="#{lote.vencimientoLote}" /></td>
-                                                </tr>
+                                                    <tr>
+                                                        <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
+                                                        <td><h:outputText value="#{lote.vencimientoLote}" /></td>
+                                                    </tr>
                                                 </c:forEach>          
                                             </c:forEach>
                                         </table>
@@ -155,6 +160,10 @@
                 </div>
             </ui:insert>
         </div>
+        
+        
+        
+        
     </h:body>
 </html>
 

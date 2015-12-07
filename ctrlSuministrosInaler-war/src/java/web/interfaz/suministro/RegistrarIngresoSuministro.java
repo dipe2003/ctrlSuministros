@@ -130,7 +130,8 @@ public class RegistrarIngresoSuministro implements Serializable{
             idLote = fLote.AgregarLoteSuministro(IdSuministro, idLote);
         }
         if(idLote!=-1){
-            if((fLote.CrearIngreso(FechaIngresoSuministro, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso))!=-1){
+            Date fechaHoy = Calendar.getInstance().getTime();
+            if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso))!=-1){
                 context.getExternalContext().redirect(url+"/Views/index.xhtml");
             }
         }

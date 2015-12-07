@@ -11,36 +11,51 @@
             <fieldset><legend>Estado Actual de Suministros</legend>
                 <f:view>
                     <h:form>
-                        <table class="tabla-listaSuministro">
-                            <th class="label">Suministro</th>
-                            <th class="label" style="width: 20%">Proveedor</th>
-                            <th class="label" style="width: 10%">Ultimo Ingreso</th>
-                            <th class="label" style="width: 10%">Stock Actual</th>
-                            <th class="label" style="width: 10%; display: none">IdSuministro</th>
-                            <th class="label" style="width: 5%">Mas Info</th>
-                            <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
-                                <tr>
-                                    <td class="div-output" >
-                                        <div>#{sum.nombreSuministro}</div>
-                                    </td>
-                                    <td class="div-output">
-                                        #{sum.proveedorSuministro.nombreProveedor}
-                                    </td>
-                                    <td class="div-output">
-                                        #{sum.ultimoIngreso.cantidadIngreso}
-                                    </td>
-                                    <td class="div-output">
-                                        #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
-                                    </td>
-                                    <td class="div-output" style="display: none;">
-                                        #{sum.idSuministro}
-                                    </td>
-                                    <td class="div-output">
-                                        <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
-                                    </td>
-                                </tr>
-                            </c:forEach>                                
-                        </table>                            
+                        <table>
+                            <td><div class="label">Filtro: </div></td>
+                            <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListado"/>
+                                </h:inputText></td>
+                        </table>
+                        <h:panelGroup id="tablaListado">
+                            <table class="tabla-listaSuministro">
+                                <th class="label">Suministro</th>
+                                <th class="label" style="width: 20%">Proveedor</th>
+                                <th class="label" style="width: 10%">Ultimo Ingreso</th>
+                                <th class="label" style="width: 10%">Stock Actual</th>
+                                <th class="label" style="width: 10%; display: none">IdSuministro</th>
+                                <th class="label" style="width: 5%">Mas Info</th>
+                                <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
+                                    <tr>
+                                        <c:if test="#{not empty sum.lotesVencidosEnStock or sum.debajoStockMinimo}">
+                                        <td class="div-output" >
+                                            <div><img title="Requiere Atencion! Ver Mas Informacion." height="20px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning.png"/>#{sum.nombreSuministro}</div>
+                                        </td>
+                                        </c:if>
+                                        <c:if test="#{empty sum.lotesVencidosEnStock and !sum.debajoStockMinimo}">
+                                        <td class="div-output" >
+                                            <div>#{sum.nombreSuministro}</div>
+                                        </td>
+                                        </c:if>
+                                        <td class="div-output">
+                                            #{sum.proveedorSuministro.nombreProveedor}
+                                        </td>
+                                        <td class="div-output">
+                                            #{sum.ultimoIngreso.cantidadIngreso}
+                                        </td>
+                                        <td class="div-output">
+                                            #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
+                                        </td>
+                                        <td class="div-output" style="display: none;">
+                                            #{sum.idSuministro}
+                                        </td>
+                                        <td class="div-output">
+                                            <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
+                                        </td>
+                                    </tr>
+                                </c:forEach>                                
+                            </table>
+                        </h:panelGroup>
                     </h:form>
                 </f:view>
             </fieldset>
