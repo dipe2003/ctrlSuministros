@@ -22,6 +22,7 @@ public class ControladorLote implements Serializable{
     private ControladorSuministro cSuministro;
     @Inject
     private BufferSuministros buffer;
+
     
     /**
      * Crea un lote en la base de datos.

@@ -30,19 +30,19 @@
                                             <div>#{lot.numeroLote}</div>
                                         </td>
                                         <td class="div-output" >
-                                            <div>#{entry.fechaIngreso}</div>
+                                            <div>#{entry.strFechaIngreso}</div>
                                         </td>
                                         <td class="div-output">
                                             <div>#{entry.cantidadIngreso}</div>
                                         </td>
                                         <c:if test="#{infoSuministro.lotesVencido.get(lot.idLote)}">
                                             <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                                <div>#{lot.vencimientoLote}</div>
+                                                <div>#{lot.strFechaVencimientoLote}</div>
                                             </td>
                                         </c:if>                                        
                                         <c:if test="#{!infoSuministro.lotesVencido.get(lot.idLote)}">
                                             <td class="div-output" >
-                                                <div>#{lot.vencimientoLote}</div>
+                                                <div>#{lot.strFechaVencimientoLote}</div>
                                             </td>
                                         </c:if>
                                        <c:if test="#{infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock gt 0}">

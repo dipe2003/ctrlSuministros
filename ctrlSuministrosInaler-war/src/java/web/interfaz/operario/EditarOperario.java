@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 @Named
 @ViewScoped
@@ -71,6 +72,7 @@ public class EditarOperario implements Serializable{
     
     public void editarOperario() throws IOException{
         String msj= getMensajePass();
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         if(msj.equals("Ok") || msj.equals("cambio")){
             if((fOperario.ModificarDatosOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario))!=-1){
                 fOperario.AgregarPermiso(Integer.parseInt(IdOperario), PermisoOperario);
@@ -82,7 +84,7 @@ public class EditarOperario implements Serializable{
                         FacesContext.getCurrentInstance().getExternalContext().redirect("../index.xhtml");
                     }
                 }
-                FacesContext.getCurrentInstance().getExternalContext().redirect("../index.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Operario/ListadoOperarios.xhtml");
             }else{
                 msj = "No se pudo actualizar.";
             }
@@ -99,9 +101,15 @@ public class EditarOperario implements Serializable{
         }
         NombresCompletosOperarios = fOperario.GetNombresOperarios();
         PasswordsOperario = new String[2];
+        try{
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();        
+            IdOperario = request.getParameter("id");
+            cargarDatosOperario();
+        }catch(NullPointerException | NumberFormatException ex){}
     }
     
-    public void cargarDatosOperario(){
+    private void cargarDatosOperario(){
         Operario op = fOperario.BuscarOperario(Integer.parseInt(IdOperario));
         NombreOperario = op.getNombreOperario();
         ApellidoOperario = op.getApellidoOperario();

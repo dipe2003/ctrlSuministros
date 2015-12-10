@@ -2,6 +2,8 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.Operario;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,10 +28,9 @@ public class Salida implements Serializable{
     
     //	Constructores
     public Salida(){}
-    public Salida(Date FechaSalida, float CantidadSalida, Lote LoteSalida, String ObservacionesSalida){
+    public Salida(Date FechaSalida, float CantidadSalida,String ObservacionesSalida){
         this.FechaSalida = FechaSalida;
         this.CantidadSalida = CantidadSalida;
-        this.LoteSalida = LoteSalida;
         this.ObservacionesSalida = ObservacionesSalida;
     }
     
@@ -40,7 +41,12 @@ public class Salida implements Serializable{
     public Operario getOperarioSalidaSuministro(){return this.OperarioSalidaSuministro;}
     public Lote getLoteSalida() {return LoteSalida;}
     public String getObservacionesSalida() {return ObservacionesSalida;}
-    
+    public String getStrFechaSalida(){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if(FechaSalida==null) return "---";
+        return sdf.format(FechaSalida);    
+    }
     //	Setters
     public void setIdSalida(int IdSalida){this.IdSalida = IdSalida;}
     public void setFechaSalida(Date FechaSalida){this.FechaSalida = FechaSalida;}

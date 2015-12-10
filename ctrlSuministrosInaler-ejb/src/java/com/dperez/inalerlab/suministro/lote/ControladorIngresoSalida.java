@@ -3,6 +3,8 @@ package com.dperez.inalerlab.suministro.lote;
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.suministro.BufferSuministros;
+import com.dperez.inalerlab.suministro.ControladorSuministro;
+import com.dperez.inalerlab.suministro.ManejadorSuministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,8 @@ public class ControladorIngresoSalida implements Serializable{
     private ControladorOperario cOp;
     @Inject
     private BufferSuministros buffer;
+    @Inject
+    private ManejadorSuministro mSum;
     
     /**
      * Crea un ingreso en la base de datos.
@@ -32,16 +36,20 @@ public class ControladorIngresoSalida implements Serializable{
      * @param ObservacionesIngreso
      * @return Retorna el id del ingreso creada. Retorna -1 si no se crea.
      */
-    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperarioIngreso, String ObservacionesIngreso){
+    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperarioIngreso, String ObservacionesIngreso, int IdSuministro){
         int id = -1;
         try{
             Operario operario = cOp.BuscarOperario(IdOperarioIngreso);
-            Ingreso ingreso = new Ingreso(FechaIngreso, CantidadIngreso, NumeroFactura, cLote.BuscarLote(IdLoteIngreso), ObservacionesIngreso );
-            ingreso.setOperarioIngresoSuministro(operario);
-            id= mInSal.CrearIngreso(ingreso);
-            if(id!=-1) buffer.updateSuministro(ingreso.getLoteIngreso().getSuministroLote());
+            Ingreso ingreso = new Ingreso(FechaIngreso, CantidadIngreso, NumeroFactura, ObservacionesIngreso);
+            id= mInSal.CrearIngreso(ingreso);            
+            if(id!=-1) {
+                ingreso.setLoteIngreso(cLote.BuscarLote(IdLoteIngreso));
+                ingreso.setOperarioIngresoSuministro(operario);
+                id = mInSal.ActualizarIngreso(ingreso);
+                if(id!=-1)buffer.updateSuministro(mSum.ObtenerSuministro(IdSuministro));
+            }
         }catch(NullPointerException ex){}
-        return id;        
+        return id;
     }
     
     /**
@@ -79,7 +87,8 @@ public class ControladorIngresoSalida implements Serializable{
         int id=-1;
         try{
             Operario Operario = cOp.BuscarOperario(IdOperarioSalida);
-            Salida salida = new Salida(FechaSalida, CantidadSalida, cLote.BuscarLote(IdLoteSalida), ObservacionesSalida);
+            Salida salida = new Salida(FechaSalida, CantidadSalida, ObservacionesSalida);
+            salida.setLoteSalida(cLote.BuscarLote(IdLoteSalida));
             salida.setOperarioSalidaSuministro(Operario);
             id = mInSal.CrearSalida(salida);
             if(id!=-1) buffer.updateSuministro(salida.getLoteSalida().getSuministroLote());

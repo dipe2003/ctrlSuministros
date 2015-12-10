@@ -35,8 +35,8 @@ public class FacadeLote implements Serializable{
      * @param Observaciones
      * @return 
      */
-    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario, String Observaciones ){
-        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones);
+    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario, String Observaciones, int IdSuministro ){
+        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones, IdSuministro);
     }
     
     /**

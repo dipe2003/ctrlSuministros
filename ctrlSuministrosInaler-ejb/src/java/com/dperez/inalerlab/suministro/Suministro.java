@@ -36,7 +36,10 @@ abstract public class Suministro implements Serializable{
     private Proveedor ProveedorSuministro;
     
     //	Constructores
-    public Suministro(){}
+    public Suministro(){
+        this.StocksMinimosSuministro = new ArrayList<>();
+        this.LotesSuministros = new ArrayList<>();
+    }
     public Suministro(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             Unidad UnidadSuministro, Proveedor ProveedorSuministro){
         this.NombreSuministro = NombreSuministro;
@@ -87,7 +90,7 @@ abstract public class Suministro implements Serializable{
     //	Lotes
     public void addLote(Lote LoteSuministro){
         this.LotesSuministros.add(LoteSuministro);
-        if(!LoteSuministro.getSuministroLote().equals(this)){
+        if(LoteSuministro.getSuministroLote()==null | !LoteSuministro.getSuministroLote().equals(this)){
             LoteSuministro.setSuministroLote(this);
         }
     }

@@ -19,8 +19,7 @@ public class BufferSuministros {
 
     @Inject
     ManejadorSuministro mSuministros;
-    
-    public BufferSuministros() {}
+ 
     
     @PostConstruct
     public void init(){
@@ -72,7 +71,7 @@ public class BufferSuministros {
     public Map<String, Integer> getMapNombreSuministros(){
         Map<String, Integer> map = new HashMap<>();
         for(Suministro suministro: MapSuministros.values()){
-            map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+            map.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
         }
         return new TreeMap<>(map);
     }

@@ -27,7 +27,10 @@ public class Operario implements Serializable{
     private Permiso PermisoOperario;
     
     //	Constructores
-    public Operario(){}
+    public Operario(){
+        this.IngresosSuministrosOperario = new ArrayList<>();
+        this.IngresosSuministrosOperario = new ArrayList<>();
+    }
     public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario){
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
@@ -42,8 +45,8 @@ public class Operario implements Serializable{
     public int getIdOperario(){return this.IdOperario;}
     public String getNombreOperario(){return this.NombreOperario;}
     public String getApellidoOperario(){return this.ApellidoOperario;}
-    public Permiso getPermisoOperario(){return this.PermisoOperario;}    
-    public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}    
+    public Permiso getPermisoOperario(){return this.PermisoOperario;}
+    public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}
     public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
     public String getPasswordKeyOperario() {return PasswordKeyOperario;}
     public String getPasswordOperario() {return PasswordOperario;}
@@ -61,12 +64,12 @@ public class Operario implements Serializable{
     public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {this.IngresosSuministrosOperario = IngresosSuministrosOperario;}
     public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
     public void setPasswordKeyOperario(String PasswordKeyOperario) {this.PasswordKeyOperario = PasswordKeyOperario;}
-    public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}    
+    public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}
     
     //	Ingresos - Egresos
     public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){
         this.IngresosSuministrosOperario.add(IngresoSuministroOperario);
-        if(!IngresoSuministroOperario.getOperarioIngresoSuministro().equals(this)){
+        if(IngresoSuministroOperario.getOperarioIngresoSuministro()==null || !IngresoSuministroOperario.getOperarioIngresoSuministro().equals(this)){
             IngresoSuministroOperario.setOperarioIngresoSuministro(this);
         }
     }
@@ -74,10 +77,10 @@ public class Operario implements Serializable{
     
     public void addSalidaSuministroOperario(Salida SalidaSuministroOperario){
         this.SalidasSuministrosOperario.add(SalidaSuministroOperario);
-        if(!SalidaSuministroOperario.getOperarioSalidaSuministro().equals(this)){
+        if(SalidaSuministroOperario.getOperarioSalidaSuministro()==null || !SalidaSuministroOperario.getOperarioSalidaSuministro().equals(this)){
             SalidaSuministroOperario.setOperarioSalidaSuministro(this);
         }
     }
     public void removeSalidaSuministroOperario(Salida SalidaSuministroOperario){this.SalidasSuministrosOperario.remove(SalidaSuministroOperario);}
-      
+    
 }

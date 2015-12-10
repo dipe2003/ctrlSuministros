@@ -6,6 +6,7 @@ import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,16 +21,12 @@ import javax.inject.Named;
 public class ControladorSuministro implements Serializable{
     @Inject
     private ManejadorSuministro mSuministro;
-    
     @Inject
-    private ControladorUnidad cUnidad;
-    
+    private ControladorUnidad cUnidad;    
     @Inject
-    private ControladorProveedor cProveedor;
-    
+    private ControladorProveedor cProveedor;    
     @Inject
     private ControladorStockMinimo cStock;
-    
     @Inject
     private BufferSuministros buffer;
     
@@ -174,9 +171,13 @@ public class ControladorSuministro implements Serializable{
         }
         List<Integer> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
+            try{
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
                     suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
                 lista.add(suministro.getIdSuministro());
+            }
+            }catch(NullPointerException ex){
+                System.out.println("Error: " + ex.getMessage() + " en " + suministro.getNombreSuministro() + suministro.getIdSuministro());
             }
         }
         return lista;
@@ -256,5 +257,42 @@ public class ControladorSuministro implements Serializable{
         return lista;
     }
     
-    
+    /**
+     * Actualiza un suministro en la base de datos.
+     * Compara unidad y proveedor y actualiza si es necesario.
+     * Compara el stockminimo y si es diferente se crea con la fecha de hoy como vigencia.
+     * @param suministro objeto con la informacion basica del suministro (nombre, id, codigoSAP, Descripcion)
+     * @param IdUnidad id de unidad de medida
+     * @param IdProveedor id de proveedor
+     * @param StockMinimoSuministro cantidad de stock minimo.
+     * @return Retorna el id de suministro actualizado. Si no se creo retorna -1.
+     */
+    public int ActualizarSuministro(Suministro suministro, int IdProveedor,int IdUnidad, float StockMinimoSuministro){
+        Suministro sumBD;
+        int id = -1;
+        if(buffer.containsSuministro(suministro.getIdSuministro())){
+            sumBD = buffer.getSuministro(suministro.getIdSuministro());
+        }else{
+            sumBD = mSuministro.ObtenerSuministro(suministro.getIdSuministro());
+        }
+        try{
+            sumBD.setCodigoSAPSuministro(suministro.getCodigoSAPSuministro());
+            sumBD.setDescripcionSuministro(suministro.getDescripcionSuministro());
+            sumBD.setNombreSuministro(suministro.getNombreSuministro());
+            
+            if(sumBD.getUnidadSuministro().getIdUnidad()!= IdUnidad){
+                sumBD.setUnidadSuministro(cUnidad.BuscarUnidad(IdUnidad));
+            }
+            if(sumBD.getProveedorSuministro().getIdProveedor()!=IdProveedor){
+                sumBD.setProveedorSuministro(cProveedor.BuscarProveedor(IdProveedor));
+            }
+            if(sumBD.getStockMinimoSuministro().getCantidadStockMinimo()!=StockMinimoSuministro){
+                StockMinimo stock = cStock.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
+                sumBD.addStockMinimoSuministro(stock);
+            }
+            id = mSuministro.ActualizarSuministro(sumBD);
+            if(id!=-1) buffer.updateSuministro(sumBD);
+        }catch(NullPointerException ex){}
+        return id;
+    }
 }	

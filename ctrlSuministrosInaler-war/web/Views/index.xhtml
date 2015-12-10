@@ -121,7 +121,7 @@
                         <fieldset><legend>Detalles</legend>
                             <div class="contenedor-5050">
                                 <div class="contenedor-50">
-                                    <div class="label">Stocks</div><br/>
+                                    <div class="label">Debajo de minimo</div><br/>
                                     <f:view>
                                         <table class="tabla-listaSuministro">
                                             <th class="label" style="width: 79%;">Suministro</th>
@@ -136,7 +136,7 @@
                                     </f:view>                                    
                                 </div>                                   
                                 <div class="contenedor-50">
-                                    <div class="label">Vencimientos</div><br/>
+                                    <div class="label">Lotes vencidos</div><br/>
                                     <f:view>
                                         <table class="tabla-listaSuministro">
                                             <th class="label" style="width: 79%;">Suministro</th>
@@ -145,7 +145,7 @@
                                                 <c:forEach items="#{datosIndex.mapLotesVencidos.get(SuministroStock.idSuministro)}" var ="lote">
                                                     <tr>
                                                         <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
-                                                        <td><h:outputText value="#{lote.vencimientoLote}" /></td>
+                                                        <td><h:outputText value="#{lote.strFechaVencimientoLote}" /></td>
                                                     </tr>
                                                 </c:forEach>          
                                             </c:forEach>
@@ -159,11 +159,7 @@
                     </h:form>
                 </div>
             </ui:insert>
-        </div>
-        
-        
-        
-        
+        </div>        
     </h:body>
 </html>
 

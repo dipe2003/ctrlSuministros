@@ -21,7 +21,9 @@ public class Proveedor implements Serializable{
     private List<Suministro> SuministrosProveedor;
     
     //	Constructores
-    public Proveedor() {}
+    public Proveedor() {
+        this.SuministrosProveedor = new ArrayList<>();
+    }
     public Proveedor(String NombreProveedor, String ContactoProveedor){
         this.NombreProveedor = NombreProveedor;
         this.ContactoProveedor = ContactoProveedor;

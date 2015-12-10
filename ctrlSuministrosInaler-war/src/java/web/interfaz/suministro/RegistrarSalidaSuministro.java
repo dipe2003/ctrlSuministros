@@ -10,6 +10,7 @@ import com.dperez.inalerlab.suministro.lote.FacadeLote;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -108,7 +109,8 @@ public class RegistrarSalidaSuministro implements Serializable{
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if(fLote.CrearSalida(Calendar.getInstance().getTime(), CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
+        Date fechaHoy = Calendar.getInstance().getTime();
+        if(fLote.CrearSalida(fechaHoy, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
             context.getExternalContext().redirect(url+"/Views/index.xhtml");
         }        
     }

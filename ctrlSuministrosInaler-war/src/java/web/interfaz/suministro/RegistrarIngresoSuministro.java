@@ -110,9 +110,12 @@ public class RegistrarIngresoSuministro implements Serializable{
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         try{
             cal.setTime(sdf.parse(strFechaVencimientoSuministro));
-        }catch(ParseException ex){}
-        this.strFechaVencimientoSuministro = strFechaVencimientoSuministro;
-        this.FechaVencimientoSuministro = cal.getTime();
+            this.strFechaVencimientoSuministro = strFechaVencimientoSuministro;
+            this.FechaVencimientoSuministro = cal.getTime();
+        }catch(ParseException ex){
+            this.FechaVencimientoSuministro = null;
+        }
+        
     }
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
@@ -130,8 +133,8 @@ public class RegistrarIngresoSuministro implements Serializable{
             idLote = fLote.AgregarLoteSuministro(IdSuministro, idLote);
         }
         if(idLote!=-1){
-            Date fechaHoy = Calendar.getInstance().getTime();
-            if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso))!=-1){
+            Date fechaHoy =Calendar.getInstance().getTime();
+            if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso, IdSuministro))!=-1){
                 context.getExternalContext().redirect(url+"/Views/index.xhtml");
             }
         }
@@ -143,7 +146,7 @@ public class RegistrarIngresoSuministro implements Serializable{
         listaSuministros = fSuministro.ListarMapSuministros();
         existeLote = false;
     }
-        
+    
     /**
      * Comprueba la existencia del numero de lote para el suministro.
      * @param NumeroLote

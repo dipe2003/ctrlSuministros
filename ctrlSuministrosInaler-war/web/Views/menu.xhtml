@@ -4,16 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:composition>
-        <script>
-            $(document).ready(function(){
-                var item = $('#divMenuItemSinAccion');
-                item.on(click, function(){
-                    alert("aaa");
-                });
-            });
-        </script>
-            
+    <ui:composition>  
         <div id="menuApp" class="fondo-azul">
             <h:form id="frmMenu">
                 <h:panelGroup class="titulo-grande" rendered="#{loginOperario.logueado}">
@@ -24,27 +15,21 @@
                             <div>Inicio</div>                            
                         </div>
                     </h:link>
-                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador'}" >
-                        <div class="divMenuItem">
-                            <h:link class="link" outcome="/Views/Operario/AgregarOperario.xhtml">
-                                <div>Adm. Operarios</div>
-                            </h:link>                                     
-                        </div>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }">
-                        <div class="divMenuItem">
-                            <h:link class="link" outcome="/Views/Proveedor/AgregarProveedor.xhtml">
-                                <div>Adm. Proveedores</div>
-                            </h:link>                            
-                        </div>
-                    </h:panelGroup>
-                    <h:panelGroup rendered="#{loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador' }">
-                        <h:link class="link" outcome="/Views/Suministro/AgregarSuministro.xhtml">
+                        <h:link class="link" outcome="/Views/Operario/ListadoOperarios.xhtml">
+                            <div class="divMenuItem">                            
+                                <div>Adm. Operarios</div>                                                                 
+                            </div>
+                        </h:link>
+                        <h:link class="link" outcome="/Views/Proveedor/ListadoProveedores.xhtml">
+                            <div class="divMenuItem">                            
+                                <div>Adm. Proveedores</div>                                                      
+                            </div>
+                        </h:link> 
+                        <h:link class="link" outcome="/Views/Suministro/ListadoSuministros.xhtml">
                             <div class="divMenuItem">                            
                                 <div>Adm. Suministros</div>                                                       
-                        </div>
+                            </div>
                         </h:link>
-                    </h:panelGroup>
                     <h:link  class="link" rendered="#{loginOperario.permisoOperario != 'Lectura'}" outcome="/Views/Suministro/RegistrarIngresoSuministro.xhtml">
                         <div class="divMenuItem">                                
                             Ingreso Suministros                             
@@ -55,9 +40,9 @@
                             Salida Suministros                            
                         </div>
                     </h:link>
-                    <h:link  class="link" outcome="/Views/Suministro/ListadoSuministros.xhtml">
+                    <h:link  class="link" outcome="/Views/Suministro/ListadoEstadoSuministros.xhtml">
                         <div class="divMenuItem">
-                            Listado                                    
+                            Estado de Suministros                                    
                         </div>
                     </h:link>
                     <h:commandLink action="#{loginOperario.logout()}"  class="link">

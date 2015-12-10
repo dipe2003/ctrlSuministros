@@ -2,6 +2,8 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.Operario;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,11 +29,10 @@ public class Ingreso implements Serializable{
     
     //	Constructores
     public Ingreso(){}
-    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, Lote LoteIngreso, String Observaciones){
+    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, String Observaciones){
         this.FechaIngreso = FechaIngreso;
         this.CantidadIngreso = CantidadIngreso;
         this.NumeroFactura = NumeroFactura;
-        this.LoteIngreso = LoteIngreso;
         this.ObservacionesIngreso = Observaciones;
     }
     
@@ -43,7 +44,12 @@ public class Ingreso implements Serializable{
     public Operario getOperarioIngresoSuministro() {return OperarioIngresoSuministro;}
     public String getNumeroFactura() {return NumeroFactura;}
     public String getObservacionesIngreso() {return ObservacionesIngreso;}
-    
+    public String getStrFechaIngreso(){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if(FechaIngreso==null) return "---";
+        return sdf.format(FechaIngreso);    
+    }
     //	Setters
     public void setIdIngreso(int IdIngreso){this.IdIngreso = IdIngreso;}
     public void setFechaIngreso(Date FechaIngreso){this.FechaIngreso = FechaIngreso;}

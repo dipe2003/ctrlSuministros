@@ -46,7 +46,7 @@ public class ListadoSuministros implements Serializable{
         if(!NombreSuministro.isEmpty()){
             ListaSuministros.clear();
             for(String nom: MapSuministros.keySet()){
-                if(nom.toLowerCase().contains(NombreSuministro)) {
+                if(nom.toLowerCase().contains(NombreSuministro.toLowerCase())) {
                     ListaSuministros.add(MapSuministros.get(nom));
                 }
             }
@@ -60,8 +60,23 @@ public class ListadoSuministros implements Serializable{
     public void init() {
         ListaSuministros = fSuministro.ListarSuministros();
         MapSuministros = new HashMap<>();
-        for(Suministro sum: ListaSuministros){
-            MapSuministros.put(sum.getNombreSuministro()+"-"+sum.getProveedorSuministro().getNombreProveedor(), sum);
+        try{
+            for(Suministro sum: ListaSuministros){
+                MapSuministros.put(sum.getNombreSuministro()+" ("+sum.getProveedorSuministro().getNombreProveedor() +")", sum);
+            }
+        }catch(IndexOutOfBoundsException ex){
+            System.out.println("Error: " +ex.getMessage());
         }
+    }
+    
+    public String checkTipo(int IdSuministro){
+        String clase = "";
+        for(Suministro sum: ListaSuministros){
+            if(sum.getIdSuministro()==IdSuministro){
+                clase =  sum.getClass().getSimpleName();
+                break;
+            }
+        }
+        return clase;
     }
 }

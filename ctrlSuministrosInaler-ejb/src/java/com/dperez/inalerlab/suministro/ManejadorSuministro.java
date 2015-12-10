@@ -85,7 +85,7 @@ public class ManejadorSuministro {
         try{
             List<Suministro> list = query.getResultList();
             for(Suministro suministro: list){
-                suministros.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+                suministros.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
             }
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());

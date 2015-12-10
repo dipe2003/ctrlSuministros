@@ -16,15 +16,14 @@
             <div id="linea" class="fondo-azul">
                 <div id="titulo" class="fondo-azul">
                     <img height="80px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/error.png"/><br/>
-                    Pagina No Encontrada
+                    <b>Pagina No Encontrada</b>
                 </div>
                 <div id="contenedor" >
                     <h:outputText class="output" value="Error 404" />
                     <h:outputText class="output" value="La pagina a la que intenta acceder no esta disponible." /> 
-                    <h:outputText class="output" value="#{Exception}" /> 
-                    
                 </div>
             </div>
+        <meta http-equiv="refresh" content="10;url=#{facesContext.externalContext.requestContextPath}/Views/index.xhtml"></meta>
     </h:body>
 </html>
 

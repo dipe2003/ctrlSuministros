@@ -16,7 +16,8 @@ public class ControladorProveedor implements Serializable{
     private ManejadorProveedor mProveedor;
     
     @Inject
-    private BufferProveedores buffer;
+    private BufferProveedores buffer;   
+    
     /**
      * Crea un proveedor en la base de datos.
      * @param NombreProveedor

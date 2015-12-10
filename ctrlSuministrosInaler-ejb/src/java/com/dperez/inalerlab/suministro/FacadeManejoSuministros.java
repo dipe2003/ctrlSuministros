@@ -145,7 +145,7 @@ public class FacadeManejoSuministros implements Serializable {
     
     /**
      * Devuelve los suministros registrados en la base de datos..
-     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
+     * @return Retorna un map con el nombre de los suministros y el proveedor (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<String, Integer> ListarMapSuministros(){
         return cSuministro.ListarMapSuministros();
@@ -204,6 +204,18 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public List<Suministro> getSuministrosConLotesVencidos(){
         return cSuministro.getSuministrosConLotesVencidos(true);
+    }
+    
+    /**
+     * Actualiza un suministro en la base de datos.
+     * @param suministro objeto con la informacion basica del suministro (nombre, id, codigoSAP, Descripcion)
+     * @param IdUnidad id de unidad de medida
+     * @param IdProveedor id de proveedor
+     * @param StockMinimo cantidad de stock minimo.
+     * @return Retorna el id de suministro actualizado. Si no se creo retorna -1.
+     */
+    public int ActualizarSuministro(Suministro suministro, int IdProveedor,int IdUnidad, float StockMinimo){
+            return cSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidad, StockMinimo);
     }
     
 }

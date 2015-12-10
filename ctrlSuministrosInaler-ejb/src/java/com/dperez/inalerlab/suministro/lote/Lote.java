@@ -3,12 +3,12 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,10 +34,15 @@ public class Lote implements Serializable{
     private List<Salida> SalidasLote;
     
     //	Constructores
-    public Lote(){}
+    public Lote(){
+        SalidasLote = new ArrayList();
+        IngresosLote = new ArrayList();
+    }
     public Lote(Date VencimientoLote, String NumeroLote){
         this.VencimientoLote = VencimientoLote;
         this.NumeroLote = NumeroLote;
+        SalidasLote = new ArrayList();
+        IngresosLote = new ArrayList();
     }
     
     //	Getters
@@ -47,6 +52,12 @@ public class Lote implements Serializable{
     public List<Ingreso> getIngresosLote(){return this.IngresosLote;}
     public List<Salida> getSalidasLote(){return this.SalidasLote;}
     public String getNumeroLote() {return NumeroLote;}
+    public String getStrFechaVencimientoLote(){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if(VencimientoLote==null) return "---";
+        return sdf.format(VencimientoLote);        
+    }
     
     //	Setters
     public void setIdLote(int IdLote){this.IdLote = IdLote;}   
@@ -94,14 +105,14 @@ public class Lote implements Serializable{
     
     public void addIngresoLote(Ingreso IngresoLote){
         this.IngresosLote.add(IngresoLote);
-        if (!IngresoLote.getLoteIngreso().equals(this)) {
-            IngresoLote.setLoteIngreso(this);
-        }
+//        if (IngresoLote.getLoteIngreso()==null | !IngresoLote.getLoteIngreso().equals(this)) {
+//            IngresoLote.setLoteIngreso(this);
+//        }
     }
     
     public void addSalidaLote(Salida SalidaLote){
         this.SalidasLote.add(SalidaLote);
-        if (!SalidaLote.getLoteSalida().equals(this)) {
+        if (SalidaLote.getLoteSalida() == null | !SalidaLote.getLoteSalida().equals(this)) {
             SalidaLote.setLoteSalida(this);
         }
     }

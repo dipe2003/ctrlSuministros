@@ -10,14 +10,7 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmEditProv">
-                <fieldset><legend>Editar Proveedor</legend>
-                    <div class="label">Proveedor</div>
-                    <h:selectOneMenu id="selectEditarProveedor" value="#{editarProveedor.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono Proveedor." >
-                        <f:selectItem itemValue="--Seleccionar Proveedor---"  itemDisabled="false"  noSelectionOption="true"  />
-                        <f:selectItems value="#{editarProveedor.mapProveedores}" />
-                        <f:ajax execute="@this" listener="#{editarProveedor.cargarDatosProveedor()}" render="editNombreProveedor editContactoProveedor" />
-                    </h:selectOneMenu>
-                    
+                <fieldset><legend>Editar Proveedor</legend>                    
                     <div class="label">Nombre de Proveedor</div><h:inputText id="editNombreProveedor" class="input" value="#{editarProveedor.nombreProveedor}" required="true" requiredMessage="No se ingreso nombre de proveedor."/>
                     <div class="label">Contacto</div><h:inputText id="editContactoProveedor" class="input" value="#{editarProveedor.contactoProveedor}" required="true" requiredMessage="No se ingreso contacto." />
                     

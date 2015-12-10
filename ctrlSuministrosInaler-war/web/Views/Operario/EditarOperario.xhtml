@@ -11,13 +11,6 @@
         <div class="contenido">            
             <h:form id="frmEditOp">
                 <fieldset><legend>Editar Operario</legend>
-                    <div class="label">Operario</div>
-                    <h:selectOneMenu id="selectEditarOperario" value="#{editarOperario.idOperario}" class="select-opt-menu" required="true" requiredMessage="No se selecciono Operario." >
-                        <f:selectItem itemValue="--Seleccionar Operario---"  itemDisabled="false"  noSelectionOption="true"  />
-                        <f:selectItems value="#{editarOperario.nombresCompletosOperarios}" />
-                        <f:ajax execute="@this" listener="#{editarOperario.cargarDatosOperario()}" render="editNombreOperario editApellidoOperario selectEditarPermiso" />
-                    </h:selectOneMenu>               
-                    
                     <div class="label">Nombre de Operario</div>
                     <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
                     
@@ -57,11 +50,6 @@
                         <h:message for="btnEditarOperario" class="error"/>                     
                     </div>
                 </fieldset>
-                <div class="div-boton-left">
-                    <h:link class="boton-input" outcome="AgregarOperario.xhtml">
-                        <div>Ir a Agregar Operario</div>
-                    </h:link>
-                </div>
             </h:form>
         </div>
     </ui:define>

@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"                    
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:define name="page_content">
+        <div class="contenido">
+            <fieldset><legend>Listado Operarios Registrados</legend>
+                <h:panelGroup rendered="#{loginOperario.permisoOperario=='Administrador'}">
+                    <div class="div-boton">
+                        <h:link class="boton-input" outcome="/Views/Operario/AgregarOperario.xhtml">
+                            Nuevo
+                        </h:link>
+                    </div>
+                </h:panelGroup>
+                <f:view>
+                    <h:form>
+                        <table>
+                            <td><div class="label">Filtro: </div></td>
+                            <td><h:inputText value="#{listadoOperarios.nombreOperario}" >
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoOperarios.filtrarLista()}" render="tablaListadoOperarios"/>
+                                </h:inputText>
+                            </td>
+                        </table>
+                        <h:panelGroup id="tablaListadoOperarios">
+                            <table class="tabla-listaSuministro">
+                                <th class="label" style="width: 15%">Numero</th>
+                                <th class="label">Nombre</th>
+                                <th class="label" style="width: 10%">Permiso</th> 
+                                <th class="label" style="width: 2%"></th>                                
+                                <c:forEach items="#{listadoOperarios.listaOperario}" var ="op">
+                                    <tr>                                        
+                                        <td class="div-output">
+                                            #{op.idOperario}
+                                        </td>
+                                        <td class="div-output">
+                                            #{op.nombreOperario} #{op.apellidoOperario}
+                                        </td>
+                                        <td class="div-output">
+                                            #{op.permisoOperario.nombrePermiso}
+                                        </td>                                        
+                                        <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
+                                            <td class="div-output" >
+                                                <a href="#{facesContext.externalContext.requestContextPath}/Views/Operario/EditarOperario.xhtml?id=#{op.idOperario}">
+                                                    <img title="Editar el operario" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>
+                                                </a>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="#{loginOperario.permisoOperario!='Administrador'}">
+                                            <td class="div-output" >                                                
+                                                <img title="Solo el administrador puede modificar un operario" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>                                                
+                                            </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>                             
+                            </table>
+                            
+                        </h:panelGroup>
+                    </h:form>
+                </f:view>                
+            </fieldset>
+        </div>
+    </ui:define>
+</ui:composition>    

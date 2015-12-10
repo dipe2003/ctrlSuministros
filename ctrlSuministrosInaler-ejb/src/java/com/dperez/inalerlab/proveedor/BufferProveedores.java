@@ -18,10 +18,8 @@ import javax.inject.Inject;
 public class BufferProveedores {
 
     @Inject
-    ManejadorProveedor mProveedor;
-    
-    public BufferProveedores() {}
-    
+    private ManejadorProveedor mProveedor;
+      
     @PostConstruct
     public void init(){
         MapProveedores = mProveedor.ListarMapProveedoresFull();

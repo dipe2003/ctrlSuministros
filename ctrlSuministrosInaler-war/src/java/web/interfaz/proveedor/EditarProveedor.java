@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 @Named
 @ViewScoped
@@ -43,10 +44,10 @@ public class EditarProveedor implements Serializable{
         ContactoProveedor = prov.getContactoProveedor();
     }
     
-    public void editarProveedor() throws IOException{
+    private void editarProveedor() throws IOException{
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();        
         if (fProveedor.ModificarDatosProveedor(IdProveedor, NombreProveedor, ContactoProveedor)!=-1) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Proveedor/ListadoProveedores.xhtml");
         }else{
             String msj="No se pudo actualizar.";            
             FacesContext.getCurrentInstance().addMessage("frmEditProv:btnEditarProveedor", new FacesMessage(msj));
@@ -56,6 +57,12 @@ public class EditarProveedor implements Serializable{
     @PostConstruct
     public void init(){
         MapProveedores = fProveedor.ListarMapProveedores();
+        try{
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();        
+            IdProveedor = Integer.parseInt(request.getParameter("id"));
+            cargarDatosProveedor();
+        }catch(NullPointerException | NumberFormatException ex){}
     }
     
  }

@@ -8,56 +8,79 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="page_content">
         <div class="contenido">
-            <fieldset><legend>Estado Actual de Suministros</legend>
+            <fieldset><legend>Listado de Suministros Registrados</legend>
+                <h:panelGroup rendered="#{loginOperario.permisoOperario=='Administrador'}">
+                    <div class="div-boton">
+                        <h:link class="boton-input" outcome="/Views/Suministro/AgregarSuministro.xhtml">
+                            Nuevo
+                        </h:link>
+                    </div>
+                </h:panelGroup>
                 <f:view>
                     <h:form>
                         <table>
                             <td><div class="label">Filtro: </div></td>
                             <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListado"/>
-                                </h:inputText></td>
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListadoOpciones"/>
+                                </h:inputText>
+                            </td>
                         </table>
-                        <h:panelGroup id="tablaListado">
+                        <h:panelGroup id="tablaListadoOpciones">
                             <table class="tabla-listaSuministro">
+                                <th class="label" style="width: 15%">Tipo</th>
                                 <th class="label">Suministro</th>
-                                <th class="label" style="width: 20%">Proveedor</th>
-                                <th class="label" style="width: 10%">Ultimo Ingreso</th>
-                                <th class="label" style="width: 10%">Stock Actual</th>
-                                <th class="label" style="width: 10%; display: none">IdSuministro</th>
-                                <th class="label" style="width: 5%">Mas Info</th>
+                                <th class="label" style="width: 30%">Proveedor</th>
+                                <th class="label" style="width: 10%">Stock Minimo</th>
+                                <th class="label" style="width: 0%; display: none">IdSuministro</th>
+                                <th class="label" style="width: 2%"></th>                                
                                 <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
                                     <tr>
-                                        <c:if test="#{not empty sum.lotesVencidosEnStock or sum.debajoStockMinimo}">
-                                        <td class="div-output" >
-                                            <div><img title="Requiere Atencion! Ver Mas Informacion." height="20px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning.png"/>#{sum.nombreSuministro}</div>
-                                        </td>
+                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'Material'}" >
+                                            <td class="div-output">
+                                                Material
+                                            </td>
                                         </c:if>
-                                        <c:if test="#{empty sum.lotesVencidosEnStock and !sum.debajoStockMinimo}">
-                                        <td class="div-output" >
-                                            <div>#{sum.nombreSuministro}</div>
-                                        </td>
+                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}" >
+                                            <td class="div-output">
+                                                Reactivo Quimico
+                                            </td>
                                         </c:if>
+                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}" >
+                                            <td class="div-output">
+                                                Medio de Ensayo
+                                            </td>
+                                        </c:if>
+                                        <td class="div-output">
+                                            #{sum.nombreSuministro}
+                                        </td>
                                         <td class="div-output">
                                             #{sum.proveedorSuministro.nombreProveedor}
                                         </td>
                                         <td class="div-output">
-                                            #{sum.ultimoIngreso.cantidadIngreso}
-                                        </td>
-                                        <td class="div-output">
-                                            #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
+                                            #{sum.stockMinimoSuministro.cantidadStockMinimo} #{sum.unidadSuministro.nombreUnidad}
                                         </td>
                                         <td class="div-output" style="display: none;">
                                             #{sum.idSuministro}
                                         </td>
-                                        <td class="div-output">
-                                            <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
-                                        </td>
+                                        <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
+                                              <td class="div-output" >
+                                                  <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarSuministro.xhtml?id=#{sum.idSuministro}">
+                                                    <img title="Editar el suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>
+                                                </a>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="#{loginOperario.permisoOperario!='Administrador' and loginOperario.permisoOperario!='Verificador'}">
+                                              <td class="div-output" >                                                
+                                                <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>                                                
+                                            </td>
+                                        </c:if>
                                     </tr>
-                                </c:forEach>                                
+                                </c:forEach>                             
                             </table>
+                            
                         </h:panelGroup>
                     </h:form>
-                </f:view>
+                </f:view>                
             </fieldset>
         </div>
     </ui:define>
