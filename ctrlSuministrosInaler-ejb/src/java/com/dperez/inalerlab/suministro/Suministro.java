@@ -90,7 +90,7 @@ abstract public class Suministro implements Serializable{
     //	Lotes
     public void addLote(Lote LoteSuministro){
         this.LotesSuministros.add(LoteSuministro);
-        if(LoteSuministro.getSuministroLote()==null | !LoteSuministro.getSuministroLote().equals(this)){
+        if(LoteSuministro.getSuministroLote()==null || !LoteSuministro.getSuministroLote().equals(this)){
             LoteSuministro.setSuministroLote(this);
         }
     }

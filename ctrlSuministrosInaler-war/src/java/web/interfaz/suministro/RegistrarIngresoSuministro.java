@@ -128,9 +128,8 @@ public class RegistrarIngresoSuministro implements Serializable{
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))<=0) {
-            idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro);
-            idLote = fLote.AgregarLoteSuministro(IdSuministro, idLote);
+        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))==0) {
+            idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
         }
         if(idLote!=-1){
             Date fechaHoy =Calendar.getInstance().getTime();

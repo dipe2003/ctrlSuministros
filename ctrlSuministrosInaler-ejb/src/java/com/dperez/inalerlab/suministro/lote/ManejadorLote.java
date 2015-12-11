@@ -77,7 +77,7 @@ public class ManejadorLote {
     
     public int ExisteNumeroLoteSuministro(String NumeroLote, int IdSuministro){
         try{
-            Query query = em.createQuery("SELECT s.IdSuministro FROM Suministro s, Lote lot WHERE lot MEMBER OF s.LotesSuministros AND lot.NumeroLote= :numeroLote AND s.IdSuministro= :idSuministro");
+            Query query = em.createQuery("SELECT lot.IdLote FROM Suministro s, Lote lot WHERE lot MEMBER OF s.LotesSuministros AND lot.NumeroLote= :numeroLote AND s.IdSuministro= :idSuministro");
             query.setParameter("idSuministro", IdSuministro);
             query.setParameter("numeroLote", NumeroLote);
             return (int) query.getSingleResult();

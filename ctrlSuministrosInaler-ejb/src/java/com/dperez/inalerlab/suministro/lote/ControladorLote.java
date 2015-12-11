@@ -2,6 +2,7 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.suministro.BufferSuministros;
 import com.dperez.inalerlab.suministro.ControladorSuministro;
+import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,10 +29,13 @@ public class ControladorLote implements Serializable{
      * Crea un lote en la base de datos.
      * @param VencimientoLote
      * @param NumeroLote
+     * @param IdSuministro
      * @return Retorna el id del lote creado. Retorna -1 si no se creo.
      */
-    public int CrearLote(Date VencimientoLote, String NumeroLote){
+    public int CrearLote(Date VencimientoLote, String NumeroLote, int IdSuministro){
         Lote lote = new Lote(VencimientoLote, NumeroLote);
+        Suministro suministro = cSuministro.BuscarSuministro(IdSuministro);
+        suministro.addLote(lote);
         return mLote.CrearLote(lote);
     }
     

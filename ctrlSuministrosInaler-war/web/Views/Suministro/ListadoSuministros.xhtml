@@ -31,7 +31,6 @@
                                 <th class="label">Suministro</th>
                                 <th class="label" style="width: 30%">Proveedor</th>
                                 <th class="label" style="width: 10%">Stock Minimo</th>
-                                <th class="label" style="width: 0%; display: none">IdSuministro</th>
                                 <th class="label" style="width: 2%"></th>                                
                                 <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
                                     <tr>
@@ -58,9 +57,6 @@
                                         </td>
                                         <td class="div-output">
                                             #{sum.stockMinimoSuministro.cantidadStockMinimo} #{sum.unidadSuministro.nombreUnidad}
-                                        </td>
-                                        <td class="div-output" style="display: none;">
-                                            #{sum.idSuministro}
                                         </td>
                                         <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
                                               <td class="div-output" >

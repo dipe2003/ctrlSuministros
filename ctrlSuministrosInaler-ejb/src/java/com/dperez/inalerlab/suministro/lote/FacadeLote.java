@@ -16,13 +16,14 @@ public class FacadeLote implements Serializable{
     private ControladorLote cLote;
     
     /**
-     * Crea un lote.
+     * Crea un lote y lo agrega al suministro.
      * @param VencimientoLote
      * @param NumeroLote
+     * @param IdSuministro
      * @return Retorna el id del lote. Retorna -1 si no se pudo crear.
      */
-    public int CrearLote(Date VencimientoLote, String NumeroLote){
-        return cLote.CrearLote(VencimientoLote, NumeroLote);
+    public int CrearLote(Date VencimientoLote, String NumeroLote, int IdSuministro){
+        return cLote.CrearLote(VencimientoLote, NumeroLote, IdSuministro);
     }
     
     /**
@@ -50,18 +51,7 @@ public class FacadeLote implements Serializable{
      */
     public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario, String ObservacionesSalida){
         return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario, ObservacionesSalida);
-    }
-    
-    /**
-     * Agrega un lote creado a un suministro especificado.
-     * @param IdSuministro
-     * @param IdLote
-     * @return Retorna el id del lote. Retorna -1 si no se agrego.
-     */
-    public int AgregarLoteSuministro(int IdSuministro, int IdLote){
-        return cLote.AgregarLoteSuministro(IdLote, IdSuministro);
-    }
-    
+    }    
     
     /**
      * Buscar un lote por numero de lote.

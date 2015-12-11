@@ -105,14 +105,14 @@ public class Lote implements Serializable{
     
     public void addIngresoLote(Ingreso IngresoLote){
         this.IngresosLote.add(IngresoLote);
-//        if (IngresoLote.getLoteIngreso()==null | !IngresoLote.getLoteIngreso().equals(this)) {
-//            IngresoLote.setLoteIngreso(this);
-//        }
+        if (IngresoLote.getLoteIngreso()==null || !IngresoLote.getLoteIngreso().equals(this)) {
+            IngresoLote.setLoteIngreso(this);
+        }
     }
     
     public void addSalidaLote(Salida SalidaLote){
         this.SalidasLote.add(SalidaLote);
-        if (SalidaLote.getLoteSalida() == null | !SalidaLote.getLoteSalida().equals(this)) {
+        if (SalidaLote.getLoteSalida() == null || !SalidaLote.getLoteSalida().equals(this)) {
             SalidaLote.setLoteSalida(this);
         }
     }
