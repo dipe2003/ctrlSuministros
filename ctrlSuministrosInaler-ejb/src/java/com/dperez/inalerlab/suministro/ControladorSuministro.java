@@ -150,7 +150,7 @@ public class ControladorSuministro implements Serializable{
         int cantidad = 0;
         for(Suministro suministro: suministros){
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
-                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0 && suministro.isVigente()){
                 cantidad ++;
             }
         }
@@ -173,7 +173,7 @@ public class ControladorSuministro implements Serializable{
         for(Suministro suministro: suministros){
             try{
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
-                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0 && suministro.isVigente()){
                 lista.add(suministro.getIdSuministro());
             }
             }catch(NullPointerException ex){
@@ -199,12 +199,12 @@ public class ControladorSuministro implements Serializable{
         Map<String, Integer> map = new HashMap<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
             }
             return new TreeMap<>(map);
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
         }
         return new TreeMap<>(map);
     }
@@ -223,12 +223,12 @@ public class ControladorSuministro implements Serializable{
         List<Integer> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0) lista.add(suministro.getIdSuministro());
+                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) lista.add(suministro.getIdSuministro());
             }
             return lista;
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0) lista.add(suministro.getIdSuministro());
+            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) lista.add(suministro.getIdSuministro());
         }
         return lista;
     }
@@ -247,12 +247,12 @@ public class ControladorSuministro implements Serializable{
         List<Suministro> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0) lista.add(suministro);
+                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) lista.add(suministro);
             }
             return lista;
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0) lista.add(suministro);
+            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) lista.add(suministro);
         }
         return lista;
     }
@@ -290,6 +290,7 @@ public class ControladorSuministro implements Serializable{
                 StockMinimo stock = cStock.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
                 sumBD.addStockMinimoSuministro(stock);
             }
+            sumBD.setVigente(suministro.isVigente());
             id = mSuministro.ActualizarSuministro(sumBD);
             if(id!=-1) buffer.updateSuministro(sumBD);
         }catch(NullPointerException ex){}

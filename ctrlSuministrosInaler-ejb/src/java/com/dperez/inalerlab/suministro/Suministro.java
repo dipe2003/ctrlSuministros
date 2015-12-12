@@ -34,11 +34,13 @@ abstract public class Suministro implements Serializable{
     private List<StockMinimo> StocksMinimosSuministro;
     @ManyToOne
     private Proveedor ProveedorSuministro;
+    private boolean Vigente;
     
     //	Constructores
     public Suministro(){
         this.StocksMinimosSuministro = new ArrayList<>();
         this.LotesSuministros = new ArrayList<>();
+        this.Vigente = true;
     }
     public Suministro(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             Unidad UnidadSuministro, Proveedor ProveedorSuministro){
@@ -49,6 +51,7 @@ abstract public class Suministro implements Serializable{
         this.StocksMinimosSuministro = new ArrayList<>();
         this.LotesSuministros = new ArrayList<>();
         this.ProveedorSuministro = ProveedorSuministro;
+        this.Vigente = true;
     }
     
     //	Getters
@@ -60,6 +63,7 @@ abstract public class Suministro implements Serializable{
     public List<Lote> getLotesSuministros() {return LotesSuministros;}
     public List<StockMinimo> getStocksMinimosSuministro() {return StocksMinimosSuministro;}
     public Proveedor getProveedorSuministro() {return ProveedorSuministro;}
+    public boolean isVigente() {return Vigente;}
     
     //	Setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -70,6 +74,7 @@ abstract public class Suministro implements Serializable{
     public void setLotesSuministros(List<Lote> LotesSuministros) {this.LotesSuministros = LotesSuministros;}
     public void setStocksMinimosSuministro(List<StockMinimo> StocksMinimosSuministro) {this.StocksMinimosSuministro = StocksMinimosSuministro;}
     public void setProveedorSuministro(Proveedor ProveedorSuministro) {this.ProveedorSuministro = ProveedorSuministro;}
+    public void setVigente(boolean Vigente) {this.Vigente = Vigente;}
     
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){

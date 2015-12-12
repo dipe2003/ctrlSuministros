@@ -31,6 +31,12 @@
                     <div class="label">Sotck Minimo</div>
                     <h:inputText id="inputEditCantidadStockMinimo" class="input" value="#{editarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>                    
                     
+                    <div class="label">Vigencia</div>
+                    <h:selectOneRadio value="#{editarSuministro.estaVigente}">
+                        <f:selectItem  itemValue="true" itemLabel="En Uso"/>
+                        <f:selectItem  itemValue="false" itemLabel="No Se Utiliza" />
+                    </h:selectOneRadio>
+                    
                     <div class="label">Proveedor</div>
                     <h:selectOneMenu value="#{editarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
                         <f:selectItems value="#{editarSuministro.proveedoresSuministros}" />

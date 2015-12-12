@@ -12,6 +12,14 @@
                 <legend>#{infoSuministro.suministroSeleccionado.nombreSuministro} (#{infoSuministro.suministroSeleccionado.proveedorSuministro.nombreProveedor})</legend>
                 <div class="label">Descripcion</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.descripcionSuministro}"/></div><br/>
                 <div class="label">Codigo SAP</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.codigoSAPSuministro}"/></div><br/>
+                <div class="label">Vigencia</div> <div style="text-align: left;">
+                    <c:if test="#{infoSuministro.suministroSeleccionado.vigente}">
+                        <h:outputText class="output" value="En Uso"/>
+                    </c:if>
+                    <c:if test="#{!infoSuministro.suministroSeleccionado.vigente}">
+                        <h:outputText class="output" value="No se utiliza"/>
+                    </c:if>
+                </div><br/>
                 <div style="text-align: left;"><ouputText class="output">Movimientos de Stock</ouputText></div><br/>
                 <div class="contenedor-5050">                    
                     <div class="contenedor-60">

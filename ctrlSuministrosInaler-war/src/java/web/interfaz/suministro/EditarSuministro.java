@@ -39,6 +39,7 @@ public class EditarSuministro implements Serializable{
     private String NombreSuministro;
     private String DescripcionSuministro;
     private String CodigoSAPSuministro;
+    private boolean EstaVigente;
     
     private float CantidadStockMinimo;
     private Date FechaVigenteStock;
@@ -71,6 +72,7 @@ public class EditarSuministro implements Serializable{
             return fDate.format(FechaVigenteStock);
         }
     }
+    public boolean isEstaVigente() {return EstaVigente;}
     
     //  setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -94,6 +96,7 @@ public class EditarSuministro implements Serializable{
         this.strFechaVigenteStock = strFechaVigenteStock;
         this.FechaVigenteStock = cal.getTime();
     }
+    public void setEstaVigente(boolean EstaVigente) {this.EstaVigente = EstaVigente;}
     
     public void editarSuministro() throws IOException{
         int idSuministro = -1;
@@ -117,7 +120,7 @@ public class EditarSuministro implements Serializable{
         suministro.setDescripcionSuministro(DescripcionSuministro);        
         suministro.setNombreSuministro(NombreSuministro);
         suministro.setIdSuministro(IdSuministro);
-        
+        suministro.setVigente(EstaVigente);
         if(fSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidadSuministro, CantidadStockMinimo)!=-1){
             FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/ListadoSuministros.xhtml");
         }else{
@@ -156,6 +159,7 @@ public class EditarSuministro implements Serializable{
         NombreSuministro = sum.getNombreSuministro();
         DescripcionSuministro = sum.getDescripcionSuministro();
         CodigoSAPSuministro = sum.getCodigoSAPSuministro();
+        EstaVigente = sum.isVigente();
         
         CantidadStockMinimo = sum.getStockMinimoSuministro().getCantidadStockMinimo();
         FechaVigenteStock = sum.getStockMinimoSuministro().getFechaVigenteStockMinimo();
@@ -164,11 +168,11 @@ public class EditarSuministro implements Serializable{
         IdUnidadSuministro = sum.getUnidadSuministro().getIdUnidad();
         IdProveedor = sum.getProveedorSuministro().getIdProveedor();
         switch(sum.getClass().getSimpleName()){
-            case "Reactivo Quimico":
+            case "ReactivoQuimico":
                 TipoSuministro = TiposSuministros[0];
                 break;
                 
-            case "Medio de Ensayo":
+            case "MedioEnsayo":
                 TipoSuministro = TiposSuministros[1];
                 break;
                 
