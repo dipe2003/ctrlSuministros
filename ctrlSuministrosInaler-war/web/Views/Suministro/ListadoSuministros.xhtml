@@ -28,7 +28,7 @@
                         <h:panelGroup id="tablaListadoOpciones">
                             <table class="tabla-listaSuministro">
                                 <th class="label" style="width: 15%">Tipo</th>
-                                <th class="label">Suministro</th>
+                                <th class="label" style="width: 43%">Suministro</th>
                                 <th class="label" style="width: 30%">Proveedor</th>
                                 <th class="label" style="width: 10%">Stock Minimo</th>
                                 <th class="label" style="width: 5%">Vigente</th>
@@ -76,7 +76,7 @@
                                                 </a>
                                             </td>
                                         </c:if>
-                                        <c:if test="#{loginOperario.permisoOperario!='Administrador' and loginOperario.permisoOperario!='Verificador'}">
+                                        <c:if test="#{loginOperario.permisoOperario=='Analista' or loginOperario.permisoOperario=='Lectura'}">
                                             <td class="div-output" >                                                
                                                 <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>                                                
                                             </td>
