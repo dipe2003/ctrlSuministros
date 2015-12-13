@@ -33,10 +33,16 @@
                     </c:catch>  
                     
                     <div class="label">Permiso del Operario</div>
-                    <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
-                        <f:selectItems value="#{editarOperario.permisosOperarios}" />
-                    </h:selectOneRadio>
-                    
+                    <c:if test="#{loginOperario.permisoOperario != 'Administrador'}" >
+                        <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" title="Solo el Administrador puede asignar los permisos" disabled="true" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                            <f:selectItems value="#{editarOperario.permisosOperarios}" />
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                        <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                            <f:selectItems value="#{editarOperario.permisosOperarios}" />
+                        </h:selectOneRadio>
+                    </c:if>
                     <div class="div-boton">
                         <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" action="#{editarOperario.editarOperario()}"/>
                     </div>

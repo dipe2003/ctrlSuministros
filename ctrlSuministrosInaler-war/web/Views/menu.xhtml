@@ -9,7 +9,7 @@
             <h:form id="frmMenu">
                 <h:panelGroup class="titulo-grande" rendered="#{loginOperario.logueado}">
                     <div class="titulo-fondo">
-                        <a href="Operario/EditarOperario.xhtml?id=#{loginOperario.idOperario}">
+                        <a href="#{facesContext.externalContext.requestContextPath}/Views/Operario/EditarOperario.xhtml?id=#{loginOperario.idOperario}">
                         <h:outputText value="#{loginOperario.nombreOperario}" />
                         </a>
                     </div>

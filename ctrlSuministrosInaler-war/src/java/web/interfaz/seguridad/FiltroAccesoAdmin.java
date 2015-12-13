@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(urlPatterns = {"/Views/Operario/EditarOperario.xhtml"})
+@WebFilter("/Views/Operario/EditarOperario.xhtml")
 public class FiltroAccesoAdmin implements Filter{
     
     @Override
@@ -30,7 +30,6 @@ public class FiltroAccesoAdmin implements Filter{
             Id = Integer.parseInt(req.getParameter("id"));
         }catch(NullPointerException ex){}
         
-        if (session != null){
             if((Id!=session.getIdOperario() && session.getPermisoOperario().getNombrePermiso().equals("Administrador"))
                     || Id==session.getIdOperario()){
                 fc.doFilter(req, resp);
@@ -38,10 +37,6 @@ public class FiltroAccesoAdmin implements Filter{
                 HttpServletResponse res = (HttpServletResponse) resp;
                 res.sendRedirect(req.getContextPath() + "/Errores/Error_500.xhtml");
             }
-        } else {
-            HttpServletResponse res = (HttpServletResponse) resp;
-            res.sendRedirect(req.getContextPath() + "/Errores/Error_500.xhtml");
-        }
     }
     
     @Override

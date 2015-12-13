@@ -54,17 +54,17 @@ public class Ingreso implements Serializable{
     public void setIdIngreso(int IdIngreso){this.IdIngreso = IdIngreso;}
     public void setFechaIngreso(Date FechaIngreso){this.FechaIngreso = FechaIngreso;}
     public void setCantidadIngreso(float CantidadIngreso){this.CantidadIngreso = CantidadIngreso;}
-    public void setOperarioIngresoSuministro(Operario OperarioIngresoSuministro){
-        this.OperarioIngresoSuministro = OperarioIngresoSuministro;
+    public void setOperarioIngresoSuministro(Operario OperarioIngresoSuministro){        
         if(!OperarioIngresoSuministro.getIngresosSuministrosOperario().contains(this)){
-            OperarioIngresoSuministro.getIngresosSuministrosOperario().add(this);
+            OperarioIngresoSuministro.addIngresoInsumoOperario(this);
         }
+        this.OperarioIngresoSuministro = OperarioIngresoSuministro;
     }
-    public void setLoteIngreso(Lote LoteIngreso) {
-        this.LoteIngreso = LoteIngreso;
-        if (!LoteIngreso.getIngresosLote().contains(this)) {
-            LoteIngreso.getIngresosLote().add(this);
+    public void setLoteIngreso(Lote loteIngreso) {        
+        if (!loteIngreso.getIngresosLote().contains(this)) {
+            loteIngreso.addIngresoLote(this);
         }
+        this.LoteIngreso = loteIngreso;
     }
     public void setNumeroFactura(String NumeroFactura) {this.NumeroFactura = NumeroFactura;}
     public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}

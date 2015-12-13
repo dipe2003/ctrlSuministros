@@ -51,17 +51,17 @@ public class Salida implements Serializable{
     public void setIdSalida(int IdSalida){this.IdSalida = IdSalida;}
     public void setFechaSalida(Date FechaSalida){this.FechaSalida = FechaSalida;}
     public void setCantidadSalida(float CantidadSalida){this.CantidadSalida = CantidadSalida;}
-    public void setOperarioSalidaSuministro(Operario OperarioSalidaSuministro){
-        this.OperarioSalidaSuministro = OperarioSalidaSuministro;
+    public void setOperarioSalidaSuministro(Operario OperarioSalidaSuministro){        
         if(!OperarioSalidaSuministro.getSalidasSuministrosOperario().contains(this)){
-            OperarioSalidaSuministro.getSalidasSuministrosOperario().add(this);
+            OperarioSalidaSuministro.addSalidaSuministroOperario(this);
         }
+        this.OperarioSalidaSuministro = OperarioSalidaSuministro;
     }
-    public void setLoteSalida(Lote LoteSalida) {
-        this.LoteSalida = LoteSalida;
+    public void setLoteSalida(Lote LoteSalida) {        
         if(!LoteSalida.getSalidasLote().contains(this)){
-            LoteSalida.getSalidasLote().add(this);
+            LoteSalida.addSalidaLote(this);
         }
+        this.LoteSalida = LoteSalida;
     }
     public void setObservacionesSalida(String ObservacionesSalida) {this.ObservacionesSalida = ObservacionesSalida;}
     

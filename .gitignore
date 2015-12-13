@@ -3,3 +3,6 @@
 /dist/
 /build/
 /ctrlSuministrosInaler-war/dist/
+/ctrlSuministrosInaler-war/nbproject/private/
+/ctrlSuministrosInaler-ejb/nbproject/private/
+/nbproject/private/
