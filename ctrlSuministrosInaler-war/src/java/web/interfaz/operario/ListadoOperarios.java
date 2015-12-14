@@ -3,7 +3,6 @@ package web.interfaz.operario;
 
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.Operario;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 

@@ -28,7 +28,7 @@
                         <h:panelGroup id="tablaListadoOperarios">
                             <table class="tabla-listaSuministro">
                                 <th class="label" style="width: 15%">Numero</th>
-                                <th class="label">Nombre</th>
+                                <th class="label" style="width: 70%">Nombre</th>
                                 <th class="label" style="width: 10%">Permiso</th> 
                                 <th class="label" style="width: 2%"></th>                                
                                 <c:forEach items="#{listadoOperarios.listaOperario}" var ="op">
@@ -42,7 +42,7 @@
                                         <td class="div-output">
                                             #{op.permisoOperario.nombrePermiso}
                                         </td>                                        
-                                        <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
+                                        <c:if test="#{loginOperario.permisoOperario=='Administrador'}">
                                             <td class="div-output" >
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Operario/EditarOperario.xhtml?id=#{op.idOperario}">
                                                     <img title="Editar el operario" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>

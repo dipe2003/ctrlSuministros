@@ -12,8 +12,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter("/Views/Operario/EditarOperario.xhtml")
-public class FiltroAccesoAdmin implements Filter{
+@WebFilter({"/Views/Suministro/EditarSuministro.xhtml","/Views/Proveedor/EditarProveedor.xhtml" })
+public class FiltroAccesoEdicion implements Filter{
     
     @Override
     public void init(FilterConfig fc) throws ServletException {
@@ -24,14 +24,9 @@ public class FiltroAccesoAdmin implements Filter{
     public void doFilter(ServletRequest sr, ServletResponse sr1, FilterChain fc) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) sr;
         HttpServletResponse resp = (HttpServletResponse) sr1;
-        Operario session = (Operario) req.getSession().getAttribute("Operario");
-        int Id = 0;
-        try{
-            Id = Integer.parseInt(req.getParameter("id"));
-        }catch(NullPointerException ex){}
-        
-            if((Id!=session.getIdOperario() && session.getPermisoOperario().getNombrePermiso().equals("Administrador"))
-                    || Id==session.getIdOperario()){
+        Operario session = (Operario) req.getSession().getAttribute("Operario");       
+            if(session.getPermisoOperario().getNombrePermiso().equals("Administrador") || 
+                    session.getPermisoOperario().getNombrePermiso().equals("Verificador")) {
                 fc.doFilter(req, resp);
             }else{
                 HttpServletResponse res = (HttpServletResponse) resp;

@@ -8,6 +8,9 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
+        <h:panelGroup rendered="#{loginOperario.idOperario != editarOperario.idOperario and loginOperario.permisoOperario!='Administrador'}">
+        <meta http-equiv="refresh" content="0;url=#{facesContext.externalContext.requestContextPath}/Errores/Error_500.xhtml"></meta>
+        </h:panelGroup>
         <div class="contenido">            
             <h:form id="frmEditOp">
                 <fieldset><legend>Editar Operario</legend>
