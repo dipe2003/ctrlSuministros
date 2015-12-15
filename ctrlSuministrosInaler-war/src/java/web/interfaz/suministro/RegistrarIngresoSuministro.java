@@ -7,14 +7,18 @@ import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.FacadeLote;
+import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -36,7 +40,6 @@ public class RegistrarIngresoSuministro implements Serializable{
     private String strFechaIngresoSuministro;
     private int IdSuministro;
     private Map<String, Integer> listaSuministros;
-    private List<Suministro> lstSuministros;
     private float CantidadIngresoSuministro;
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
@@ -52,6 +55,9 @@ public class RegistrarIngresoSuministro implements Serializable{
     private Date FechaVencimientoSuministro;
     private String strFechaVencimientoSuministro;
     private boolean existeLote;
+    private int IdLoteSeleccionado;
+    private Map<Integer, Lote> LotesSuministro;
+    private Set<Lote> SetLotesSuministro;
     
     //  getters
     public Date getFechaIngresoSuministro() {return FechaIngresoSuministro;}
@@ -79,11 +85,13 @@ public class RegistrarIngresoSuministro implements Serializable{
             return fDate.format(FechaVencimientoSuministro);
         }
     }
-    public List<Suministro> getLstSuministros() {return lstSuministros;}
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
     public String getObservacionesIngreso() {return ObservacionesIngreso;}
     public String getUnidadCantidad() {return UnidadCantidad;}
+    public int getIdLoteSeleccionado() {return IdLoteSeleccionado;}
+    public Map<Integer, Lote> getLotesSuministro() {return LotesSuministro;}
+    public Set<Lote> getSetLotesSuministro() {return SetLotesSuministro;}
     
     //  setters
     public void setFechaIngresoSuministro(Date FechaIngresoSuministro) {this.FechaIngresoSuministro = FechaIngresoSuministro;}
@@ -101,7 +109,6 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
     public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
-    public void setLstSuministros(List<Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
     public void setCantidadIngresoSuministro(float CantidadIngresoSuministro) {this.CantidadIngresoSuministro = CantidadIngresoSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
     public void setFechaVencimientoSuministro(Date FechaVencimientoSuministro) {this.FechaVencimientoSuministro = FechaVencimientoSuministro;}
@@ -121,14 +128,26 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
     public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
+    public void setIdLoteSeleccionado(int IdLoteSeleccionado) {this.IdLoteSeleccionado = IdLoteSeleccionado;}
+    public void setLotesSuministro(Map<Integer, Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}    
+    public void setSetLotesSuministro(Set<Lote> SetLotesSuministro) {this.SetLotesSuministro = SetLotesSuministro;}
     
+    /**
+     * Registra un nuevo ingreso de suministro.
+     * Si no existe el lote lo crea y agrega el nuevo ingreso.
+     * Si existe agrega el nuevo ingreso.
+     * @throws IOException 
+     */
     public void registrarIngresoSuministro() throws IOException{
         int idLote;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if ((idLote = fLote.ExisteLoteSuministro(NumeroLoteSuministro, IdSuministro))==0) {
+        if(IdLoteSeleccionado!=0){
+            NumeroLoteSuministro = LotesSuministro.get(IdLoteSeleccionado).getNumeroLote();
+            idLote = IdLoteSeleccionado;
+        }else{
             idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
         }
         if(idLote!=-1){
@@ -139,30 +158,37 @@ public class RegistrarIngresoSuministro implements Serializable{
         }
     }
     
+    /**
+     * Carga los lotes del suministro seleccionado.
+     */
+    public void cargarLotes(){
+        LotesSuministro = new HashMap<>();
+        SetLotesSuministro = new HashSet<>();
+        Suministro sum = fSuministro.BuscarSuministro(IdSuministro);
+        for(Lote  lot: sum.getLotesSuministros()){
+            LotesSuministro.put(lot.getIdLote(), lot);
+            SetLotesSuministro.add(lot);
+        }
+    }
+    
     @PostConstruct
     public void init(){
         Proveedores = fProveedor.ListarProveedores();
         listaSuministros = fSuministro.ListarMapSuministros();
         existeLote = false;
     }
-    
+            
     /**
-     * Comprueba la existencia del numero de lote para el suministro.
-     * @param NumeroLote
+     * Carga la unidad del suministro.
      */
-    public void comprobarLote(String NumeroLote){
-        existeLote = false;
-        try{
-            if(fLote.ExisteLoteSuministro(NumeroLote, IdSuministro)>0){
-                existeLote = true;
-            }
-        }catch(NullPointerException ex){}
-    }
-    
     public void cargarUnidad(){
         UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
     }
     
+    /**
+     * Carga los proveedores del suministro seleccionado.
+     * @param IdSuministro 
+     */
     public void cargarProveedoresSuministro(int IdSuministro){
         for(Proveedor proveedor: Proveedores){
             if(proveedor.esProveedorSuministro(IdSuministro)) {

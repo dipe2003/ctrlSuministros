@@ -3,7 +3,6 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class Lote implements Serializable{
@@ -28,9 +29,11 @@ public class Lote implements Serializable{
     private String NumeroLote;
     @ManyToOne
     private Suministro SuministroLote;
-    @OneToMany(mappedBy = "LoteIngreso", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "LoteIngreso")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ingreso> IngresosLote;
-    @OneToMany(mappedBy = "LoteSalida", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "LoteSalida")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Salida> SalidasLote;
     
     //	Constructores
@@ -46,7 +49,7 @@ public class Lote implements Serializable{
     }
     
     //	Getters
-    public int getIdLote(){return this.IdLote;} 
+    public int getIdLote(){return this.IdLote;}
     public Date getVencimientoLote(){return this.VencimientoLote;}
     public Suministro getSuministroLote(){return this.SuministroLote;}
     public List<Ingreso> getIngresosLote(){return this.IngresosLote;}
@@ -56,11 +59,11 @@ public class Lote implements Serializable{
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(VencimientoLote==null) return "---";
-        return sdf.format(VencimientoLote);        
+        return sdf.format(VencimientoLote);
     }
     
     //	Setters
-    public void setIdLote(int IdLote){this.IdLote = IdLote;}   
+    public void setIdLote(int IdLote){this.IdLote = IdLote;}
     public void setVencimientoLote(Date VencimientoLote){this.VencimientoLote = VencimientoLote;}
     public void setSuministroLote(Suministro SuministroLote){
         this.SuministroLote = SuministroLote;
@@ -70,7 +73,7 @@ public class Lote implements Serializable{
     }
     public void setIngresosLote(List<Ingreso> IngresosLote){this.IngresosLote = IngresosLote;}
     public void setNumeroLote(String NumeroLote) {this.NumeroLote = NumeroLote;}
-    public void setSalidasLote(List<Salida> SalidasLote) {this.SalidasLote = SalidasLote;}    
+    public void setSalidasLote(List<Salida> SalidasLote) {this.SalidasLote = SalidasLote;}
     
     //	Ingresos - Salidas
     
@@ -120,13 +123,16 @@ public class Lote implements Serializable{
     public Ingreso getUltimoIngreso(){
         int max = 0;
         int index = 0;
-        for (int i = 0; i < IngresosLote.size(); i++) {
-            if(IngresosLote.get(i).getIdIngreso() > max){
-                max = IngresosLote.get(i).getIdIngreso();
-                index = i;
+        if(!IngresosLote.isEmpty()){
+            for (int i = 0; i < IngresosLote.size(); i++) {
+                if(IngresosLote.get(i).getIdIngreso() > max){
+                    max = IngresosLote.get(i).getIdIngreso();
+                    index = i;
+                }
             }
+            return IngresosLote.get(index);
         }
-        return IngresosLote.get(index);
+        return null;
     }
     
     public boolean EstaVencido(){

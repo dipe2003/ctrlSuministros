@@ -17,16 +17,34 @@
                         <f:selectItems value="#{registrarIngresoSuministro.listaSuministros}" />
                         <f:ajax execute="@this" listener="#{registrarIngresoSuministro.cargarProveedoresSuministro(registrarIngresoSuministro.idSuministro)}" render="selectProveedorIngreso" />
                         <f:ajax listener="#{registrarIngresoSuministro.cargarUnidad()}" render="ouputUnidadIngresoSuministro"/>
+                        <f:ajax listener="#{registrarIngresoSuministro.cargarLotes()}" render="selectLoteSuministro" />
                     </h:selectOneMenu>
                     
                     <div class="label">Proveedor</div>
-                    <h:outputText id="selectProveedorIngreso" value="#{registrarIngresoSuministro.nombreProveedor}" class="output" />            
+                    <div style="text-align: left;">
+                        <h:outputText id="selectProveedorIngreso" value="#{registrarIngresoSuministro.nombreProveedor}" class="output" />            
+                    </div>
                 </fieldset>
                 
                 <fieldset><legend>Lote</legend>
-                    <div class="label">Numero de Lote</div>
-                    <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
+                    <div class="label">Numeros de Lote</div>
+                    <h:selectOneMenu id="selectLoteSuministro" value="#{registrarIngresoSuministro.idLoteSeleccionado}" class="select-opt-menu">
+                        <c:forEach items="#{registrarIngresoSuministro.setLotesSuministro}" var="lot">
+                            <f:selectItem itemValue="#{lot.idLote}" itemLabel="#{lot.numeroLote}" />
+                        </c:forEach>
+                        <f:selectItem itemValue="0"  itemDisabled="false"  noSelectionOption="false" itemLabel="-- Nuevo Lote --"  />
+                        <f:ajax render="panelLote grupoDatosLote"/>
+                    </h:selectOneMenu>
                     
+                    <div class="label">Numero de Lote</div>
+                    <h:panelGroup id="panelLote">
+                        <c:if test="#{registrarIngresoSuministro.idLoteSeleccionado == 0}">
+                            <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" required="true" requiredMessage="No se ingreso numero lote suministro." p:placeholder="Numero de lote de suministro"/>
+                        </c:if>
+                        <c:if test="#{registrarIngresoSuministro.idLoteSeleccionado != 0}">
+                            <h:inputText id="inputNumeroLoteSuministro" class="input" value="#{registrarIngresoSuministro.numeroLoteSuministro}" style="display: none;" />
+                        </c:if>
+                    </h:panelGroup>
                     <div class="label">Cantidad de Ingreso</div>
                     <div style="text-align: left;">
                         <h:inputText id="inputCantidadIngresoSuministro" style="width: 50%" class="input" value="#{registrarIngresoSuministro.cantidadIngresoSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a ingresar"/>
@@ -35,13 +53,8 @@
                     <div class="label">Factura</div>
                     <h:inputText id="inputFacturaIngresoSuministro" class="input" value="#{registrarIngresoSuministro.numeroFacturaSuministro}" required="true" requiredMessage="No se ingreso factura de suministro." p:placeholder="Numero de Factura"/>
                     
-                    
-                    <h:commandButton id="btnNumLote" style="display: none;" >
-                        <f:ajax event="click" execute="selectSuministroIngreso inputNumeroLoteSuministro" listener="#{registrarIngresoSuministro.comprobarLote(registrarIngresoSuministro.numeroLoteSuministro)}" render="grupoDatosLote"/>
-                    </h:commandButton>                    
-                    
                     <h:panelGroup id="grupoDatosLote">
-                        <h:panelGroup rendered="#{!registrarIngresoSuministro.existeLote}">                          
+                        <h:panelGroup rendered="#{registrarIngresoSuministro.idLoteSeleccionado == 0}">                          
                             <div class="label">Fecha de Vencimiento</div>
                             <h:inputText id="inputFechaVencimientoSuministro" class="calendario input" value="#{registrarIngresoSuministro.strFechaVencimientoSuministro}"  p:placeholder="Ingrese fecha de vencimiento"/>
                         </h:panelGroup>

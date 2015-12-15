@@ -150,17 +150,17 @@ abstract public class Suministro implements Serializable{
     public Ingreso getUltimoIngreso(){
         int max = 0;
         int index = 0;
+        if(!LotesSuministros.isEmpty()){
         for (int i = 0; i < this.LotesSuministros.size(); i++) {
-            if(this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso()>max){
+            Ingreso in = LotesSuministros.get(i).getUltimoIngreso();
+            if(in!=null && this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso()>max){
                 max = this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso();
                 index = i;
             }
         }
-        try{
-            return this.LotesSuministros.get(index).getUltimoIngreso();
-        }catch(IndexOutOfBoundsException ex){
-            return null;
+        return this.LotesSuministros.get(index).getUltimoIngreso();   
         }
+        return null;
     }
     
 }

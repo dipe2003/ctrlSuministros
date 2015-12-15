@@ -44,11 +44,18 @@
                                             <td class="div-output">
                                                 #{sum.proveedorSuministro.nombreProveedor}
                                             </td>
+                                            
                                             <td class="div-output">
-                                                #{sum.ultimoIngreso.cantidadIngreso}
+                                                <c:catch var="err">
+                                                    #{sum.ultimoIngreso.cantidadIngreso}
+                                                </c:catch>                                            
                                             </td>
                                             <td class="div-output">
-                                                #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
+                                                <c:catch>
+                                                    <c:when test="#{sum.ultimoIngreso != null}">
+                                                        #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
+                                                    </c:when>
+                                                </c:catch>                                                                                                
                                             </td>
                                             <td class="div-output">
                                                 <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
