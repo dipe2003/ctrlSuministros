@@ -46,16 +46,20 @@
                                             </td>
                                             
                                             <td class="div-output">
-                                                <c:catch var="err">
+                                                <c:if test="#{sum.ultimoIngreso != null}">
                                                     #{sum.ultimoIngreso.cantidadIngreso}
-                                                </c:catch>                                            
+                                                </c:if>
+                                                <c:if  test="#{sum.ultimoIngreso == null}">
+                                                    ---
+                                                </c:if>                                       
                                             </td>
                                             <td class="div-output">
-                                                <c:catch>
-                                                    <c:when test="#{sum.ultimoIngreso != null}">
-                                                        #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
-                                                    </c:when>
-                                                </c:catch>                                                                                                
+                                                <c:if test="#{sum.ultimoIngreso != null}">
+                                                    #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
+                                                </c:if>
+                                                <c:if test="#{sum.ultimoIngreso == null}">
+                                                    ---
+                                                </c:if>
                                             </td>
                                             <td class="div-output">
                                                 <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />

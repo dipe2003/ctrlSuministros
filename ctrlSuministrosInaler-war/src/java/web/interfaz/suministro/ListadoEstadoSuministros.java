@@ -18,7 +18,7 @@ import javax.inject.Named;
 
 @Named
 @ViewScoped
-public class ListadoSuministros implements Serializable{
+public class ListadoEstadoSuministros implements Serializable{
     @EJB
     private FacadeManejoSuministros fSuministro;
     
@@ -58,7 +58,7 @@ public class ListadoSuministros implements Serializable{
     
     @PostConstruct
     public void init() {
-        ListaSuministros = fSuministro.ListarSuministros(false);
+        ListaSuministros = fSuministro.ListarSuministros(true);
         MapSuministros = new HashMap<>();
         try{
             for(Suministro sum: ListaSuministros){

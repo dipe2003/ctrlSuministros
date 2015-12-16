@@ -20,8 +20,8 @@
                     <h:form>
                         <table>
                             <td><div class="label">Filtro: </div></td>
-                            <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListadoOpciones"/>
+                            <td><h:inputText value="#{listadoEstadoSuministros.nombreSuministro}" >
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoEstadoSuministros.filtrarLista()}" render="tablaListadoOpciones"/>
                                 </h:inputText>
                             </td>
                         </table>
@@ -33,19 +33,19 @@
                                 <th class="label" style="width: 10%">Stock Minimo</th>
                                 <th class="label" style="width: 5%">Vigente</th>
                                 <th class="label" style="width: 2%"></th>                                
-                                <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
+                                <c:forEach items="#{listadoEstadoSuministros.listaSuministros}" var ="sum">
                                     <tr>
-                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'Material'}" >
+                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'Material'}" >
                                             <td class="div-output">
                                                 Material
                                             </td>
                                         </c:if>
-                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}" >
+                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}" >
                                             <td class="div-output">
                                                 Reactivo Quimico
                                             </td>
                                         </c:if>
-                                        <c:if test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}" >
+                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}" >
                                             <td class="div-output">
                                                 Medio de Ensayo
                                             </td>

@@ -53,10 +53,11 @@ public class ManejadorSuministro {
         return null;
     }
     
-    public List<Suministro> ListarSuministros(){
+    public List<Suministro> ListarSuministros(boolean Vigente){
         List<Suministro> suministros = new ArrayList<>();
-        TypedQuery<Suministro> query = em.createQuery("FROM Suministro s", Suministro.class);
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s WHERE s.Vigente= :vigente", Suministro.class);
         try{
+            query.setParameter("vigente", Vigente);
             suministros = query.getResultList();
         }catch(Exception ex){}
         return suministros;
@@ -81,7 +82,7 @@ public class ManejadorSuministro {
     
     public Map<String, Integer> ListarMapSuministros(){
         Map<String, Integer> suministros = new HashMap<>();
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s", Suministro.class);
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
         try{
             List<Suministro> list = query.getResultList();
             for(Suministro suministro: list){
@@ -95,7 +96,7 @@ public class ManejadorSuministro {
     
     public Map<Integer, Suministro> ListarMapSuministrosFull(){
         Map<Integer, Suministro> suministros = new HashMap<>();
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s", Suministro.class);
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
         try{
             List<Suministro> lista = query.getResultList();
             for(Suministro suministro: lista){

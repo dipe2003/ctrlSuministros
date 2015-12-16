@@ -79,11 +79,12 @@ public class ControladorSuministro implements Serializable{
     /**
      * Devuelve todos los suministros registrados en la base de datos.
      * Si no hay suministros devuelve una lista vacia.
+     * @param Vigente True: indica si solo se devuelven los suministros en uso.
      * @return
      */
-    public List<Suministro> ListarSuministros(){
+    public List<Suministro> ListarSuministros(boolean Vigente){
         if(buffer.bufferSize()>0) return buffer.getListaSuministros();
-        return mSuministro.ListarSuministros();
+        return mSuministro.ListarSuministros(Vigente);
     }
     
     /**
@@ -119,7 +120,7 @@ public class ControladorSuministro implements Serializable{
     }
     
     /**
-     * Devuelve los suministros registrados en la base de datos..
+     * Devuelve los suministros registrados en la base de datos. Solo los suministros vigentes.
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<String, Integer> ListarMapSuministros(){
@@ -127,7 +128,7 @@ public class ControladorSuministro implements Serializable{
         return mSuministro.ListarMapSuministros();
     }
     /**
-     * Devuelve los suministros registrados en la base de datos.
+     * Devuelve los suministros registrados en la base de datos. Solo los suministros vigentes.
      * @return Retorna un map con los ids de suministros (key) y los suministros (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<Integer, Suministro> ListarMapSuministrosFull(){
@@ -145,12 +146,12 @@ public class ControladorSuministro implements Serializable{
         if(buffer.bufferSize()>0){
             suministros = buffer.getListaSuministros();
         }else{
-            suministros = mSuministro.ListarSuministros();
+            suministros = mSuministro.ListarSuministros(true);
         }
         int cantidad = 0;
         for(Suministro suministro: suministros){
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
-                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0 && suministro.isVigente()){
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0 ){
                 cantidad ++;
             }
         }
@@ -167,13 +168,13 @@ public class ControladorSuministro implements Serializable{
         if(buffer.bufferSize()>0){
             suministros = buffer.getListaSuministros();
         }else{
-            suministros = mSuministro.ListarSuministros();
+            suministros = mSuministro.ListarSuministros(true);
         }
         List<Integer> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
             try{
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
-                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0 && suministro.isVigente()){
+                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
                 lista.add(suministro.getIdSuministro());
             }
             }catch(NullPointerException ex){
@@ -194,17 +195,17 @@ public class ControladorSuministro implements Serializable{
         if(buffer.bufferSize()>0){
             suministros = buffer.getListaSuministros();
         }else{
-            suministros = mSuministro.ListarSuministros();
+            suministros = mSuministro.ListarSuministros(true);
         }
         Map<String, Integer> map = new HashMap<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+                if(suministro.getLotesVencidosEnStock().size()>0) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
             }
             return new TreeMap<>(map);
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
+            if(suministro.getLotesVencidos().size()>0 ) map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
         }
         return new TreeMap<>(map);
     }
@@ -218,17 +219,17 @@ public class ControladorSuministro implements Serializable{
         if(buffer.bufferSize()>0){
             suministros = buffer.getListaSuministros();
         }else{
-            suministros = mSuministro.ListarSuministros();
+            suministros = mSuministro.ListarSuministros(true);
         }
         List<Integer> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) lista.add(suministro.getIdSuministro());
+                if(suministro.getLotesVencidosEnStock().size()>0) lista.add(suministro.getIdSuministro());
             }
             return lista;
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) lista.add(suministro.getIdSuministro());
+            if(suministro.getLotesVencidos().size()>0 ) lista.add(suministro.getIdSuministro());
         }
         return lista;
     }
@@ -242,17 +243,17 @@ public class ControladorSuministro implements Serializable{
         if(buffer.bufferSize()>0){
             suministros = buffer.getListaSuministros();
         }else{
-            suministros = mSuministro.ListarSuministros();
+            suministros = mSuministro.ListarSuministros(true);
         }
         List<Suministro> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
-                if(suministro.getLotesVencidosEnStock().size()>0 && suministro.isVigente()) lista.add(suministro);
+                if(suministro.getLotesVencidosEnStock().size()>0 ) lista.add(suministro);
             }
             return lista;
         }
         for(Suministro suministro: suministros){
-            if(suministro.getLotesVencidos().size()>0 && suministro.isVigente()) lista.add(suministro);
+            if(suministro.getLotesVencidos().size()>0) lista.add(suministro);
         }
         return lista;
     }
@@ -279,7 +280,7 @@ public class ControladorSuministro implements Serializable{
             sumBD.setCodigoSAPSuministro(suministro.getCodigoSAPSuministro());
             sumBD.setDescripcionSuministro(suministro.getDescripcionSuministro());
             sumBD.setNombreSuministro(suministro.getNombreSuministro());
-            
+            sumBD.setVigente(suministro.isVigente());
             if(sumBD.getUnidadSuministro().getIdUnidad()!= IdUnidad){
                 sumBD.setUnidadSuministro(cUnidad.BuscarUnidad(IdUnidad));
             }
@@ -290,7 +291,7 @@ public class ControladorSuministro implements Serializable{
                 StockMinimo stock = cStock.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
                 sumBD.addStockMinimoSuministro(stock);
             }
-            sumBD.setVigente(suministro.isVigente());
+            
             id = mSuministro.ActualizarSuministro(sumBD);
             if(id!=-1) buffer.updateSuministro(sumBD);
         }catch(NullPointerException ex){}
