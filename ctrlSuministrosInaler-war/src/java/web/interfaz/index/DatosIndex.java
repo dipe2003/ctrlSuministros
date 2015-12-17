@@ -71,15 +71,17 @@ public class DatosIndex implements Serializable{
     @PostConstruct
     public void init(){
         MapSuministrosFull = fSuministro.ListarMapSuministrosFull();
-        MapSuministros = fSuministro.ListarMapSuministros();
+        MapSuministros = fSuministro.ListarMapSuministros(true);
         List<Integer> idsStockBajo = fSuministro.GetIdsSuministrosDebajoStockMinimo();
         ListSuministrosVencidos = fSuministro.getSuministrosConLotesVencidos();
         ListSuministrosDebajoStock = new ArrayList<>();
         MapLotesVencidos = new HashMap<>();
         for(Integer id: idsStockBajo){
-            ListSuministrosDebajoStock.add(MapSuministrosFull.get(id));
+            Suministro sum = MapSuministrosFull.get(id);
+            if(sum.isVigente())ListSuministrosDebajoStock.add(sum);
         }
         for(Suministro sum: ListSuministrosVencidos){
+            if(sum.isVigente())
             MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
         }
     }

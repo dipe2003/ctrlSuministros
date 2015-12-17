@@ -17,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 abstract public class Suministro implements Serializable{
@@ -28,9 +30,11 @@ abstract public class Suministro implements Serializable{
     private String CodigoSAPSuministro;
     @ManyToOne
     private Unidad UnidadSuministro;
-    @OneToMany(mappedBy = "SuministroLote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "SuministroLote")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Lote> LotesSuministros;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<StockMinimo> StocksMinimosSuministro;
     @ManyToOne
     private Proveedor ProveedorSuministro;
@@ -106,6 +110,22 @@ abstract public class Suministro implements Serializable{
             stock += lote.getCantidadStock();
         }
         return stock;
+    }
+    
+    public float getTotalIngreso(){
+        float total =0f;
+        for(Lote lote: this.LotesSuministros){
+            total += lote.getCantidadIngresosLote();
+        }
+        return total;
+    }
+    
+    public float getTotalSalida(){
+        float total =0f;
+        for(Lote lote: this.LotesSuministros){
+            total += lote.getCantidadSalidasLote();
+        }
+        return total;
     }
     
     public boolean isDebajoStockMinimo(){

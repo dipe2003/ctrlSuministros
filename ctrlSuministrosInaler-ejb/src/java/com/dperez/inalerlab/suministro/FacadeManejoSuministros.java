@@ -146,10 +146,11 @@ public class FacadeManejoSuministros implements Serializable {
     
     /**
      * Devuelve los suministros registrados en la base de datos..
+     * @param Vigentes
      * @return Retorna un map con el nombre de los suministros y el proveedor (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
-    public Map<String, Integer> ListarMapSuministros(){
-        return cSuministro.ListarMapSuministros();
+    public Map<String, Integer> ListarMapSuministros(boolean Vigentes){
+        return cSuministro.ListarMapSuministros(Vigentes);
     }
     /**
      * Devuelve los suministros registrados en la base de datos.

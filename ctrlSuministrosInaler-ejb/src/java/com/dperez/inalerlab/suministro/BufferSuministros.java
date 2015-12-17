@@ -68,9 +68,10 @@ public class BufferSuministros {
         return new TreeMap<>(map);
     }
     
-    public Map<String, Integer> getMapNombreSuministros(){
+    public Map<String, Integer> getMapNombreSuministros(boolean Vigente){
         Map<String, Integer> map = new HashMap<>();
         for(Suministro suministro: MapSuministros.values()){
+            if(suministro.isVigente())
             map.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
         }
         return new TreeMap<>(map);

@@ -8,58 +8,63 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
-        <h:panelGroup rendered="#{loginOperario.idOperario != editarOperario.idOperario and loginOperario.permisoOperario!='Administrador'}">
-        <meta http-equiv="refresh" content="0;url=#{facesContext.externalContext.requestContextPath}/Errores/Error_500.xhtml"></meta>
-        </h:panelGroup>
-        <div class="contenido">            
-            <h:form id="frmEditOp">
-                <fieldset><legend>Editar Operario</legend>
-                    <div class="label">Nombre de Operario</div>
-                    <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
-                    
-                    <div class="label">Apellido de Operario</div>
-                    <h:inputText id="editApellidoOperario" class="input" value="#{editarOperario.apellidoOperario}" p:placeholder="Apellido del operario"/>
-                    
-                    <div class="label">Contraseña Actual</div>
-                    <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
-                    
-                    <div class="label">Contraseña Nueva</div>
-                    <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
-                    
-                    <div class="label">Confirmar Contraseña</div>
-                    <h:inputSecret id="editRePassOperario" class="input" value="#{editarOperario.repPassword}" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
-                        <f:ajax execute="editPassOperario editRePassOperario" event="keyup" render="editmsjPass"/>
-                    </h:inputSecret>
-                    
-                    <c:catch var="catch_error">
-                        <h:outputText id="editmsjPass" value="#{editarOperario.mensajePass}" />
-                    </c:catch>  
-                    
-                    <div class="label">Permiso del Operario</div>
-                    <c:if test="#{loginOperario.permisoOperario != 'Administrador'}" >
-                        <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" title="Solo el Administrador puede asignar los permisos" disabled="true" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
-                            <f:selectItems value="#{editarOperario.permisosOperarios}" />
-                        </h:selectOneRadio>
-                    </c:if>
-                    <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                        <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
-                            <f:selectItems value="#{editarOperario.permisosOperarios}" />
-                        </h:selectOneRadio>
-                    </c:if>
-                    <div class="div-boton">
-                        <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" action="#{editarOperario.editarOperario()}"/>
-                    </div>
-                    
-                    <div>
-                        <h:message for="editIdOperario" class="error"/>
-                        <h:message for="editNombreOperario" class="error"/>
-                        <h:message for="editApellidoOperario" class="error"/>                     
-                        <h:message for="editPassOperario" class="error"/>
-                        <h:message for="editRePassOperario" class="error"/>
-                        <h:message for="btnEditarOperario" class="error"/>                     
-                    </div>
-                </fieldset>
-            </h:form>
-        </div>
+        <c:choose >
+            <c:when test="#{loginOperario.idOperario != editarOperario.idOperario and loginOperario.permisoOperario!='Administrador'}">
+                <meta http-equiv="refresh" content="0;url=#{facesContext.externalContext.requestContextPath}/Errores/Error_500.xhtml"></meta>
+            </c:when>
+            <c:otherwise>
+                <div class="contenido">            
+                    <h:form id="frmEditOp">
+                        <fieldset><legend>Editar Operario</legend>
+                            <div class="label">Nombre de Operario</div>
+                            <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
+                            
+                            <div class="label">Apellido de Operario</div>
+                            <h:inputText id="editApellidoOperario" class="input" value="#{editarOperario.apellidoOperario}" p:placeholder="Apellido del operario"/>
+                            
+                            <div class="label">Contraseña Actual</div>
+                            <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
+                            
+                            <div class="label">Contraseña Nueva</div>
+                            <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
+                            
+                            <div class="label">Confirmar Contraseña</div>
+                            <h:inputSecret id="editRePassOperario" class="input" value="#{editarOperario.repPassword}" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
+                                <f:ajax execute="editPassOperario editRePassOperario" event="keyup" render="editmsjPass"/>
+                            </h:inputSecret>
+                            
+                            <c:catch var="catch_error">
+                                <h:outputText id="editmsjPass" value="#{editarOperario.mensajePass}" />
+                            </c:catch>  
+                            
+                            <div class="label">Permiso del Operario</div>
+                            <c:if test="#{loginOperario.permisoOperario != 'Administrador'}" >
+                                <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" title="Solo el Administrador puede asignar los permisos" disabled="true" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                                    <f:selectItems value="#{editarOperario.permisosOperarios}" />
+                                </h:selectOneRadio>
+                            </c:if>
+                            <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                <h:selectOneRadio id="selectEditarPermiso" value="#{editarOperario.permisoOperario}" class="select-opt" required="true" requiredMessage="No se selecciono permiso." >
+                                    <f:selectItems value="#{editarOperario.permisosOperarios}" />
+                                </h:selectOneRadio>
+                            </c:if>
+                            <div class="div-boton">
+                                <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" action="#{editarOperario.editarOperario()}"/>
+                            </div>
+                            
+                            <div>
+                                <h:message for="editIdOperario" class="error"/>
+                                <h:message for="editNombreOperario" class="error"/>
+                                <h:message for="editApellidoOperario" class="error"/>                     
+                                <h:message for="editPassOperario" class="error"/>
+                                <h:message for="editRePassOperario" class="error"/>
+                                <h:message for="btnEditarOperario" class="error"/>                     
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </c:otherwise>
+        </c:choose>
+        
     </ui:define>
 </ui:composition>    

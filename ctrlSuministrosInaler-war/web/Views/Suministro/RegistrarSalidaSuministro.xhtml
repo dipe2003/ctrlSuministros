@@ -28,7 +28,7 @@
                     <h:selectOneMenu id="selectNumeroLoteSuministroSalida" value="#{registrarSalidaSuministro.idLoteSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono numero de lote." >
                         <f:selectItem itemValue="--Seleccionar Numero Lote---" itemDisabled="false"  noSelectionOption="true" />
                         <f:selectItems value="#{registrarSalidaSuministro.listaNumerosLoteSuministro}" />
-                        <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote" />
+                        <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote inputCantidadSalidaSuministro" />
                     </h:selectOneMenu>
                     
                     <div class="label">Cantidad de Salida</div>

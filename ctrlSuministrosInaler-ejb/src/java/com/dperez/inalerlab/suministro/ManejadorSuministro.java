@@ -80,10 +80,11 @@ public class ManejadorSuministro {
         return new TreeMap<>(suministros);
     }
     
-    public Map<String, Integer> ListarMapSuministros(){
+    public Map<String, Integer> ListarMapSuministros(boolean Vigente){
         Map<String, Integer> suministros = new HashMap<>();
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s WHERE s.Vigente= :vigente ", Suministro.class);
         try{
+            query.setParameter("vigente", Vigente);
             List<Suministro> list = query.getResultList();
             for(Suministro suministro: list){
                 suministros.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());

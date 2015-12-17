@@ -8,53 +8,60 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
     <ui:define name="page_content">
-        <div class="contenido">            
-            <h:form id="frmEditSuministro">
-                <fieldset><legend>Agregar Suministro</legend>
-                    <div class="label">Tipo de Suministro</div>
-                    <h:outputText class="output" value="#{editarSuministro.tipoSuministro}" />
-                    
-                    <div class="label">Nombre de Suministro</div>
-                    <h:inputText id="inputEditNombreSuministro" class="input" value="#{editarSuministro.nombreSuministro}" required="true" requiredMessage="No se ingreso nombre de suministro." p:placeholder="Nombre del suministro."/>
-                    
-                    <div class="label">Descripcion de Suministro</div>
-                    <h:inputText id="inputEditDescripcionSuministro" class="input" value="#{editarSuministro.descripcionSuministro}"  p:placeholder="Descripcion del suministro."/>
-                    
-                    <div class="label">Codigo SAP</div>
-                    <h:inputText id="inputEditCodigoSAPSuministro" class="input" value="#{editarSuministro.codigoSAPSuministro}" p:placeholder="Codigo de suministro en sistema SAP"/>
-                    
-                    <div class="label">Unidad</div>
-                    <h:selectOneRadio value="#{editarSuministro.idUnidadSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
-                        <f:selectItems value="#{editarSuministro.unidadesSuministros}" />
-                    </h:selectOneRadio>
-                    
-                    <div class="label">Sotck Minimo</div>
-                    <h:inputText id="inputEditCantidadStockMinimo" class="input" value="#{editarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>                    
-                    
-                    <div class="label">Vigencia</div>
-                    <h:selectOneRadio value="#{editarSuministro.estaVigente}">
-                        <f:selectItem  itemValue="true" itemLabel="En Uso"/>
-                        <f:selectItem  itemValue="false" itemLabel="No Se Utiliza" />
-                    </h:selectOneRadio>
-                    
-                    <div class="label">Proveedor</div>
-                    <h:selectOneMenu value="#{editarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
-                        <f:selectItems value="#{editarSuministro.proveedoresSuministros}" />
-                    </h:selectOneMenu>
-                    
-                    <div class="div-boton">
-                        <h:commandButton id="btnEditarSuministro" class="boton-input" value="Guardar" action="#{editarSuministro.editarSuministro()}"/>
-                    </div>
-                    
-                    <div>
-                        <h:message for="inputEditNombreSuministro" class="error"/>
-                        <h:message for="inputEditDescripcionSuministro" class="error"/>
-                        <h:message for="inputEditCodigoSAPSuministro" class="error"/>
-                        <h:message for="inputEditCantidadStockMinimo" class="error"/>
-                        <h:message for="btnEditarSuministro" class="error"/>                     
-                    </div>
-                </fieldset>
-            </h:form>
-        </div>
+        <c:choose>
+            <c:when test="#{loginOperario.permisoOperario != 'Administrador' and loginOperario.permisoOperario != 'Verificador'}">
+                <meta http-equiv="refresh" content="0;url=#{facesContext.externalContext.requestContextPath}/Errores/Error_500.xhtml"></meta>
+            </c:when>
+            <c:otherwise>
+                <div class="contenido">            
+                    <h:form id="frmEditSuministro">
+                        <fieldset><legend>Agregar Suministro</legend>
+                            <div class="label">Tipo de Suministro</div>
+                            <h:outputText class="output" value="#{editarSuministro.tipoSuministro}" />
+                            
+                            <div class="label">Nombre de Suministro</div>
+                            <h:inputText id="inputEditNombreSuministro" class="input" value="#{editarSuministro.nombreSuministro}" required="true" requiredMessage="No se ingreso nombre de suministro." p:placeholder="Nombre del suministro."/>
+                            
+                            <div class="label">Descripcion de Suministro</div>
+                            <h:inputText id="inputEditDescripcionSuministro" class="input" value="#{editarSuministro.descripcionSuministro}"  p:placeholder="Descripcion del suministro."/>
+                            
+                            <div class="label">Codigo SAP</div>
+                            <h:inputText id="inputEditCodigoSAPSuministro" class="input" value="#{editarSuministro.codigoSAPSuministro}" p:placeholder="Codigo de suministro en sistema SAP"/>
+                            
+                            <div class="label">Unidad</div>
+                            <h:selectOneRadio value="#{editarSuministro.idUnidadSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
+                                <f:selectItems value="#{editarSuministro.unidadesSuministros}" />
+                            </h:selectOneRadio>
+                            
+                            <div class="label">Sotck Minimo</div>
+                            <h:inputText id="inputEditCantidadStockMinimo" class="input" value="#{editarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>                    
+                            
+                            <div class="label">Vigencia</div>
+                            <h:selectOneRadio value="#{editarSuministro.estaVigente}">
+                                <f:selectItem  itemValue="true" itemLabel="En Uso"/>
+                                <f:selectItem  itemValue="false" itemLabel="No Se Utiliza" />
+                            </h:selectOneRadio>
+                            
+                            <div class="label">Proveedor</div>
+                            <h:selectOneMenu value="#{editarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
+                                <f:selectItems value="#{editarSuministro.proveedoresSuministros}" />
+                            </h:selectOneMenu>
+                            
+                            <div class="div-boton">
+                                <h:commandButton id="btnEditarSuministro" class="boton-input" value="Guardar" action="#{editarSuministro.editarSuministro()}"/>
+                            </div>
+                            
+                            <div>
+                                <h:message for="inputEditNombreSuministro" class="error"/>
+                                <h:message for="inputEditDescripcionSuministro" class="error"/>
+                                <h:message for="inputEditCodigoSAPSuministro" class="error"/>
+                                <h:message for="inputEditCantidadStockMinimo" class="error"/>
+                                <h:message for="btnEditarSuministro" class="error"/>                     
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </c:otherwise>
+        </c:choose>        
     </ui:define>
 </ui:composition>    

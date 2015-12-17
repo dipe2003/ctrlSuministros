@@ -121,11 +121,12 @@ public class ControladorSuministro implements Serializable{
     
     /**
      * Devuelve los suministros registrados en la base de datos. Solo los suministros vigentes.
+     * @param Vigente
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
-    public Map<String, Integer> ListarMapSuministros(){
-        if(buffer.bufferSize()>0) return buffer.getMapNombreSuministros();
-        return mSuministro.ListarMapSuministros();
+    public Map<String, Integer> ListarMapSuministros(boolean Vigente){
+        if(buffer.bufferSize()>0) return buffer.getMapNombreSuministros(Vigente);
+        return mSuministro.ListarMapSuministros(Vigente);
     }
     /**
      * Devuelve los suministros registrados en la base de datos. Solo los suministros vigentes.
