@@ -32,7 +32,7 @@
                     </h:selectOneMenu>
                     
                     <div class="label">Cantidad de Salida</div>
-                    <h:inputText id="inputCantidadSalidaSuministro" class="input" value="#{registrarSalidaSuministro.cantidadSalidaSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a bajar de stock">
+                    <h:inputText id="inputCantidadSalidaSuministro" class="input" value="#{registrarSalidaSuministro.cantidadSalidaSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a bajar de stock" maxlength="#{registrarSalidaSuministro.cantidadStockLote}">
                         <f:ajax event="keyup" render="outputNuevaCantidadStockLote"/>
                     </h:inputText>
                     <div class="label">Stock Actual</div>
