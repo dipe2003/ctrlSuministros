@@ -11,7 +11,8 @@
     <h:body>
         <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">
             <span style="text-align: center;">
-                <h:messages id="msjLogin" class="error" />
+                <h:message for="inputNumOperario" id="msjLoginNumero" class="error" />
+                <h:message for="inputSecret" id="msjLoginPass" class="error" />
             </span>            
             <div id="linea" class="fondo-azul">
                 <div id="titulo" class="fondo-azul">
@@ -19,9 +20,9 @@
                     <b>Ingresar</b>
                 </div>
                 <div id="contenedor" >
-                    <h:inputText value="#{loginOperario.idOperario}" class="Texto" p:placeholder="Numero de Operario" required="true" requiredMessage="Debes ingresar un numero de operario"/><br/>
-                    <h:inputSecret value="#{loginOperario.password}" class="Texto" p:placeholder="Password" required="true" requiredMessage="Debes ingresar una contraseña."/><br/>                    
-                    <h:commandButton type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
+                    <h:inputText id="inputNumOperario" value="#{loginOperario.idOperario}" class="Texto" p:placeholder="Numero de Operario" required="true" requiredMessage="Debes ingresar un numero de operario"/><br/>
+                    <h:inputSecret id="inputSecret" value="#{loginOperario.password}" class="Texto" p:placeholder="Password" required="true" requiredMessage="Debes ingresar una contraseña."/><br/>                    
+                    <h:commandButton id="btnLogin" type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
                 </div>
             </div>
         </h:form>  

@@ -49,10 +49,10 @@ public class LoginOperario implements Serializable{
                 PermisoOperario = operario.getPermisoOperario().getNombrePermiso();
                 Logueado = true;
             }else{
-                FacesContext.getCurrentInstance().addMessage("login:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
+                FacesContext.getCurrentInstance().addMessage("login:inputNumOperario", new FacesMessage("Error", "Los datos no son correctos."));
             }            
         }catch(NullPointerException | NumberFormatException ex){
-            FacesContext.getCurrentInstance().addMessage("login:msjLogin", new FacesMessage("Error", "Los datos no son correctos."));
+            FacesContext.getCurrentInstance().addMessage("login:inputNumOperario", new FacesMessage("Error", "Los datos no son correctos."));
         }
     }
     

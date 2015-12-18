@@ -19,8 +19,7 @@
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarSalidaSuministro.js"/>
         
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/Chart.js"/>
-        
-        <Script>
+        <script>
             $(document).ready(function() {
                 var datosStock = [
                     {
@@ -64,13 +63,25 @@
                     var StockChart = new Chart(ctx).Pie(datosStock, opciones);
                     var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento, opciones);
                 }catch(ex){}
+                
+                $.ajaxSetup({
+                    beforeSend:function(){
+                        $("#loading").show();
+                    },
+                    complete:function(){
+                        $("#loading").hide();
+                    }
+                });
+            });        
+        </script>
 
-            });
-        </Script>
         <title>Inicio</title>
     </h:head>
     <h:body>
-        
+        <div id="loading" class="carga">
+            <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
+            <div>Cargando...</div>
+        </div>
         <div>
             <ui:include src="header.xhtml"/>
         </div>

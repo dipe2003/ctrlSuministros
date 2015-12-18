@@ -42,11 +42,14 @@ public class ListadoEstadoSuministros implements Serializable{
         }catch(IOException ex){}
     }
     
+    /**
+     * llena la lista de suministros según el nombre ingresado.
+     */
     public void filtrarLista(){
         if(!NombreSuministro.isEmpty()){
             ListaSuministros.clear();
             for(String nom: MapSuministros.keySet()){
-                if(nom.toLowerCase().contains(NombreSuministro.toLowerCase())) {
+                if(nom.contains(NombreSuministro.toLowerCase())) {
                     ListaSuministros.add(MapSuministros.get(nom));
                 }
             }
@@ -62,7 +65,7 @@ public class ListadoEstadoSuministros implements Serializable{
         MapSuministros = new HashMap<>();
         try{
             for(Suministro sum: ListaSuministros){
-                MapSuministros.put(sum.getNombreSuministro()+" ("+sum.getProveedorSuministro().getNombreProveedor() +")", sum);
+                MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getIdSuministro()+")", sum);
             }
         }catch(IndexOutOfBoundsException ex){
             System.out.println("Error: " +ex.getMessage());

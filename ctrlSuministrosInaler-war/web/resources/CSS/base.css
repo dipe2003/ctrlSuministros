@@ -301,3 +301,12 @@ div .sub-titulo-fondo{
     font-size: 14px;
     font-family: LibreSans;
 }
+
+.carga{
+    position:absolute; 
+    margin-left: 50%;
+    margin-top: 30%;
+    padding: 1%;
+    color:blue;
+    text-align: center;
+}

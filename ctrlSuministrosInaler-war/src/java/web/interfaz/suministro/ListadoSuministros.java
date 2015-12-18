@@ -1,6 +1,7 @@
 
 package web.interfaz.suministro;
 
+import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.IOException;
@@ -46,14 +47,13 @@ public class ListadoSuministros implements Serializable{
         if(!NombreSuministro.isEmpty()){
             ListaSuministros.clear();
             for(String nom: MapSuministros.keySet()){
-                if(nom.toLowerCase().contains(NombreSuministro.toLowerCase())) {
+                if(nom.contains(NombreSuministro.toLowerCase())) {
                     ListaSuministros.add(MapSuministros.get(nom));
                 }
             }
         }else{
             ListaSuministros = new ArrayList<>(MapSuministros.values());
-        }
-        
+        }        
     }
     
     @PostConstruct
@@ -61,8 +61,8 @@ public class ListadoSuministros implements Serializable{
         ListaSuministros = fSuministro.ListarSuministros(false);
         MapSuministros = new HashMap<>();
         try{
-            for(Suministro sum: ListaSuministros){
-                MapSuministros.put(sum.getNombreSuministro()+" ("+sum.getProveedorSuministro().getNombreProveedor() +")", sum);
+            for(Suministro sum: ListaSuministros){                
+                MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor()+")", sum);
             }
         }catch(IndexOutOfBoundsException ex){
             System.out.println("Error: " +ex.getMessage());
