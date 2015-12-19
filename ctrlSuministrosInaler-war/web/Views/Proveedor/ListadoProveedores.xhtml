@@ -21,7 +21,7 @@
                         <table>
                             <td><div class="label">Filtro: </div></td>
                             <td><h:inputText value="#{listadoProveedores.nombreProveedor}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoProveedores.filtrarLista()}" render="tablaListadoProveedores"/>
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoProveedores.filtrarLista()}" render="tablaListadoProveedores" onevent="indicador"/>
                                 </h:inputText>
                             </td>
                         </table>

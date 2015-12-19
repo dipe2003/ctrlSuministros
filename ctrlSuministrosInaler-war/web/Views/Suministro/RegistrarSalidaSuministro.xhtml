@@ -16,7 +16,7 @@
                         <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
                         <f:selectItems value="#{registrarSalidaSuministro.listaSuministros}" />
                         <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" />
-                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" />
+                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" onevent="indicador" />
                     </h:selectOneMenu>
                     
                     <div class="label">Proveedor</div>
@@ -46,10 +46,10 @@
                 </fieldset>
                 
                 <div class="div-boton">
-                    <h:commandButton id="btnRegistrarSalidaSuministro" class="boton-input" value="Registrar" action="#{registrarSalidaSuministro.registrarSalidaSuministro()}"/>
+                    <h:commandButton id="btnRegistrarSalidaSuministro" class="boton-input" value="Registrar" action="#{registrarSalidaSuministro.registrarSalidaSuministro()}" />
                 </div>
                 
-                <div>                    
+                <div id="mensajesSalida">                    
                     <h:message for="inputCantidadSalidaSuministro" class="error"/>
                     <h:message for="selectNumeroLoteSuministroSalida" class="error"/>                    
                     <h:message for="btnRegistrarSalidaSuministro" class="error"/>                     

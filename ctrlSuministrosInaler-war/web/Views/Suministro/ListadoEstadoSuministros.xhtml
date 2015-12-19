@@ -14,7 +14,7 @@
                         <table>
                             <td><div class="label">Filtro: </div></td>
                             <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListado"/>
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListado" onevent="indicador"/>
                                 </h:inputText></td>
                         </table>
                         <h:panelGroup id="tablaListado">
