@@ -10,50 +10,56 @@
     <ui:define name="page_content">
         <div class="contenido">            
             <h:form id="frmRegSalidaSuministro">
-                <fieldset><legend>Suministro</legend>
-                    <div class="label">Suministro</div>
-                    <h:selectOneMenu id="selectSuministroSalida" value="#{registrarSalidaSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
-                        <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
-                        <f:selectItems value="#{registrarSalidaSuministro.listaSuministros}" />
-                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" />
-                        <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" onevent="indicador" />
-                    </h:selectOneMenu>
+                <fieldset><legend>Salidas de Suministros</legend>
+                    <fieldset><legend>Suministro</legend>
+                        <div class="label">Suministro</div>
+                        <h:selectOneMenu id="selectSuministroSalida" value="#{registrarSalidaSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
+                            <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
+                            <f:selectItems value="#{registrarSalidaSuministro.listaSuministros}" />
+                            <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" onevent="indicador" />
+                            <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" onevent="indicador" />
+                        </h:selectOneMenu>
+                        
+                        <div class="label">Proveedor</div>
+                        <h:outputText id="selectProveedorSalida" value="#{registrarSalidaSuministro.nombreProveedor}" class="output" />            
+                    </fieldset>
                     
-                    <div class="label">Proveedor</div>
-                    <h:outputText id="selectProveedorSalida" value="#{registrarSalidaSuministro.nombreProveedor}" class="output" />            
+                    <fieldset><legend>Lote</legend>
+                        <div class="label">Numero de Lote</div>
+                        <h:selectOneMenu id="selectNumeroLoteSuministroSalida" value="#{registrarSalidaSuministro.idLoteSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono numero de lote." >
+                            <f:selectItem itemValue="--Seleccionar Numero Lote---" itemDisabled="false"  noSelectionOption="true" />
+                            <f:selectItems value="#{registrarSalidaSuministro.listaNumerosLoteSuministro}" />
+                            <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote inputCantidadSalidaSuministro" onevent="indicador" />
+                        </h:selectOneMenu>
+                        
+                        <div class="label">Cantidad de Salida</div>
+                        <h:inputText id="inputCantidadSalidaSuministro" class="input" value="#{registrarSalidaSuministro.cantidadSalidaSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a bajar de stock"  maxlength="#{registrarSalidaSuministro.cantidadStockLote}">
+                            <f:ajax event="keyup" render="outputNuevaCantidadStockLote" onevent="indicador"/>
+                        </h:inputText>
+                        <div class="label">Stock Actual</div>
+                        <h:inputText id="outputCantidadStockLote" class="output" value="Lote: #{registrarSalidaSuministro.cantidadStockLote} #{registrarSalidaSuministro.unidadCantidad} / Total: #{registrarSalidaSuministro.stockSuministro}" p:disabled="true" />
+                        <div class="label">Nuevo Stock</div>
+                        <h:inputText id="outputNuevaCantidadStockLote" class="output" value="Lote: #{registrarSalidaSuministro.nuevoStock} #{registrarSalidaSuministro.unidadCantidad} / Total: #{registrarSalidaSuministro.stockSuministro - registrarSalidaSuministro.cantidadSalidaSuministro }" p:disabled="true" />
+                        
+                        <div class="label">Observaciones</div>
+                        <h:inputTextarea id="inputObservacionesSalidaSuministro" class="input" value="#{registrarSalidaSuministro.observacionesSalida}" p:placeholder="Observaciones para esta salida"/>
+                        
+                    </fieldset>
+                    
+                    <div class="div-boton">
+                        <h:commandButton id="btnRegistrarSalidaSuministro" class="boton-input" value="Registrar" >
+                            <f:ajax execute="@form" listener="#{registrarSalidaSuministro.registrarSalidaSuministro()}" onevent="indicador" render="mensajesSalida" />
+                        </h:commandButton>
+                    </div>
+                    
+                    <h:panelGroup id="mensajesSalida">
+                        <div >                    
+                            <h:message for="inputCantidadSalidaSuministro" class="error"/>
+                            <h:message for="selectNumeroLoteSuministroSalida" class="error"/>                    
+                            <h:message for="btnRegistrarSalidaSuministro" class="error"/>                     
+                        </div>
+                    </h:panelGroup>
                 </fieldset>
-                
-                <fieldset><legend>Lote</legend>
-                    <div class="label">Numero de Lote</div>
-                    <h:selectOneMenu id="selectNumeroLoteSuministroSalida" value="#{registrarSalidaSuministro.idLoteSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono numero de lote." >
-                        <f:selectItem itemValue="--Seleccionar Numero Lote---" itemDisabled="false"  noSelectionOption="true" />
-                        <f:selectItems value="#{registrarSalidaSuministro.listaNumerosLoteSuministro}" />
-                        <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote inputCantidadSalidaSuministro" />
-                    </h:selectOneMenu>
-                    
-                    <div class="label">Cantidad de Salida</div>
-                    <h:inputText id="inputCantidadSalidaSuministro" class="input" value="#{registrarSalidaSuministro.cantidadSalidaSuministro}" required="true" requiredMessage="No se ingreso cantidad de suministro." p:placeholder="Cantidad a bajar de stock" maxlength="#{registrarSalidaSuministro.cantidadStockLote}">
-                        <f:ajax event="keyup" render="outputNuevaCantidadStockLote"/>
-                    </h:inputText>
-                    <div class="label">Stock Actual</div>
-                    <h:inputText id="outputCantidadStockLote" class="output" value="Lote: #{registrarSalidaSuministro.cantidadStockLote} #{registrarSalidaSuministro.unidadCantidad} / Total: #{registrarSalidaSuministro.stockSuministro}" p:disabled="true" />
-                    <div class="label">Nuevo Stock</div>
-                    <h:inputText id="outputNuevaCantidadStockLote" class="output" value="Lote: #{registrarSalidaSuministro.nuevoStock} #{registrarSalidaSuministro.unidadCantidad} / Total: #{registrarSalidaSuministro.stockSuministro - registrarSalidaSuministro.cantidadSalidaSuministro }" p:disabled="true" />
-                    
-                    <div class="label">Observaciones</div>
-                    <h:inputTextarea id="inputObservacionesSalidaSuministro" class="input" value="#{registrarSalidaSuministro.observacionesSalida}" p:placeholder="Observaciones para esta salida"/>
-                    
-                </fieldset>
-                
-                <div class="div-boton">
-                    <h:commandButton id="btnRegistrarSalidaSuministro" class="boton-input" value="Registrar" action="#{registrarSalidaSuministro.registrarSalidaSuministro()}" />
-                </div>
-                
-                <div id="mensajesSalida">                    
-                    <h:message for="inputCantidadSalidaSuministro" class="error"/>
-                    <h:message for="selectNumeroLoteSuministroSalida" class="error"/>                    
-                    <h:message for="btnRegistrarSalidaSuministro" class="error"/>                     
-                </div>
             </h:form>
         </div>
     </ui:define>

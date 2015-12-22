@@ -12,9 +12,12 @@
                 <f:view>
                     <h:form>
                         <table>
-                            <td><div class="label">Filtro: </div></td>
-                            <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListado" onevent="indicador"/>
+                            <td>
+                                <div class="label">Filtro: </div>
+                            </td>
+                            <td>
+                                <h:inputText value="#{listadoEstadoSuministros.nombreSuministro}" >
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoEstadoSuministros.filtrarLista()}" render="tablaListado" onevent="indicador" delay="500"/>
                                 </h:inputText></td>
                         </table>
                         <h:panelGroup id="tablaListado">
@@ -25,46 +28,49 @@
                                 <th class="label" style="width: 10%">Ultimo Ingreso</th>
                                 <th class="label" style="width: 10%">Stock Actual</th>
                                 <th class="label" style="width: 5%">Mas Info</th>
-                                <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
-                                    <c:if test="#{sum.vigente}" >
-                                        <tr>
-                                            <c:if test="#{not empty sum.lotesVencidosEnStock or sum.debajoStockMinimo}">
-                                                <td class="div-output" >
-                                                    <img title="Requiere Atencion! Ver Mas Informacion." height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning.png"/>
-                                                </td>
-                                            </c:if>
-                                            <c:if test="#{empty sum.lotesVencidosEnStock and !sum.debajoStockMinimo}">
-                                                <td class="div-output" >
-                                                    <img title="OK" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok.png"/>
-                                                </td>
-                                            </c:if>
-                                            <td class="div-output" >
-                                                <div>#{sum.nombreSuministro}</div>
-                                            </td>                                        
-                                            <td class="div-output">
-                                                #{sum.proveedorSuministro.nombreProveedor}
-                                            </td>
-                                            
-                                            <td class="div-output">
-                                                <c:if test="#{sum.ultimoIngreso != null}">
-                                                    #{sum.ultimoIngreso.cantidadIngreso}
-                                                </c:if>
-                                                <c:if  test="#{sum.ultimoIngreso == null}">
+                                <c:forEach var ="sum" items="#{listadoEstadoSuministros.mapFiltroSuministros}" >
+                                    <c:if test="#{not empty sum.value.nombreSuministro}" >
+                                    <tr>
+                                        <td class="div-output" >
+                                            <c:choose>
+                                                <c:when test="#{not empty sum.value.lotesVencidos or sum.value.debajoStockMinimo}">                                                
+                                                    <img title="#{sum.value.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning.png"/>
+                                                </c:when>
+                                                <c:when test="#{empty sum.value.lotesVencidos and not sum.value.debajoStockMinimo}">                                                
+                                                    <img title="#{sum.value.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok.png"/>                                                
+                                                </c:when>                                                
+                                            </c:choose>
+                                        </td>
+                                        <td class="div-output" >
+                                            <div>#{sum.value.nombreSuministro}</div>
+                                        </td>                                        
+                                        <td class="div-output">
+                                            #{sum.value.proveedorSuministro.nombreProveedor}
+                                        </td>                                        
+                                        <td class="div-output">
+                                            <c:choose>
+                                                <c:when test="#{sum.value.ultimoIngreso != null}">
+                                                    #{sum.value.ultimoIngreso.cantidadIngreso}
+                                                </c:when>
+                                                <c:otherwise>
                                                     ---
-                                                </c:if>                                       
-                                            </td>
-                                            <td class="div-output">
-                                                <c:if test="#{sum.ultimoIngreso != null}">
-                                                    #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
-                                                </c:if>
-                                                <c:if test="#{sum.ultimoIngreso == null}">
+                                                </c:otherwise>
+                                            </c:choose>                                                                                      
+                                        </td>
+                                        <td class="div-output">
+                                            <c:choose>
+                                                <c:when test="#{sum.value.ultimoIngreso != null}">
+                                                    #{sum.value.stock} #{sum.value.unidadSuministro.nombreUnidad}
+                                                </c:when>
+                                                <c:otherwise>
                                                     ---
-                                                </c:if>
-                                            </td>
-                                            <td class="div-output">
-                                                <h:commandButton value="..." action="#{listadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
-                                            </td>
-                                        </tr>
+                                                </c:otherwise>
+                                            </c:choose>                                                
+                                        </td>
+                                        <td class="div-output">
+                                            <h:commandButton value="..." action="#{listadoEstadoSuministros.verMasInfo(sum.value.idSuministro)}" class="boton-input boton-tabla" />
+                                        </td>
+                                    </tr>
                                     </c:if>
                                 </c:forEach>                                
                             </table>

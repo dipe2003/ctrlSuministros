@@ -23,7 +23,7 @@ public class ControladorLote implements Serializable{
     private ControladorSuministro cSuministro;
     @Inject
     private BufferSuministros buffer;
-
+    
     
     /**
      * Crea un lote en la base de datos.
@@ -42,7 +42,7 @@ public class ControladorLote implements Serializable{
     /**
      * Busca un lote por su IdLote en la base de datos.
      * @param IdLote
-     * @return 
+     * @return
      */
     public Lote BuscarLote(int IdLote){
         return mLote.ObtenerLote(IdLote);
@@ -51,7 +51,7 @@ public class ControladorLote implements Serializable{
     /**
      * Busca un lote por su NumeroLote en la base de datos.
      * @param NumeroLote
-     * @return 
+     * @return
      */
     public Lote BuscarLotePorNumeroLote(String NumeroLote){
         return mLote.ObtenerLote(NumeroLote);
@@ -60,7 +60,7 @@ public class ControladorLote implements Serializable{
     /**
      * Devuelve una lista con todos los lotes registrados en la base de datos.
      * Si no hay lotes registrados devuelve una lista vacia.
-     * @return 
+     * @return
      */
     public List<Lote> ListarLotes(){
         return mLote.ListarLotes();
@@ -106,14 +106,19 @@ public class ControladorLote implements Serializable{
     /**
      * Devuelve un Map con los lotes con stock registrados de un suministro en el sistema.
      * @param IdSuministro
+     * @param Vencimiento True para anexar la fecha de vencimiento al numero de lote.
      * @return Retorna un Map con el numero de lote (key) e id (value)
      */
-    public Map<String, Integer> ListarMapLotesStock(int IdSuministro){
+    public Map<String, Integer> ListarMapLotesStock(int IdSuministro, boolean Vencimiento){
         Map<String, Integer> strLotes = new HashMap<>();
         Map<Integer, Lote> lotes = mLote.ListarMapLotesFull(IdSuministro);
         for(Lote lote: lotes.values()){
             if(lote.getCantidadStock()!=0) {
-                strLotes.put(lote.getNumeroLote(), lote.getIdLote());
+                if(Vencimiento) {
+                    strLotes.put(lote.getNumeroLote() + " (Vto: "+ lote.getStrFechaVencimientoLote()+")", lote.getIdLote());
+                }else{
+                    strLotes.put(lote.getNumeroLote(), lote.getIdLote());
+                }
             }
         }
         return strLotes;

@@ -20,36 +20,35 @@
                     <h:form>
                         <table>
                             <td><div class="label">Filtro: </div></td>
-                            <td><h:inputText value="#{listadoEstadoSuministros.nombreSuministro}" >
-                                    <f:ajax execute="@this" event="keyup" listener="#{listadoEstadoSuministros.filtrarLista()}" render="tablaListadoOpciones" onevent="indicador"/>
+                            <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >
+                                    <f:ajax execute="@this" event="keyup" listener="#{listadoSuministros.filtrarLista()}" render="tablaListadoOpciones" onevent="indicador"/>
                                 </h:inputText>
                             </td>
                         </table>
                         <h:panelGroup id="tablaListadoOpciones">
                             <table class="tabla-listaSuministro">
                                 <th class="label" style="width: 15%">Tipo</th>
-                                <th class="label" style="width: 43%">Suministro</th>
-                                <th class="label" style="width: 30%">Proveedor</th>
+                                <th class="label" style="width: 38%">Suministro</th>
+                                <th class="label" style="width: 18%">Proveedor</th>
+                                <th class="label" style="width: 10%">Codigo SAP</th>
                                 <th class="label" style="width: 10%">Stock Minimo</th>
-                                <th class="label" style="width: 5%">Vigente</th>
+                                <th class="label" style="width: 5%">En Uso</th>
                                 <th class="label" style="width: 2%"></th>                                
-                                <c:forEach items="#{listadoEstadoSuministros.listaSuministros}" var ="sum">
+                                <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
                                     <tr>
-                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'Material'}" >
-                                            <td class="div-output">
-                                                Material
-                                            </td>
-                                        </c:if>
-                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}" >
-                                            <td class="div-output">
-                                                Reactivo Quimico
-                                            </td>
-                                        </c:if>
-                                        <c:if test="#{listadoEstadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}" >
-                                            <td class="div-output">
-                                                Medio de Ensayo
-                                            </td>
-                                        </c:if>
+                                        <td class="div-output">
+                                            <c:choose>
+                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'Material'}">
+                                                    Material
+                                                </c:when>
+                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}">
+                                                    Reactivo Quimico
+                                                </c:when>
+                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}">
+                                                    Medio de Ensayo
+                                                </c:when>                                            
+                                            </c:choose>
+                                        </td>
                                         <td class="div-output">
                                             #{sum.nombreSuministro}
                                         </td>
@@ -57,34 +56,34 @@
                                             #{sum.proveedorSuministro.nombreProveedor}
                                         </td>
                                         <td class="div-output">
+                                            #{sum.codigoSAPSuministro}
+                                        </td>
+                                        <td class="div-output">
                                             #{sum.stockMinimoSuministro.cantidadStockMinimo} #{sum.unidadSuministro.nombreUnidad}
                                         </td>
-                                        <c:if test="#{sum.vigente}">
-                                            <td class="div-output" >
-                                                Si
-                                            </td>
-                                        </c:if>
-                                        <c:if test="#{!sum.vigente}">
-                                            <td class="div-output" >                                                
-                                                No
-                                            </td>
-                                        </c:if>                           
-                                        <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
-                                            <td class="div-output" >
+                                        <td class="div-output" >
+                                            <c:choose>
+                                                <c:when test="#{sum.vigente}">
+                                                    Si
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No
+                                                </c:otherwise>
+                                            </c:choose>                                                
+                                        </td>
+                                        <td class="div-output" >
+                                            <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarSuministro.xhtml?id=#{sum.idSuministro}">
                                                     <img title="Editar el suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>
                                                 </a>
-                                            </td>
-                                        </c:if>
-                                        <c:if test="#{loginOperario.permisoOperario=='Analista' or loginOperario.permisoOperario=='Lectura'}">
-                                            <td class="div-output" >                                                
-                                                <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>                                                
-                                            </td>
-                                        </c:if>
+                                            </c:if>
+                                            <c:if test="#{loginOperario.permisoOperario=='Analista' or loginOperario.permisoOperario=='Lectura'}">
+                                                <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>
+                                            </c:if>
+                                        </td>
                                     </tr>
                                 </c:forEach>                             
-                            </table>
-                            
+                            </table>                            
                         </h:panelGroup>
                     </h:form>
                 </f:view>                

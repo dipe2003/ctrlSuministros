@@ -107,8 +107,12 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     public void setStockSuministro(float StockSuministro) {this.StockSuministro = StockSuministro;}
     
+    /**
+     * Registra la salida de un suministro.
+     * @throws IOException 
+     */
     public void registrarSalidaSuministro() throws IOException{
-        if(CantidadSalidaSuministro <= CantidadStockLote){
+        if(CantidadSalidaSuministro > 0 && CantidadSalidaSuministro <= CantidadStockLote){
             FacesContext context = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
@@ -116,13 +120,18 @@ public class RegistrarSalidaSuministro implements Serializable{
             Date fechaHoy = Calendar.getInstance().getTime();
             if(fLote.CrearSalida(fechaHoy, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
                 context.getExternalContext().redirect(url+"/Views/index.xhtml");
+                context.responseComplete();
             }
         }else{
             FacesContext.getCurrentInstance().addMessage("frmRegSalidaSuministro:inputCantidadSalidaSuministro", 
-                    new FacesMessage("La cantidad de salida no puede ser mayor que la disponible del lote", "La cantidad de salida no puede ser mayor que la disponible del lote"));
+                    new FacesMessage("La cantidad de salida no es correcta.", "La cantidad de salida no es correcta."));
+            FacesContext.getCurrentInstance().renderResponse();
         }
     }
     
+    /**
+     * Inicializa las listas y maps
+     */
     @PostConstruct
     public void init(){
         listaSuministros = fSuministro.ListarMapSuministros(true);
@@ -136,7 +145,7 @@ public class RegistrarSalidaSuministro implements Serializable{
      * @param IdSuministro id de suministro seleccionado.
      */
     public void cargarNumerosLoteSuministro(int IdSuministro){
-        listaNumerosLoteSuministro = fLote.ListarMapLotesConStock(IdSuministro);
+        listaNumerosLoteSuministro = fLote.ListarMapLotesConStock(IdSuministro, true);
         UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
         StockSuministro = fSuministro.BuscarSuministro(IdSuministro).getStock();
     }

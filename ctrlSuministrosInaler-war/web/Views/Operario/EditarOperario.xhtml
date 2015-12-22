@@ -49,17 +49,20 @@
                                 </h:selectOneRadio>
                             </c:if>
                             <div class="div-boton">
-                                <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" action="#{editarOperario.editarOperario()}"/>
+                                <h:commandButton id="btnEditarOperario" class="boton-input" value="Guardar" >
+                                    <f:ajax execute="@form" listener="#{editarOperario.editarOperario()}" onevent="indicador" render="mensajes"/>
+                                </h:commandButton>
                             </div>
-                            
+                            <h:panelGroup id="mensajes">
                             <div>
-                                <h:message for="editIdOperario" class="error"/>
                                 <h:message for="editNombreOperario" class="error"/>
                                 <h:message for="editApellidoOperario" class="error"/>                     
-                                <h:message for="editPassOperario" class="error"/>
+                                <h:message for="editPassActualOperario" class="error"/>
+                                <h:message for="editPassNuevoOperario" class="error"/>
                                 <h:message for="editRePassOperario" class="error"/>
                                 <h:message for="btnEditarOperario" class="error"/>                     
                             </div>
+                            </h:panelGroup>
                         </fieldset>
                     </h:form>
                 </div>

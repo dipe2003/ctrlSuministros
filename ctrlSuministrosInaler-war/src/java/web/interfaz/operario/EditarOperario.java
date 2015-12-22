@@ -70,6 +70,11 @@ public class EditarOperario implements Serializable{
     public void setNombresCompletosOperarios(Map<String, Integer> NombresCompletosOperarios) {this.NombresCompletosOperarios = NombresCompletosOperarios;}
     public void setPasswordActual(String PasswordActual) {this.PasswordActual = PasswordActual;}
     
+    /**
+     * Guarda los datos modificados del operario.
+     * Se comprueban que sean correctas las contraseñas (si se modificaron).
+     * @throws IOException
+     */
     public void editarOperario() throws IOException{
         String msj= getMensajePass();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
@@ -87,10 +92,15 @@ public class EditarOperario implements Serializable{
                 FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Operario/ListadoOperarios.xhtml");
             }else{
                 msj = "No se pudo actualizar.";
+                FacesContext.getCurrentInstance().addMessage("frmEditOp:btnEditarOperario", new FacesMessage(msj));
+                FacesContext.getCurrentInstance().renderResponse();
             }
+        }else{
+            FacesContext.getCurrentInstance().addMessage("frmEditOp:btnEditarOperario", new FacesMessage(msj));
+            FacesContext.getCurrentInstance().renderResponse();
         }
-        FacesContext.getCurrentInstance().addMessage("frmEditOp:btnEditarOperario", new FacesMessage(msj));
     }
+    
     
     @PostConstruct
     public void init(){
@@ -103,12 +113,15 @@ public class EditarOperario implements Serializable{
         PasswordsOperario = new String[2];
         try{
             FacesContext context = FacesContext.getCurrentInstance();
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();        
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             IdOperario = request.getParameter("id");
             cargarDatosOperario();
         }catch(NullPointerException | NumberFormatException ex){}
     }
     
+    /**
+     * Carga los datos del operario a modificar.
+     */
     private void cargarDatosOperario(){
         Operario op = fOperario.BuscarOperario(Integer.parseInt(IdOperario));
         NombreOperario = op.getNombreOperario();
@@ -118,6 +131,10 @@ public class EditarOperario implements Serializable{
         PasswordsOperario[1] = op.getPasswordOperario();
     }
     
+    /**
+     * Realiza las comprobaciones sobre las contraseñas y devuelve los mensajes correspondientes.
+     * @return
+     */
     public String getMensajePass(){
         try{
             if(!(PasswordNuevo.isEmpty() && RepPassword.isEmpty())){

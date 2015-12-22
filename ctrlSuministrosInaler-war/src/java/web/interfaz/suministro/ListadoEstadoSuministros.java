@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -23,16 +24,25 @@ public class ListadoEstadoSuministros implements Serializable{
     private FacadeManejoSuministros fSuministro;
     
     private Map<String, Suministro> MapSuministros;
+    private Map<String, Suministro> mapFiltroSuministros;
     private List<Suministro> ListaSuministros;
     private String NombreSuministro;
     
     //  Getters
     public List<Suministro> getListaSuministros() {return ListaSuministros;}
     public String getNombreSuministro() {return NombreSuministro;}
+
+    public Map<String, Suministro> getMapFiltroSuministros() {
+        return mapFiltroSuministros;
+    }
     
     //  Setters
     public void setListaSuministros(List<Suministro> ListaSuministros) {this.ListaSuministros = ListaSuministros;}
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
+
+    public void setMapFiltroSuministros(Map<String, Suministro> mapFiltroSuministros) {
+        this.mapFiltroSuministros = mapFiltroSuministros;
+    }
     
     public void verMasInfo(int IdSuministro){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -47,14 +57,17 @@ public class ListadoEstadoSuministros implements Serializable{
      */
     public void filtrarLista(){
         if(!NombreSuministro.isEmpty()){
-            ListaSuministros.clear();
+            mapFiltroSuministros.clear();
+            //ListaSuministros.clear();
             for(String nom: MapSuministros.keySet()){
                 if(nom.contains(NombreSuministro.toLowerCase())) {
-                    ListaSuministros.add(MapSuministros.get(nom));
+                    //ListaSuministros.add(MapSuministros.get(nom));
+                    mapFiltroSuministros.put(nom, MapSuministros.get(nom));
                 }
             }
         }else{
-            ListaSuministros = new ArrayList<>(MapSuministros.values());
+            //ListaSuministros = new ArrayList<>(MapSuministros.values());
+            mapFiltroSuministros = new TreeMap(MapSuministros);
         }
         
     }
@@ -63,23 +76,16 @@ public class ListadoEstadoSuministros implements Serializable{
     public void init() {
         ListaSuministros = fSuministro.ListarSuministros(true);
         MapSuministros = new HashMap<>();
+        mapFiltroSuministros = new HashMap<>();
         try{
             for(Suministro sum: ListaSuministros){
-                MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getIdSuministro()+")", sum);
+                String nombre = sum.getNombreSuministro().toLowerCase()+" ("+sum.getIdSuministro()+")";
+                MapSuministros.put(nombre, sum);                
             }
+            mapFiltroSuministros = new TreeMap(MapSuministros);
         }catch(IndexOutOfBoundsException ex){
             System.out.println("Error: " +ex.getMessage());
         }
     }
     
-    public String checkTipo(int IdSuministro){
-        String clase = "";
-        for(Suministro sum: ListaSuministros){
-            if(sum.getIdSuministro()==IdSuministro){
-                clase =  sum.getClass().getSimpleName();
-                break;
-            }
-        }
-        return clase;
-    }
 }

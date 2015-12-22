@@ -303,18 +303,23 @@ div .sub-titulo-fondo{
 }
 
 .contenedor-carga{
+    position:absolute;
     width: 100%;
     height: 100%;
     background-color: #96c841;        
     color: whitesmoke;
     opacity: 0.8;
+    z-index: 99999999;
 }
 
 .carga{
     position:absolute; 
-    margin-left: 50%;
-    margin-top: 30%;
+    left: 50%;
+    top: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
     padding: 1%;
     color:#96c841;
     text-align: center;
+    z-index: 999999999;
 }

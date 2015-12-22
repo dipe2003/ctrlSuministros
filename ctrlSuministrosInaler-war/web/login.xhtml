@@ -9,11 +9,7 @@
         <title>Inicio</title>
     </h:head>
     <h:body>
-        <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">
-            <span style="text-align: center;">
-                <h:message for="inputNumOperario" id="msjLoginNumero" class="error" />
-                <h:message for="inputSecret" id="msjLoginPass" class="error" />
-            </span>            
+        <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">        
             <div id="linea" class="fondo-azul">
                 <div id="titulo" class="fondo-azul">
                     <img height="80px" src="./Resources/Images/lock_fixed.png"/><br/>
@@ -25,6 +21,10 @@
                     <h:commandButton id="btnLogin" type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
                 </div>
             </div>
+            <span style="text-align: center;">
+                <h:message for="inputNumOperario" id="msjLoginNumero" class="error" />
+                <h:message for="inputSecret" id="msjLoginPass" class="error" />
+            </span>    
         </h:form>  
         <h:form rendered="#{loginOperario.logueado}">
             <meta http-equiv="refresh" content="0;url=Views/index.xhtml"></meta>

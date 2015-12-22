@@ -17,6 +17,7 @@
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/AgregarSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarIngresoSuministro.js"/>
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/RegistrarSalidaSuministro.js"/>
+        <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/IndicadorCarga.js"/>
         
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/Chart.js"/>
         <script>
@@ -63,29 +64,13 @@
                     var StockChart = new Chart(ctx).Pie(datosStock, opciones);
                     var VencimientoChart = new Chart(ctx2).Pie(datosVencimiento, opciones);
                 }catch(ex){}                
-            });    
-        </script>
-        <script>
-            $(document).ready(function(){
-                $("#loading").show();
             });
-            $(window).load(function(){
-                $("#loading").hide();
-            });
-            function indicador(data){
-                if(data.status==='begin'){
-                    $("#loading").show();
-                }
-                if(data.status === 'complete'){
-                    $("#loading").hide();
-                }
-            }
         </script>
         <title>Inicio</title>
     </h:head>
     <h:body>
-        <div id="loading" class="contenedor-carga" >
-            <div class="carga">
+        <div id="loading-container" class="contenedor-carga" >
+            <div id="loading" class="carga">
                 <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
                 <div>Cargando...</div>
             </div>

@@ -1,7 +1,6 @@
 
 package web.interfaz.suministro;
 
-import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.IOException;
@@ -35,17 +34,9 @@ public class ListadoSuministros implements Serializable{
     public void setListaSuministros(List<Suministro> ListaSuministros) {this.ListaSuministros = ListaSuministros;}
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
     
-    public void verMasInfo(int IdSuministro){
-        FacesContext context = FacesContext.getCurrentInstance();
-        String url = context.getExternalContext().getRequestContextPath();
-        try{
-            context.getExternalContext().redirect(url+"/Views/Suministro/InfoSuministro.xhtml?id=" + IdSuministro);
-        }catch(IOException ex){}
-    }
-    
     public void filtrarLista(){
-        if(!NombreSuministro.isEmpty()){
-            ListaSuministros.clear();
+        ListaSuministros.clear();
+        if(!NombreSuministro.isEmpty()){            
             for(String nom: MapSuministros.keySet()){
                 if(nom.contains(NombreSuministro.toLowerCase())) {
                     ListaSuministros.add(MapSuministros.get(nom));
@@ -53,19 +44,15 @@ public class ListadoSuministros implements Serializable{
             }
         }else{
             ListaSuministros = new ArrayList<>(MapSuministros.values());
-        }        
+        }
     }
     
     @PostConstruct
     public void init() {
         ListaSuministros = fSuministro.ListarSuministros(false);
         MapSuministros = new HashMap<>();
-        try{
-            for(Suministro sum: ListaSuministros){                
-                MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor()+")", sum);
-            }
-        }catch(IndexOutOfBoundsException ex){
-            System.out.println("Error: " +ex.getMessage());
+        for(Suministro sum: ListaSuministros){
+            MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")", sum);
         }
     }
     

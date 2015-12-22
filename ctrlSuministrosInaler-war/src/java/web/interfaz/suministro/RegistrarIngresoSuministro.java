@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -129,31 +130,38 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setObservacionesIngreso(String ObservacionesIngreso) {this.ObservacionesIngreso = ObservacionesIngreso;}
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     public void setIdLoteSeleccionado(int IdLoteSeleccionado) {this.IdLoteSeleccionado = IdLoteSeleccionado;}
-    public void setLotesSuministro(Map<Integer, Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}    
+    public void setLotesSuministro(Map<Integer, Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}
     public void setSetLotesSuministro(Set<Lote> SetLotesSuministro) {this.SetLotesSuministro = SetLotesSuministro;}
     
     /**
      * Registra un nuevo ingreso de suministro.
+     * Comprueba que la cantidad a ingresar sea correcta (mayor a 0)
      * Si no existe el lote lo crea y agrega el nuevo ingreso.
      * Si existe agrega el nuevo ingreso.
-     * @throws IOException 
+     * @throws IOException
      */
     public void registrarIngresoSuministro() throws IOException{
         int idLote;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
-        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        if(IdLoteSeleccionado!=0){
-            NumeroLoteSuministro = LotesSuministro.get(IdLoteSeleccionado).getNumeroLote();
-            idLote = IdLoteSeleccionado;
+        if(CantidadIngresoSuministro <= 0){
+            context.addMessage("frmRegIngresoSuministro:inputCantidadIngresoSuministro", new FacesMessage("La cantidad ingresada no es valida.", "La cantidad ingresada no es valida."));
+            context.renderResponse();
         }else{
-            idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
-        }
-        if(idLote!=-1){
-            Date fechaHoy =Calendar.getInstance().getTime();
-            if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso, IdSuministro))!=-1){
-                context.getExternalContext().redirect(url+"/Views/index.xhtml");
+            int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
+            String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+            if(IdLoteSeleccionado!=0){
+                NumeroLoteSuministro = LotesSuministro.get(IdLoteSeleccionado).getNumeroLote();
+                idLote = IdLoteSeleccionado;
+            }else{
+                idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
+            }
+            if(idLote!=-1){
+                Date fechaHoy =Calendar.getInstance().getTime();
+                if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso, IdSuministro))!=-1){
+                    context.getExternalContext().redirect(url+"/Views/index.xhtml");
+                    context.responseComplete();
+                }
             }
         }
     }
@@ -177,7 +185,7 @@ public class RegistrarIngresoSuministro implements Serializable{
         listaSuministros = fSuministro.ListarMapSuministros(true);
         existeLote = false;
     }
-            
+    
     /**
      * Carga la unidad del suministro.
      */
@@ -187,7 +195,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     
     /**
      * Carga los proveedores del suministro seleccionado.
-     * @param IdSuministro 
+     * @param IdSuministro
      */
     public void cargarProveedoresSuministro(int IdSuministro){
         for(Proveedor proveedor: Proveedores){
