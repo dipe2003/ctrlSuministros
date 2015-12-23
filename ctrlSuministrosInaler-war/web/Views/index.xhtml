@@ -7,6 +7,8 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
+        
+        
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/base.css"/>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/tablas.css"/>
         <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/Resources/CSS/jquery-ui.css"/>
@@ -20,6 +22,8 @@
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/IndicadorCarga.js"/>
         
         <script src="#{facesContext.externalContext.requestContextPath}/Resources/Scripts/Chart.js"/>
+        
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/Resources/Images/favicon.ico"/>
         <script>
             $(document).ready(function() {
                 var datosStock = [
@@ -66,7 +70,7 @@
                 }catch(ex){}                
             });
         </script>
-        <title>Inicio</title>
+        <title>Control de Suministros</title>
     </h:head>
     <h:body>
         <div id="loading-container" class="contenedor-carga" >

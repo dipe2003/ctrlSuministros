@@ -100,6 +100,7 @@ public class Lote implements Serializable{
     
     /**
      *	Devuelve la cantidad en stock del Suministro con el lote.
+     * @return 
      */
     public float getCantidadStock(){
         return this.getCantidadIngresosLote() - this.getCantidadSalidasLote();
@@ -119,13 +120,17 @@ public class Lote implements Serializable{
         }
     }
     
-    public Ingreso getUltimoIngreso(){
-        int max = 0;
+    /**
+     * Comprueba cada ingreso y devuelve el ultimo registro.
+     * @return 
+     */
+    public Ingreso getUltimoIngreso(){        
         int index = 0;
         if(!IngresosLote.isEmpty()){
+            Date max = IngresosLote.get(0).getFechaIngreso();
             for (int i = 0; i < IngresosLote.size(); i++) {
-                if(IngresosLote.get(i).getIdIngreso() > max){
-                    max = IngresosLote.get(i).getIdIngreso();
+                if(IngresosLote.get(i).getFechaIngreso().after(max)){
+                    max = IngresosLote.get(i).getFechaIngreso();
                     index = i;
                 }
             }

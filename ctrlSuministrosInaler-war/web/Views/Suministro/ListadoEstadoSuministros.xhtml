@@ -28,29 +28,28 @@
                                 <th class="label" style="width: 10%">Ultimo Ingreso</th>
                                 <th class="label" style="width: 10%">Stock Actual</th>
                                 <th class="label" style="width: 5%">Mas Info</th>
-                                <c:forEach var ="sum" items="#{listadoEstadoSuministros.mapFiltroSuministros}" >
-                                    <c:if test="#{not empty sum.value.nombreSuministro}" >
+                                <c:forEach var ="sum" items="#{listadoEstadoSuministros.listaSuministros}" >
                                     <tr>
                                         <td class="div-output" >
                                             <c:choose>
-                                                <c:when test="#{not empty sum.value.lotesVencidos or sum.value.debajoStockMinimo}">                                                
-                                                    <img title="#{sum.value.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning.png"/>
+                                                <c:when test="#{not empty sum.lotesVencidos or sum.debajoStockMinimo}">                                                
+                                                    <img title="#{sum.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning_icon.ico"/>
                                                 </c:when>
-                                                <c:when test="#{empty sum.value.lotesVencidos and not sum.value.debajoStockMinimo}">                                                
-                                                    <img title="#{sum.value.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok.png"/>                                                
-                                                </c:when>                                                
+                                                <c:otherwise>                                               
+                                                    <img title="#{sum.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok_icon.ico"/>                                                
+                                                </c:otherwise>                                                
                                             </c:choose>
                                         </td>
                                         <td class="div-output" >
-                                            <div>#{sum.value.nombreSuministro}</div>
+                                           #{sum.nombreSuministro}
                                         </td>                                        
                                         <td class="div-output">
-                                            #{sum.value.proveedorSuministro.nombreProveedor}
+                                            #{sum.proveedorSuministro.nombreProveedor}
                                         </td>                                        
                                         <td class="div-output">
                                             <c:choose>
-                                                <c:when test="#{sum.value.ultimoIngreso != null}">
-                                                    #{sum.value.ultimoIngreso.cantidadIngreso}
+                                                <c:when test="#{sum.ultimoIngreso != null}">
+                                                    #{sum.ultimoIngreso.cantidadIngreso}
                                                 </c:when>
                                                 <c:otherwise>
                                                     ---
@@ -59,8 +58,8 @@
                                         </td>
                                         <td class="div-output">
                                             <c:choose>
-                                                <c:when test="#{sum.value.ultimoIngreso != null}">
-                                                    #{sum.value.stock} #{sum.value.unidadSuministro.nombreUnidad}
+                                                <c:when test="#{sum.ultimoIngreso != null}">
+                                                    #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
                                                 </c:when>
                                                 <c:otherwise>
                                                     ---
@@ -68,10 +67,9 @@
                                             </c:choose>                                                
                                         </td>
                                         <td class="div-output">
-                                            <h:commandButton value="..." action="#{listadoEstadoSuministros.verMasInfo(sum.value.idSuministro)}" class="boton-input boton-tabla" />
+                                            <h:commandButton value="..." action="#{listadoEstadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
                                         </td>
                                     </tr>
-                                    </c:if>
                                 </c:forEach>                                
                             </table>
                         </h:panelGroup>

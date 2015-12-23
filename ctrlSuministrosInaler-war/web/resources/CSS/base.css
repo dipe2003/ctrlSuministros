@@ -1,8 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
 /* 
     Created on : 04/11/2015, 09:42:39 AM
     Author     : dperez
@@ -224,7 +219,7 @@ div .sub-titulo-fondo{
     width: 200px;
     height: 100%;
     overflow: hidden;
-    z-index: 9999999; 
+    z-index: 99; 
     -webkit-box-shadow:#999999 0px 15px 5px;
     -moz-box-shadow: #999999 0px 15px 5px;;
     box-shadow: #999999 0px 15px 5px;
@@ -303,13 +298,13 @@ div .sub-titulo-fondo{
 }
 
 .contenedor-carga{
-    position:absolute;
+    position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #96c841;        
-    color: whitesmoke;
+    background-color: #060606;
+    color: #F5F5F5;
     opacity: 0.8;
-    z-index: 99999999;
+    z-index: 999;
 }
 
 .carga{
@@ -321,5 +316,5 @@ div .sub-titulo-fondo{
     padding: 1%;
     color:#96c841;
     text-align: center;
-    z-index: 999999999;
+    z-index: 9999;
 }

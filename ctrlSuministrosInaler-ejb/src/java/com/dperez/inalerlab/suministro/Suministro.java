@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -168,17 +167,19 @@ abstract public class Suministro implements Serializable{
      * @return Retorna null si no hay ingresos.
      */
     public Ingreso getUltimoIngreso(){
-        int max = 0;
         int index = 0;
         if(!LotesSuministros.isEmpty()){
-        for (int i = 0; i < this.LotesSuministros.size(); i++) {
-            Ingreso in = LotesSuministros.get(i).getUltimoIngreso();
-            if(in!=null && this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso()>max){
-                max = this.LotesSuministros.get(i).getUltimoIngreso().getIdIngreso();
-                index = i;
+            for (int i = 0; i < this.LotesSuministros.size(); i++) {
+                Ingreso in = LotesSuministros.get(i).getUltimoIngreso();
+                if(in!=null){
+                    Date max = in.getFechaIngreso();
+                    if(this.LotesSuministros.get(i).getUltimoIngreso().getFechaIngreso().after(max)){
+                        max = this.LotesSuministros.get(i).getUltimoIngreso().getFechaIngreso();
+                        index = i;
+                    }
+                }
             }
-        }
-        return this.LotesSuministros.get(index).getUltimoIngreso();   
+            return this.LotesSuministros.get(index).getUltimoIngreso();
         }
         return null;
     }

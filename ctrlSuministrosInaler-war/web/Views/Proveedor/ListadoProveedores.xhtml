@@ -41,13 +41,13 @@
                                         <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
                                             <td class="div-output" >
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Proveedor/EditarProveedor.xhtml?id=#{prov.idProveedor}">
-                                                    <img title="Editar el operario" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>
+                                                    <img title="Editar el operario" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
                                                 </a>
                                             </td>
                                         </c:if>
                                         <c:if test="#{loginOperario.permisoOperario!='Administrador' and loginOperario.permisoOperario !='Verificador'}">
                                             <td class="div-output" >                                                
-                                                <img title="Solo el administrador puede modificar un proveedor" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit.png"/>                                                
+                                                <img title="Solo el administrador puede modificar un proveedor" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>                                                
                                             </td>
                                         </c:if>
                                     </tr>
