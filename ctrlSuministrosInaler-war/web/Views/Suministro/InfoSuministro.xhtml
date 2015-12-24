@@ -12,122 +12,130 @@
                 <legend>#{infoSuministro.suministroSeleccionado.nombreSuministro} (#{infoSuministro.suministroSeleccionado.proveedorSuministro.nombreProveedor})</legend>
                 <div class="label">Descripcion</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.descripcionSuministro}"/></div><br/>
                 <div class="label">Codigo SAP</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.codigoSAPSuministro}"/></div><br/>
-                <div class="label">Vigencia</div> <div style="text-align: left;">
-                    <c:if test="#{infoSuministro.suministroSeleccionado.vigente}">
-                        <h:outputText class="output" value="En Uso"/>
-                    </c:if>
-                    <c:if test="#{!infoSuministro.suministroSeleccionado.vigente}">
-                        <h:outputText class="output" value="No se utiliza"/>
-                    </c:if>
-                </div><br/>
-                <div class="label">Stock Actual</div> <div style="text-align: left;">
-                    <h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.stock} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}"/>
-                </div><br/>
-                <div style="text-align: left;"><ouputText class="output">Movimientos de Stock</ouputText></div><br/>
-                <div class="contenedor-5050">                    
-                    <div class="contenedor-60">
-                        <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
-                        <table class="tabla-infoSuministro">
-                            <th class="label" style="width: 30%">Lote</th>
-                            <th class="label" style="width: 10%">Fecha</th>
-                            <th class="label" style="width: 10%">Cantidad</th>
-                            <th class="label" style="width: 20%">Vencimiento</th>
-                            <th class="label" style="width: 20%">Operario</th>
-                            <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
-                                <c:forEach items="#{infoSuministro.ingresosSuministro.get(lot.idLote)}" var="entry">
-                                    <tr>
-                                        <td class="div-output" >
-                                            <div>#{lot.numeroLote}</div>
-                                        </td>
-                                        <td class="div-output" >
-                                            <div>#{entry.strFechaIngreso}</div>
-                                        </td>
-                                        <td class="div-output">
-                                            <div>#{entry.cantidadIngreso}</div>
-                                        </td>
-                                        <c:choose>
-                                            <c:when test="#{infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock gt 0}">
-                                                <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                                <div>#{lot.strFechaVencimientoLote}</div>
-                                                </td>
-                                            </c:when>
-                                            <c:when test="#{infoSuministro.lotesVencido.get(lot.idLote)}">
-                                                <td class="div-output" >
-                                                    <div>#{lot.strFechaVencimientoLote}</div>
-                                                </td>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <td class="div-output" >
-                                                    <div>#{lot.strFechaVencimientoLote}</div>
-                                                </td>
-                                            </c:otherwise>
-                                        </c:choose>                                                                
-                                        <td class="div-output" >
-                                            <div>#{entry.operarioIngresoSuministro.idOperario}</div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                <tr bgcolor="azure" style="border-top: 1px !important;">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Stock Lote:</td>
-                                    <c:if test="#{infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock gt 0}">
-                                        <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                            <div>#{lot.cantidadStock}</div>                    
-                                        </td>
-                                    </c:if>
-                                    <c:if test="#{(infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock le 0) or !infoSuministro.lotesVencido.get(lot.idLote) }" >
-                                        <td class="div-output" >
-                                            <div>#{ lot.cantidadStock}</div>
-                                        </td>
-                                    </c:if>
-                                </tr>
-                            </c:forEach>
-                        </table>                        
+                <div class="contenedor-5050" style="margin-left: -2%;">
+                    <div class="contenedor-50" style="margin-left: -1%;">
+                        <div class="label">Vigencia</div> <div style="text-align: left; margin-left:1%;">
+                            <c:if test="#{infoSuministro.suministroSeleccionado.vigente}">
+                                <h:outputText class="output" value="En Uso"/>
+                            </c:if>
+                            <c:if test="#{!infoSuministro.suministroSeleccionado.vigente}">
+                                <h:outputText class="output" value="No se utiliza"/>
+                            </c:if>
+                        </div>
                     </div>
-                    <div class="contenedor-40">
-                        <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
-                        <table class="tabla-infoSuministro">
-                            <th class="label" style="width: 30%">Lote</th>
-                            <th class="label" style="width: 10%">Cantidad</th> 
-                            <th class="label" style="width: 20%">Operario</th>
-                            <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
-                                <c:forEach items="#{infoSuministro.salidasSuministro.get(lote.idLote)}" var="salida">
-                                    <tr>
-                                        <td class="div-output" >
-                                            <div>#{lote.numeroLote}</div>
-                                        </td>
-                                        <td class="div-output" >
-                                            <div>#{salida.cantidadSalida}</div>                                            
-                                        </td>
-                                        <td class="div-output" >
-                                            <div>#{salida.operarioSalidaSuministro.idOperario}</div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:forEach>
-                        </table>                        
-                    </div>                    
-                </div>
-                <div class="contenedor-5050">
-                    <div class="contenedor-60">
-                        <table>
-                            <tr>
-                                <td><div class="output">Total Ingresos:</div></td>
-                                <td><div class="output">#{infoSuministro.suministroSeleccionado.totalIngreso} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}</div></td>
-                            </tr>                                
-                        </table>
-                    </div>
-                    <div class="contenedor-40">
-                        <table>
-                            <tr>
-                                <td><div class="output">Total Salidas:</div></td>
-                                <td><div class="output">#{infoSuministro.suministroSeleccionado.totalSalida} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}</div></td>
-                            </tr>                                
-                        </table>
+                    <div class="contenedor-50" style="margin-left: -1%;">
+                        <div class="label">Stock Actual</div> <div style="text-align: left; margin-left:1%;">
+                            <h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.stock} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}"/>
+                        </div>
                     </div>
                 </div>
+                <fieldset>
+                    <legend>Movimientos de Stock</legend>
+                    <div class="contenedor-5050">                    
+                        <div class="contenedor-60">
+                            <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
+                            <table class="tabla-infoSuministro">
+                                <th class="label" style="width: 30%">Lote</th>
+                                <th class="label" style="width: 10%">Fecha</th>
+                                <th class="label" style="width: 10%">Cantidad</th>
+                                <th class="label" style="width: 20%">Vencimiento</th>
+                                <th class="label" style="width: 20%">Operario</th>
+                                <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
+                                    <c:forEach items="#{infoSuministro.ingresosSuministro.get(lot.idLote)}" var="entry">
+                                        <tr>
+                                            <td class="div-output" >
+                                                <div>#{lot.numeroLote}</div>
+                                            </td>
+                                            <td class="div-output" >
+                                                <div>#{entry.strFechaIngreso}</div>
+                                            </td>
+                                            <td class="div-output">
+                                                <div>#{entry.cantidadIngreso}</div>
+                                            </td>
+                                            <c:choose>
+                                                <c:when test="#{infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock gt 0}">
+                                                    <td class="div-output" style="background-color: red; color:whitesmoke;">
+                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="#{infoSuministro.lotesVencido.get(lot.idLote)}">
+                                                    <td class="div-output" >
+                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="div-output" >
+                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>                                                                
+                                            <td class="div-output" >
+                                                <div>#{entry.operarioIngresoSuministro.idOperario}</div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    <tr bgcolor="azure" style="border-top: 1px !important;">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Stock Lote:</td>
+                                        <c:if test="#{infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock gt 0}">
+                                            <td class="div-output" style="background-color: red; color:whitesmoke;">
+                                                <div>#{lot.cantidadStock}</div>                    
+                                            </td>
+                                        </c:if>
+                                        <c:if test="#{(infoSuministro.lotesVencido.get(lot.idLote) and lot.cantidadStock le 0) or !infoSuministro.lotesVencido.get(lot.idLote) }" >
+                                            <td class="div-output" >
+                                                <div>#{ lot.cantidadStock}</div>
+                                            </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>
+                            </table>                        
+                        </div>
+                        <div class="contenedor-40">
+                            <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
+                            <table class="tabla-infoSuministro">
+                                <th class="label" style="width: 30%">Lote</th>
+                                <th class="label" style="width: 10%">Cantidad</th> 
+                                <th class="label" style="width: 20%">Operario</th>
+                                <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
+                                    <c:forEach items="#{infoSuministro.salidasSuministro.get(lote.idLote)}" var="salida">
+                                        <tr>
+                                            <td class="div-output" >
+                                                <div>#{lote.numeroLote}</div>
+                                            </td>
+                                            <td class="div-output" >
+                                                <div>#{salida.cantidadSalida}</div>                                            
+                                            </td>
+                                            <td class="div-output" >
+                                                <div>#{salida.operarioSalidaSuministro.idOperario}</div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:forEach>
+                            </table>                        
+                        </div>                    
+                    </div>
+                    <div class="contenedor-5050">
+                        <div class="contenedor-60">
+                            <table>
+                                <tr>
+                                    <td><div class="output">Total Ingresos:</div></td>
+                                    <td><div class="output">#{infoSuministro.suministroSeleccionado.totalIngreso} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}</div></td>
+                                </tr>                                
+                            </table>
+                        </div>
+                        <div class="contenedor-40">
+                            <table>
+                                <tr>
+                                    <td><div class="output">Total Salidas:</div></td>
+                                    <td><div class="output">#{infoSuministro.suministroSeleccionado.totalSalida} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}</div></td>
+                                </tr>                                
+                            </table>
+                        </div>
+                    </div>
+                </fieldset>
             </fieldset>
         </div>
     </ui:define>

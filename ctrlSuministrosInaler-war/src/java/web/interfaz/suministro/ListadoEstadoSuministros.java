@@ -48,10 +48,11 @@ public class ListadoEstadoSuministros implements Serializable{
      * llena la lista de suministros según el nombre ingresado.
      */
     public void filtrarLista(){
+        ListaSuministros.clear();
         if(!NombreSuministro.isEmpty()){
-            ListaSuministros.clear();
+            NombreSuministro = NombreSuministro.toLowerCase();            
             for(String nom: MapSuministros.keySet()){
-                if(nom.contains(NombreSuministro.toLowerCase())) {
+                if(nom.contains(NombreSuministro)) {
                     ListaSuministros.add(MapSuministros.get(nom));
                 }
             }

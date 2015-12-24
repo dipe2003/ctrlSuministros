@@ -316,5 +316,15 @@ div .sub-titulo-fondo{
     padding: 1%;
     color:#96c841;
     text-align: center;
-    z-index: 9999;
+    z-index: 9999999;
+}
+
+.leyenda-grafico{
+    padding-left: 1%;
+    padding-right: 1%;
+    color: white;
+    height: 15px;
+    border-right: 20px solid;
+    border-left: 20px solid;
+    font-weight: bold;
 }

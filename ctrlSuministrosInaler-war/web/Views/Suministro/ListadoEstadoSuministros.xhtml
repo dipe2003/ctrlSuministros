@@ -67,7 +67,9 @@
                                             </c:choose>                                                
                                         </td>
                                         <td class="div-output">
-                                            <h:commandButton value="..." action="#{listadoEstadoSuministros.verMasInfo(sum.idSuministro)}" class="boton-input boton-tabla" />
+                                            <h:commandButton value="..." class="boton-input boton-tabla" >
+                                                <f:ajax listener="#{listadoEstadoSuministros.verMasInfo(sum.idSuministro)}" onevent="indicador" />
+                                            </h:commandButton>
                                         </td>
                                     </tr>
                                 </c:forEach>                                

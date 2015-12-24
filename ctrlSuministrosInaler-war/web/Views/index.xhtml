@@ -43,14 +43,14 @@
                 var datosVencimiento = [
                     {
                         value: #{graficosIndex.totalSuministrosLotesVencidosStock},
-                        color:"#F7464A",
-                        highlight: "#FF5A5E",
+                        color: "crimson",
+                        highlight: "#ff6666",
                         label: "Vencidos"
                     },
                     {
                         value: #{graficosIndex.totalSuministrosRegistrados - graficosIndex.totalSuministrosLotesVencidosStock},
-                        color: "#86B559",
-                        highlight: "#9AC949",
+                        color: "#2c5697",
+                        highlight: "#4297d7",
                         label: "Vigentes"
                     }                    
                 ];
@@ -74,11 +74,15 @@
     </h:head>
     <h:body>
         <div id="loading-container" class="contenedor-carga" >
-            <div id="loading" class="carga">
+            <div class="carga">
                 <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
                 <div>Cargando...</div>
             </div>
         </div>
+        <div id="loading" class="carga" style="display: none;">
+                <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
+                <div>Cargando...</div>
+            </div>
         <div>
             <ui:include src="header.xhtml"/>
         </div>
@@ -116,6 +120,16 @@
                             <div class="contenedor-5050">
                                 <canvas id="myChart" width="300" height="200" class="contenedor-50"></canvas>
                                 <canvas id="myChartVenc" width="300" height="200" class="contenedor-50"></canvas>                                   
+                            </div>
+                            <div class="contenedor-5050">
+                                <div  class="contenedor-5050">
+                                    <div class="contenedor-50 leyenda-grafico" style="background-color: #F7464A;">Debajo de Stock</div>
+                                    <div class="contenedor-50 leyenda-grafico" style="background-color: #86B559">Con Stock</div> 
+                                </div>
+                                <div  class="contenedor-5050">
+                                    <div class="contenedor-50 leyenda-grafico" style="background-color: crimson; ">Vencidos</div>
+                                    <div class="contenedor-50 leyenda-grafico" style="background-color:#4297d7">Vigentes</div> 
+                                </div>                                                          
                             </div>
                         </fieldset>
                         <fieldset><legend>Detalles</legend>
