@@ -52,10 +52,14 @@ public class BufferSuministros {
         return MapSuministros.size();
     }
     
-    public List<Suministro> getListaSuministros(){
+    public List<Suministro> getListaSuministros(boolean Vigente){
         List<Suministro> lista = new ArrayList<>();
         for(Suministro suministro: MapSuministros.values()){
-            lista.add(suministro);
+            if(Vigente){
+                if(suministro.isVigente())lista.add(suministro);
+            }else{
+                lista.add(suministro);
+            }            
         }
         return lista;
     }

@@ -55,6 +55,16 @@ public class LoginOperario implements Serializable{
             FacesContext.getCurrentInstance().addMessage("login:inputNumOperario", new FacesMessage("Error", "Los datos no son correctos."));
         }
     }
+    public void ActualizarInfoLogin(String IdOperario){
+        this.IdOperario = IdOperario;
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Operario operario = fOperario.BuscarOperario(Integer.parseInt(this.IdOperario));
+        request.getSession().setAttribute("Operario", operario);
+        this.NombreOperario = operario.getNombreOperario() + " " + operario.getApellidoOperario();
+        PermisoOperario = operario.getPermisoOperario().getNombrePermiso();
+        Logueado = true; 
+    }
     
     public void logout(){
         try{

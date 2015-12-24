@@ -21,58 +21,56 @@
                                 </h:inputText></td>
                         </table>
                         <h:panelGroup id="tablaListado">
-                            <table class="tabla-listaSuministro">                                
-                                <th class="label" style="width: 1%"></th>
-                                <th class="label" style="width: 54%">Suministro</th>
-                                <th class="label" style="width: 20%">Proveedor</th>
-                                <th class="label" style="width: 10%">Ultimo Ingreso</th>
-                                <th class="label" style="width: 10%">Stock Actual</th>
-                                <th class="label" style="width: 5%">Mas Info</th>
-                                <c:forEach var ="sum" items="#{listadoEstadoSuministros.listaSuministros}" >
-                                    <tr>
-                                        <td class="div-output" >
-                                            <c:choose>
-                                                <c:when test="#{not empty sum.lotesVencidos or sum.debajoStockMinimo}">                                                
-                                                    <img title="#{sum.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning_icon.ico"/>
-                                                </c:when>
-                                                <c:otherwise>                                               
-                                                    <img title="#{sum.nombreSuministro}" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok_icon.ico"/>                                                
-                                                </c:otherwise>                                                
-                                            </c:choose>
-                                        </td>
-                                        <td class="div-output" >
-                                           #{sum.nombreSuministro}
-                                        </td>                                        
-                                        <td class="div-output">
-                                            #{sum.proveedorSuministro.nombreProveedor}
-                                        </td>                                        
-                                        <td class="div-output">
-                                            <c:choose>
-                                                <c:when test="#{sum.ultimoIngreso != null}">
+                            <table class="tabla-listaSuministro">
+                                <thead>
+                                    <th class="label" style="width: 1%"></th>
+                                    <th class="label" style="width: 54%">Suministro</th>
+                                    <th class="label" style="width: 20%">Proveedor</th>
+                                    <th class="label" style="width: 10%">Ultimo Ingreso</th>
+                                    <th class="label" style="width: 10%">Stock Actual</th>
+                                    <th class="label" style="width: 5%">Mas Info</th>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat var ="sum" value="#{listadoEstadoSuministros.listaSuministros}" >
+                                        <tr>
+                                            <td class="div-output" >
+                                                <h:panelGroup rendered="#{not empty sum.lotesVencidosEnStock or sum.debajoStockMinimo==true}">                                                 
+                                                    <img  title="Requiere Atencion!" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/warning_icon.ico"/>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{empty sum.lotesVencidosEnStock and sum.debajoStockMinimo==false}">
+                                                    <img title="Ok!" height="15px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/ok_icon.ico"/>
+                                                </h:panelGroup>                                                
+                                            </td>                                           
+                                            <td class="div-output" >
+                                                #{sum.nombreSuministro}
+                                            </td>                                        
+                                            <td class="div-output">
+                                                #{sum.proveedorSuministro.nombreProveedor}
+                                            </td>                                        
+                                            <td class="div-output">
+                                                <h:panelGroup rendered="#{sum.ultimoIngreso != null}">
                                                     #{sum.ultimoIngreso.cantidadIngreso}
-                                                </c:when>
-                                                <c:otherwise>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{sum.ultimoIngreso == null}">
                                                     ---
-                                                </c:otherwise>
-                                            </c:choose>                                                                                      
-                                        </td>
-                                        <td class="div-output">
-                                            <c:choose>
-                                                <c:when test="#{sum.ultimoIngreso != null}">
+                                                </h:panelGroup>                                                                                 
+                                            </td>
+                                            <td class="div-output">
+                                                <h:panelGroup rendered="#{sum.ultimoIngreso != null}">
                                                     #{sum.stock} #{sum.unidadSuministro.nombreUnidad}
-                                                </c:when>
-                                                <c:otherwise>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{sum.ultimoIngreso == null}">
                                                     ---
-                                                </c:otherwise>
-                                            </c:choose>                                                
-                                        </td>
-                                        <td class="div-output">
-                                            <h:commandButton value="..." class="boton-input boton-tabla" >
-                                                <f:ajax listener="#{listadoEstadoSuministros.verMasInfo(sum.idSuministro)}" onevent="indicador" />
-                                            </h:commandButton>
-                                        </td>
-                                    </tr>
-                                </c:forEach>                                
+                                                </h:panelGroup>                                                                                               
+                                            </td>
+                                            <td class="div-output">
+                                                <h:commandButton value="..." class="boton-input boton-tabla" >
+                                                    <f:ajax listener="#{listadoEstadoSuministros.verMasInfo(sum.idSuministro)}" onevent="indicador" />
+                                                </h:commandButton>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
                             </table>
                         </h:panelGroup>
                     </h:form>

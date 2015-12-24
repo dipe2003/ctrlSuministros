@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +29,8 @@ public class EditarOperario implements Serializable{
     private ControladorPermiso cPermiso;
     @EJB
     private ControladorSeguridad cSeg;
+    @Inject
+    private LoginOperario login;
     
     private String IdOperario;
     private String PasswordActual;
@@ -88,6 +91,9 @@ public class EditarOperario implements Serializable{
                     }else{
                         FacesContext.getCurrentInstance().getExternalContext().redirect("../index.xhtml");
                     }
+                }
+                if(login.getIdOperario().equals(IdOperario)){
+                    login.ActualizarInfoLogin(IdOperario);
                 }
                 FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Operario/ListadoOperarios.xhtml");
             }else{

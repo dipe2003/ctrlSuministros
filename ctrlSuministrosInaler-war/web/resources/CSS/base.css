@@ -191,6 +191,14 @@ div .sub-titulo-fondo{
     color:#2c5697;
     background-color: #F4FEE9;
 }
+
+.alerta{
+    background-color: #ff6666  !important;
+    color: white !important;
+    width: 150px;
+    text-align: center !important;
+}
+
 #divLogin {
     width: 150px;
     margin-top: 10px;

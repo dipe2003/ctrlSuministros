@@ -83,7 +83,7 @@ public class ControladorSuministro implements Serializable{
      * @return
      */
     public List<Suministro> ListarSuministros(boolean Vigente){
-        if(buffer.bufferSize()>0) return buffer.getListaSuministros();
+        if(buffer.bufferSize()>0) return buffer.getListaSuministros(Vigente);
         return mSuministro.ListarSuministros(Vigente);
     }
     
@@ -139,13 +139,13 @@ public class ControladorSuministro implements Serializable{
     
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock minimo.
-     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0).
+     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0) y esten vigentes.
      * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
      */
     public int[] GetTotalSuministrosDebajoStockMinimo(){
         List<Suministro> suministros;
         if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros();
+            suministros = buffer.getListaSuministros(true);
         }else{
             suministros = mSuministro.ListarSuministros(true);
         }
@@ -161,13 +161,13 @@ public class ControladorSuministro implements Serializable{
     
     /**
      * Devuelve los suministros que están por debajo de su stock minimo.
-     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0).
+     * Solo se toman en cuenta aquellos suministros que tengan un stock minimo definido (cantidad mayor a 0) y esten vigentes.
      * @return Retorna una lista con los ids de suministros debajo de stock minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo(){
         List<Suministro> suministros;
         if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros();
+            suministros = buffer.getListaSuministros(true);
         }else{
             suministros = mSuministro.ListarSuministros(true);
         }
@@ -187,14 +187,14 @@ public class ControladorSuministro implements Serializable{
     
     
     /**
-     * Devuelve los suministros con lotes vencidos.
+     * Devuelve los suministros con lotes vencidos y que estén vigentes.
      * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
      * @return Map: key: idSuministros, value: nombreSuministro
      */
     public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock){
         List<Suministro> suministros;
         if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros();
+            suministros = buffer.getListaSuministros(true);
         }else{
             suministros = mSuministro.ListarSuministros(true);
         }
@@ -211,14 +211,14 @@ public class ControladorSuministro implements Serializable{
         return new TreeMap<>(map);
     }
     /**
-     * Devuelve los suministros con lotes vencidos.
+     * Devuelve los suministros con lotes vencidos y que estén vigentes.
      * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock){
         List<Suministro> suministros;
         if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros();
+            suministros = buffer.getListaSuministros(true);
         }else{
             suministros = mSuministro.ListarSuministros(true);
         }
@@ -235,14 +235,14 @@ public class ControladorSuministro implements Serializable{
         return lista;
     }
     /**
-     * Devuelve los suministros con lotes vencidos.
+     * Devuelve los suministros con lotes vencidos y que estén vigentes.
      * @param ConStock <b>True:</b> para obtener solo los que tengan stock. <b>False:</b> para obtener todos.
      * @return Retorna una lista con los suministros. Retorna una lista vacia si no existen lotes vencidos en stock
      */
     public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock){
         List<Suministro> suministros;
         if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros();
+            suministros = buffer.getListaSuministros(true);
         }else{
             suministros = mSuministro.ListarSuministros(true);
         }
@@ -262,7 +262,7 @@ public class ControladorSuministro implements Serializable{
     /**
      * Actualiza un suministro en la base de datos.
      * Compara unidad y proveedor y actualiza si es necesario.
-     * Compara el stockminimo y si es diferente se crea con la fecha de hoy como vigencia.
+     * Compara el stockminimo y si es diferente se crea con la fecha actual del sistema como vigencia.
      * @param suministro objeto con la informacion basica del suministro (nombre, id, codigoSAP, Descripcion)
      * @param IdUnidad id de unidad de medida
      * @param IdProveedor id de proveedor
