@@ -20,10 +20,17 @@
                             <h:inputText id="inputIdOperario" class="input" value="#{registrarOperario.idOperario}" required="true" requiredMessage="No se ingreso numero de operario." p:placeholder="Numero de operario de formato 300 (Inaler) + Padron (1234)"/>
                             
                             <div class="label">Nombre de Operario</div>
-                            <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
+                            <h:inputText id="inputNombreOperario" class="input" value="#{registrarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario">
+                                <f:ajax execute="inputNombreOperario inputApellidoOperario" event="keyup" delay="200" listener="#{registrarOperario.generarCorreo()}" render="inputCorreoOperario" onevent="indicador"/>
+                            </h:inputText>
                             
                             <div class="label">Apellido de Operario</div>
-                            <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Apellido del operario"/>
+                            <h:inputText id="inputApellidoOperario" class="input" value="#{registrarOperario.apellidoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Apellido del operario">
+                                 <f:ajax  execute="inputNombreOperario inputApellidoOperario" event="keyup" delay="200" listener="#{registrarOperario.generarCorreo()}" render="inputCorreoOperario" onevent="indicador"/>
+                            </h:inputText>
+                            
+                            <div class="label">Correo de Operario</div>
+                            <h:inputText id="inputCorreoOperario" class="input" value="#{registrarOperario.correoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Correo del operario"/>
                             
                             <div class="label">Contraseña</div>
                             <h:inputSecret id="inputPassOperario" class="input" value="#{registrarOperario.password}" required="true" requiredMessage="No se ingreso contraseña" p:placeholder="Contraseña" />
@@ -49,6 +56,7 @@
                             <div>
                                 <h:message for="inputIdOperario" class="error"/>
                                 <h:message for="inputNombreOperario" class="error"/>
+                                <h:message for="inputCorreoOperario" class="error"/>
                                 <h:message for="inputApellidoOperario" class="error"/>                     
                                 <h:message for="inputPassOperario" class="error"/>
                                 <h:message for="inputRePassOperario" class="error"/>

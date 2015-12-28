@@ -28,7 +28,8 @@ public class RegistrarOperario implements Serializable{
     private String Password;
     private String RepPassword;
     private String NombreOperario;
-    private String ApellidoOperario;    
+    private String ApellidoOperario; 
+    private String CorreoOperario;
     private int PermisoOperario;
     private Map<String, Integer> PermisosOperarios;
     List<Permiso> Permisos;
@@ -42,6 +43,7 @@ public class RegistrarOperario implements Serializable{
     public int getPermisoOperario() {return PermisoOperario;}
     public List<Permiso> getPermisos() {return Permisos;}
     public String getApellidoOperario() {return ApellidoOperario;}
+    public String getCorreoOperario() {return CorreoOperario;}
     
     //  setters
     public void setIdOperario(String IdOperario) {this.IdOperario = IdOperario;}
@@ -52,11 +54,16 @@ public class RegistrarOperario implements Serializable{
     public void setPermisoOperario(int PermisoOperario) {this.PermisoOperario = PermisoOperario;}
     public void setPermisos(List<Permiso> Permisos) {this.Permisos = Permisos;}
     public void setApellidoOperario(String ApellidoOperario) {this.ApellidoOperario = ApellidoOperario;}
+    public void setCorreoOperario(String CorreoOperario) {this.CorreoOperario = CorreoOperario;}
     
+    /**
+     * Registra el nuevo operario con los datos ingresados.
+     * @throws IOException 
+     */
     public void registrarOperario() throws IOException{
         String msj="";
         if(comprobarDatosOperario().equals("ok")){
-            if((fOperario.RegistrarOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario, Password))!=-1){
+            if((fOperario.RegistrarOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario, Password, CorreoOperario))!=-1){
                 fOperario.AgregarPermiso(Integer.parseInt(IdOperario), PermisoOperario);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }else{
@@ -104,5 +111,9 @@ public class RegistrarOperario implements Serializable{
             return "Ingresa contraseñas.";
         }
         return "Ok";
+    }
+    
+    public void generarCorreo(){
+        CorreoOperario = NombreOperario.toLowerCase() +"."+ ApellidoOperario.toLowerCase() + "@marfrig.com";
     }
 }

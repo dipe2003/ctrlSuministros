@@ -25,9 +25,9 @@ public class ControladorOperario implements Serializable{
      * @param PasswordOperario
      * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
-    public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario){
+    public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario, String CorreoOperario){
         String[] seg = cSeg.getPasswordSeguro(PasswordOperario);
-        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[0], seg[1]);
+        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[0], seg[1], CorreoOperario);
         return mOperario.CrearOperario(operario);
     }
     
@@ -89,10 +89,11 @@ public class ControladorOperario implements Serializable{
      * @param ApellidoOperario
      * @return Retorna el id del operario. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario){
+    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
         operario.setNombreOperario(NombreOperario);
         operario.setApellidoOperario(ApellidoOperario);
+        operario.setCorreoOperario(CorreoOperario);
         return mOperario.ActualizarOperario(operario);
     }
     

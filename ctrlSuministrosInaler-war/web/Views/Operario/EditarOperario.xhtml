@@ -17,13 +17,20 @@
                     <h:form id="frmEditOp">
                         <fieldset><legend>Editar Operario</legend>
                             <div class="label">Nombre de Operario</div>
-                            <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario"/>
+                            <h:inputText id="editNombreOperario" class="input" value="#{editarOperario.nombreOperario}" required="true" requiredMessage="No se ingreso nombre de operario." p:placeholder="Nombre del operario">
+                             <f:ajax execute="editNombreOperario editApellidoOperario" event="keyup" delay="200" listener="#{editarOperario.generarCorreo()}" render="editCorreoOperario" onevent="indicador"/>
+                            </h:inputText>
                             
                             <div class="label">Apellido de Operario</div>
-                            <h:inputText id="editApellidoOperario" class="input" value="#{editarOperario.apellidoOperario}" p:placeholder="Apellido del operario"/>
+                            <h:inputText id="editApellidoOperario" class="input" value="#{editarOperario.apellidoOperario}" p:placeholder="Apellido del operario">
+                                <f:ajax execute="editNombreOperario editApellidoOperario" event="keyup" delay="200" listener="#{editarOperario.generarCorreo()}" render="editCorreoOperario" onevent="indicador"/>
+                            </h:inputText>
                             
                             <div class="label">Contraseña Actual</div>
                             <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
+                            
+                            <div class="label">Correo de Operario</div>
+                            <h:inputText id="editCorreoOperario" class="input" value="#{editarOperario.correoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Correo del operario"/>
                             
                             <div class="label">Contraseña Nueva</div>
                             <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
@@ -56,7 +63,8 @@
                             <h:panelGroup id="mensajes">
                             <div>
                                 <h:message for="editNombreOperario" class="error"/>
-                                <h:message for="editApellidoOperario" class="error"/>                     
+                                <h:message for="editApellidoOperario" class="error"/>
+                                <h:message for="editCorreoOperario" class="error"/>                                
                                 <h:message for="editPassActualOperario" class="error"/>
                                 <h:message for="editPassNuevoOperario" class="error"/>
                                 <h:message for="editRePassOperario" class="error"/>

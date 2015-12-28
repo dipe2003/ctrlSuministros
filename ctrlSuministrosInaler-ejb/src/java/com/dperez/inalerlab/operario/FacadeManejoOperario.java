@@ -76,11 +76,12 @@ public class FacadeManejoOperario implements Serializable {
      * @param NombreOperario
      * @param ApellidoOperario
      * @param Password
+     * @param CorreoOperario
      * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
     public int RegistrarOperario(int IdOperario, String NombreOperario, String ApellidoOperario, 
-            String Password){        
-        return cOperario.CrearOperario(IdOperario, NombreOperario, ApellidoOperario,  Password);
+            String Password, String CorreoOperario){        
+        return cOperario.CrearOperario(IdOperario, NombreOperario, ApellidoOperario,  Password, CorreoOperario);
     }
     
     /**
@@ -99,10 +100,11 @@ public class FacadeManejoOperario implements Serializable {
      * @param IdOperario
      * @param NombreOperario
      * @param ApellidoOperario
+     * @param CorreoOperario
      * @return Retorna el id del operario. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario){
-        return cOperario.ModificarDatosOperario(IdOperario, NombreOperario, ApellidoOperario);
+    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario){
+        return cOperario.ModificarDatosOperario(IdOperario, NombreOperario, ApellidoOperario, CorreoOperario);
     }
     
     /**

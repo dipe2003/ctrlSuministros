@@ -23,10 +23,10 @@
                     <h:commandButton id="btnLogin" type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
                 </div>
             </div>
-            <span style="text-align: center;">
+            <div style="text-align: center;">
                 <h:message for="inputNumOperario" id="msjLoginNumero" class="error" />
                 <h:message for="inputSecret" id="msjLoginPass" class="error" />
-            </span>    
+            </div>    
         </h:form>  
         <h:form rendered="#{loginOperario.logueado}">
             <meta http-equiv="refresh" content="0;url=Views/index.xhtml"></meta>

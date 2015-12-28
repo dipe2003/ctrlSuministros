@@ -19,6 +19,8 @@ public class Operario implements Serializable{
     private String ApellidoOperario;
     private String PasswordKeyOperario;
     private String PasswordOperario;
+    private String CorreoOperario;
+    
     @OneToMany(mappedBy = "OperarioIngresoSuministro" )
     private List<Ingreso> IngresosSuministrosOperario;
     @OneToMany(mappedBy = "OperarioSalidaSuministro")
@@ -31,12 +33,13 @@ public class Operario implements Serializable{
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
     }
-    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario){
+    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario, String CorreoOperario){
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
         this.ApellidoOperario = ApellidoOperario;
         this.PasswordKeyOperario = PasswordKeyOperario;
         this.PasswordOperario = PasswordOperario;
+        this.CorreoOperario = CorreoOperario;
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
     }
@@ -50,6 +53,7 @@ public class Operario implements Serializable{
     public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
     public String getPasswordKeyOperario() {return PasswordKeyOperario;}
     public String getPasswordOperario() {return PasswordOperario;}
+    public String getCorreoOperario() {return CorreoOperario;}
     
     //	Setters
     public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
@@ -65,6 +69,8 @@ public class Operario implements Serializable{
     public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
     public void setPasswordKeyOperario(String PasswordKeyOperario) {this.PasswordKeyOperario = PasswordKeyOperario;}
     public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}
+    public void setCorreoOperario(String CorreoOperario) {this.CorreoOperario = CorreoOperario;}
+    public void setPermisoOperario(Permiso PermisoOperario) {this.PermisoOperario = PermisoOperario;}
     
     //	Ingresos - Egresos
     public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){
