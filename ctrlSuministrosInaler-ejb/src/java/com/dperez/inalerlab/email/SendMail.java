@@ -2,10 +2,13 @@
 package com.dperez.inalerlab.email;
 
 import java.util.Properties;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -18,23 +21,45 @@ import javax.mail.internet.MimeMessage;
 @Named
 @Stateless
 public class SendMail {
-
-    private String host;
-    private final Properties properties = System.getProperties();
-    private Session session;
+    @Inject
+    private ControladorPropiedad prop;
+    private static String user;
+    private static String pass;
+    private static String mail;
     
-    public void setupMail(String host, String user, String password){
-        properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.user", user);
-        properties.setProperty("mail.password", password);
-        session = Session.getDefaultInstance(properties);
+    private static Properties props;
+    private static Session session;
+    static {
+        props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", 587);
+        props.put("mail.smtp.host", "m.outlook.com");
+        //props.put("mail.smtp.host", "smtp.outlook365.com");
+        props.put("mail.smtp.auth", "true");
+
+        session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(user, pass);
+                    }
+                });
+
     }
     
-    public boolean enviarMail(String to, String from, String mensaje, String asunto){
+    @PostConstruct
+    public void init(){
+        user = prop.getMailUser();
+        pass = prop.getMailPass();
+        mail = prop.getMailFrom();
+    }
+    
+    public boolean enviarMail(String to,String mensaje, String asunto){
+        
         try{
-
+            Transport transport =session.getTransport();
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(prop.getMailFrom()));
             
             // Set To
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -43,14 +68,17 @@ public class SendMail {
             message.setSubject(asunto);
             
             // Set contenido de mail en html
-            message.setContent("<h1>This is actual message</h1>", "text/html" );
+            message.setContent(mensaje, "text/html" );
             
             // Enviar mensaje
-            Transport.send(message);
+            transport.connect(user, pass);
+            transport.send(message, user, pass);
+            transport.close();
             System.out.println("El mensaje fue enviado.");
             return true;
         }catch (MessagingException mex) {
-            mex.printStackTrace();
+            //mex.printStackTrace();
+            System.out.println("El mensaje no fue enviado: " + mex.getMessage());
         }
         return false;
     }

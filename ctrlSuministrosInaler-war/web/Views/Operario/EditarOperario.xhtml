@@ -30,7 +30,7 @@
                             <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
                             
                             <div class="label">Correo de Operario</div>
-                            <h:inputText id="editCorreoOperario" class="input" value="#{editarOperario.correoOperario}" required="true" requiredMessage="No se ingreso apellido de operario." p:placeholder="Correo del operario"/>
+                            <h:inputText id="editCorreoOperario" class="input" value="#{editarOperario.correoOperario}" p:placeholder="Correo del operario"/>
                             
                             <div class="label">Contraseña Nueva</div>
                             <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
@@ -43,6 +43,11 @@
                             <c:catch var="catch_error">
                                 <h:outputText id="editmsjPass" value="#{editarOperario.mensajePass}" />
                             </c:catch>  
+                            
+                            <div class="label">Alertas de Operario</div>
+                            <div style="text-align: left; margin-left: 1%;">
+                            <h:selectBooleanCheckbox value="#{editarOperario.alertasOperario}" label="Recibir Alertas"/>Recibir Alertas
+                            </div>
                             
                             <div class="label">Permiso del Operario</div>
                             <c:if test="#{loginOperario.permisoOperario != 'Administrador'}" >

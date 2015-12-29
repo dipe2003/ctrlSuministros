@@ -39,6 +39,7 @@ public class EditarOperario implements Serializable{
     private String NombreOperario;
     private String ApellidoOperario;
     private String CorreoOperario;
+    private boolean AlertasOperario;
     private int PermisoOperario;
     private Map<String, Integer> PermisosOperarios;
     List<Permiso> Permisos;
@@ -61,6 +62,7 @@ public class EditarOperario implements Serializable{
     public Map<String, Integer> getNombresCompletosOperarios() {return NombresCompletosOperarios;}
     public String getPasswordActual() {return PasswordActual;}
     public String getCorreoOperario() {return CorreoOperario;}
+    public boolean isAlertasOperario() {return AlertasOperario;}
     
     //  setters
     public void setIdOperario(String IdOperario) {this.IdOperario = IdOperario;}
@@ -75,6 +77,7 @@ public class EditarOperario implements Serializable{
     public void setNombresCompletosOperarios(Map<String, Integer> NombresCompletosOperarios) {this.NombresCompletosOperarios = NombresCompletosOperarios;}
     public void setPasswordActual(String PasswordActual) {this.PasswordActual = PasswordActual;}
     public void setCorreoOperario(String CorreoOperario) {this.CorreoOperario = CorreoOperario;}
+    public void setAlertasOperario(boolean AlertasOperario) {this.AlertasOperario = AlertasOperario;}
     
     /**
      * Guarda los datos modificados del operario.
@@ -85,7 +88,7 @@ public class EditarOperario implements Serializable{
         String msj= getMensajePass();
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         if(msj.equals("Ok") || msj.equals("cambio")){
-            if((fOperario.ModificarDatosOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario, CorreoOperario))!=-1){
+            if((fOperario.ModificarDatosOperario(Integer.parseInt(IdOperario), NombreOperario, ApellidoOperario, CorreoOperario, AlertasOperario))!=-1){
                 fOperario.AgregarPermiso(Integer.parseInt(IdOperario), PermisoOperario);
                 if(msj.equals("cambio")) {
                     msj = "Se actualizaron los datos pero no se pudo cambiar la contraseña.";
@@ -139,6 +142,7 @@ public class EditarOperario implements Serializable{
         PasswordsOperario[0] = op.getPasswordKeyOperario();
         PasswordsOperario[1] = op.getPasswordOperario();
         CorreoOperario = op.getCorreoOperario();
+        AlertasOperario = op.isRecibeAlertas();
     }
     
     /**

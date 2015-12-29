@@ -101,10 +101,11 @@ public class FacadeManejoOperario implements Serializable {
      * @param NombreOperario
      * @param ApellidoOperario
      * @param CorreoOperario
+     * @param RecibeAlertas
      * @return Retorna el id del operario. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario){
-        return cOperario.ModificarDatosOperario(IdOperario, NombreOperario, ApellidoOperario, CorreoOperario);
+    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario, boolean RecibeAlertas){
+        return cOperario.ModificarDatosOperario(IdOperario, NombreOperario, ApellidoOperario, CorreoOperario, RecibeAlertas);
     }
     
     /**

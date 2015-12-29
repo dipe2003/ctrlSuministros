@@ -88,13 +88,16 @@ public class ControladorOperario implements Serializable{
      * @param IdOperario
      * @param NombreOperario
      * @param ApellidoOperario
+     * @param CorreoOperario
+     * @param RecibeAlertas
      * @return Retorna el id del operario. Retorna -1 si no se pudo actualizar.
      */
-    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario){
+    public int ModificarDatosOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String CorreoOperario, boolean RecibeAlertas){
         Operario operario = mOperario.ObtenerOperario(IdOperario);
         operario.setNombreOperario(NombreOperario);
         operario.setApellidoOperario(ApellidoOperario);
         operario.setCorreoOperario(CorreoOperario);
+        operario.setRecibeAlertas(RecibeAlertas);
         return mOperario.ActualizarOperario(operario);
     }
     

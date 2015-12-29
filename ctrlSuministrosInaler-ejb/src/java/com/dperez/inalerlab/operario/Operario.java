@@ -20,6 +20,7 @@ public class Operario implements Serializable{
     private String PasswordKeyOperario;
     private String PasswordOperario;
     private String CorreoOperario;
+    private boolean RecibeAlertas;
     
     @OneToMany(mappedBy = "OperarioIngresoSuministro" )
     private List<Ingreso> IngresosSuministrosOperario;
@@ -29,10 +30,7 @@ public class Operario implements Serializable{
     private Permiso PermisoOperario;
     
     //	Constructores
-    public Operario(){
-        this.IngresosSuministrosOperario = new ArrayList<>();
-        this.IngresosSuministrosOperario = new ArrayList<>();
-    }
+    public Operario(){}
     public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario, String CorreoOperario){
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
@@ -42,6 +40,7 @@ public class Operario implements Serializable{
         this.CorreoOperario = CorreoOperario;
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
+        this.RecibeAlertas = false;
     }
     
     //	Getters
@@ -54,6 +53,7 @@ public class Operario implements Serializable{
     public String getPasswordKeyOperario() {return PasswordKeyOperario;}
     public String getPasswordOperario() {return PasswordOperario;}
     public String getCorreoOperario() {return CorreoOperario;}
+    public boolean isRecibeAlertas() {return RecibeAlertas;}
     
     //	Setters
     public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
@@ -71,6 +71,7 @@ public class Operario implements Serializable{
     public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}
     public void setCorreoOperario(String CorreoOperario) {this.CorreoOperario = CorreoOperario;}
     public void setPermisoOperario(Permiso PermisoOperario) {this.PermisoOperario = PermisoOperario;}
+    public void setRecibeAlertas(boolean RecibeAlertas) {this.RecibeAlertas = RecibeAlertas;}
     
     //	Ingresos - Egresos
     public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){
