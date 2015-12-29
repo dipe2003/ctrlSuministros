@@ -23,6 +23,7 @@ public class ControladorOperario implements Serializable{
      * @param NombreOperario
      * @param ApellidoOperario
      * @param PasswordOperario
+     * @param CorreoOperario
      * @return Retorna el id del operario creado. Si no se creo retorna -1.
      */
     public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario, String CorreoOperario){
