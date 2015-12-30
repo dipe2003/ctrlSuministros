@@ -31,10 +31,10 @@ public class SendMail {
     private static Session session;
     static {
         props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.port", 587);
-        props.put("mail.smtp.host", "m.outlook.com");
-        //props.put("mail.smtp.host", "smtp.outlook365.com");
+        props.put("mail.smtp.port", 587);              
+        props.put("mail.smtp.host", "smtp.office365.com");
         props.put("mail.smtp.auth", "true");
 
         session = Session.getInstance(props,
@@ -57,9 +57,8 @@ public class SendMail {
     public boolean enviarMail(String to,String mensaje, String asunto){
         
         try{
-            Transport transport =session.getTransport();
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(prop.getMailFrom()));
+            message.setFrom(new InternetAddress(mail));
             
             // Set To
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -71,9 +70,7 @@ public class SendMail {
             message.setContent(mensaje, "text/html" );
             
             // Enviar mensaje
-            transport.connect(user, pass);
-            transport.send(message, user, pass);
-            transport.close();
+            Transport.send(message);
             System.out.println("El mensaje fue enviado.");
             return true;
         }catch (MessagingException mex) {

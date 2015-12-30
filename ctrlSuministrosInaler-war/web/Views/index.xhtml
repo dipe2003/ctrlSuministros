@@ -80,9 +80,9 @@
             </div>
         </div>
         <div id="loading" class="carga" style="display: none;">
-                <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
-                <div>Cargando...</div>
-            </div>
+            <img height="100px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/loading-wheel.gif"/>
+            <div>Cargando...</div>
+        </div>
         <div>
             <ui:include src="header.xhtml"/>
         </div>
@@ -136,35 +136,45 @@
                             <div class="contenedor-5050">
                                 <div class="contenedor-50">
                                     <div class="label">Debajo de minimo</div><br/>
-                                    <f:view>
-                                        <table class="tabla-listaSuministro">
-                                            <th class="label" style="width: 79%;">Suministro</th>
-                                            <th class="label" style='width: 20%;'>Stock</th>
-                                            <c:forEach items="#{datosIndex.listSuministrosDebajoStock}" var="SuministroStock" >
-                                                <tr>
-                                                    <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
-                                                    <td><h:outputText value="#{SuministroStock.stock} #{SuministroStock.unidadSuministro.nombreUnidad}"/></td>
-                                                </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </f:view>                                    
+                                    <c:if test="#{empty datosIndex.listSuministrosDebajoStock}">
+                                        <div class="output"> No Hay Suministros Debajo de Stock Minimo </div>
+                                    </c:if>
+                                    <c:if test="#{not empty datosIndex.listSuministrosDebajoStock}">
+                                        <f:view>
+                                            <table class="tabla-listaSuministro">
+                                                <th class="label" style="width: 79%;">Suministro</th>
+                                                <th class="label" style='width: 20%;'>Stock</th>
+                                                <c:forEach items="#{datosIndex.listSuministrosDebajoStock}" var="SuministroStock" >
+                                                    <tr>
+                                                        <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
+                                                        <td><h:outputText value="#{SuministroStock.stock} #{SuministroStock.unidadSuministro.nombreUnidad}"/></td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </f:view>
+                                    </c:if>
                                 </div>                                   
                                 <div class="contenedor-50">
                                     <div class="label">Lotes vencidos</div><br/>
-                                    <f:view>
-                                        <table class="tabla-listaSuministro">
-                                            <th class="label" style="width: 79%;">Suministro</th>
-                                            <th class="label" style='width: 20%;'>Vencimiento</th>
-                                            <c:forEach items="#{datosIndex.listSuministrosVencidos}" var="SuministroStock" >
-                                                <c:forEach items="#{datosIndex.mapLotesVencidos.get(SuministroStock.idSuministro)}" var ="lote">
-                                                    <tr>
-                                                        <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
-                                                        <td><h:outputText value="#{lote.strFechaVencimientoLote}" /></td>
-                                                    </tr>
-                                                </c:forEach>          
-                                            </c:forEach>
-                                        </table>                                        
-                                    </f:view>                                    
+                                    <c:if test="#{empty datosIndex.listSuministrosVencidos}">
+                                        <div class="output"> No Hay Suministros con Lotes Vencidos </div>
+                                    </c:if>
+                                    <c:if test="#{not empty datosIndex.listSuministrosVencidos}" >
+                                        <f:view>
+                                            <table class="tabla-listaSuministro">
+                                                <th class="label" style="width: 79%;">Suministro</th>
+                                                <th class="label" style='width: 20%;'>Vencimiento</th>
+                                                <c:forEach items="#{datosIndex.listSuministrosVencidos}" var="SuministroStock" >
+                                                    <c:forEach items="#{datosIndex.mapLotesVencidos.get(SuministroStock.idSuministro)}" var ="lote">
+                                                        <tr>
+                                                            <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
+                                                            <td><h:outputText value="#{lote.strFechaVencimientoLote}" /></td>
+                                                        </tr>
+                                                    </c:forEach>          
+                                                </c:forEach>
+                                            </table>                                        
+                                        </f:view>
+                                    </c:if>
                                 </div>                                   
                             </div>
                         </fieldset>

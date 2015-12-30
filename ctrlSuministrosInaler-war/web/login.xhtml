@@ -8,10 +8,14 @@
         
         <link rel="stylesheet" href="./Resources/CSS/base.css"/>
         <link rel="stylesheet" href="./Resources/CSS/login.css" />
-        <title>Inicio</title>
+        <title>Inicio: Control de Suministros</title>
     </h:head>
     <h:body>
-        <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">        
+        <h:form id="login" style="text-align: center" rendered="#{!loginOperario.logueado}">  
+            <div style="text-align: left;">
+                <h:message style="position: absolute;" for="inputNumOperario" id="msjLoginNumero" class="error" />
+                <h:message style="position: absolute;" for="inputSecret" id="msjLoginPass" class="error" />
+            </div>  
             <div id="linea" class="fondo-azul">
                 <div id="titulo" class="fondo-azul">
                     <img height="80px" src="./Resources/Images/lock_fixed.png"/><br/>
@@ -22,11 +26,7 @@
                     <h:inputSecret id="inputSecret" value="#{loginOperario.password}" class="Texto" p:placeholder="Password" required="true" requiredMessage="Debes ingresar una contraseña."/><br/>                    
                     <h:commandButton id="btnLogin" type="submit" class="boton-input" style="width: 30%;height: 50px;" value="Ingresar" action="#{loginOperario.login()}"/>
                 </div>
-            </div>
-            <div style="text-align: center;">
-                <h:message for="inputNumOperario" id="msjLoginNumero" class="error" />
-                <h:message for="inputSecret" id="msjLoginPass" class="error" />
-            </div>    
+            </div>              
         </h:form>  
         <h:form rendered="#{loginOperario.logueado}">
             <meta http-equiv="refresh" content="0;url=Views/index.xhtml"></meta>
