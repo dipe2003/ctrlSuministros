@@ -25,5 +25,8 @@ public class ControladorPropiedad {
     public String getMailPass(){
         return mProp.ObtenerPropiedad("mail_pass").getValorPropiedad();
     }
+    public int getMailPort(){
+        return Integer.parseInt(mProp.ObtenerPropiedad("mail_port").getValorPropiedad());
+    }
 }
 

@@ -3,8 +3,8 @@ package com.dperez.inalerlab.email;
 
 import java.util.Properties;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,22 +21,36 @@ import javax.mail.internet.MimeMessage;
 @Named
 @Stateless
 public class SendMail {
-    @Inject
+    @EJB
     private ControladorPropiedad prop;
     private static String user;
     private static String pass;
     private static String mail;
+    private static String host;
+    private static int port;
     
     private static Properties props;
     private static Session session;
-    static {
+    
+    public SendMail() {
+        
+    }
+        
+    @PostConstruct
+    public void init(){
+        user = prop.getMailUser();
+        pass = prop.getMailPass();
+        mail = prop.getMailFrom();
+        host = prop.getMailSmtp();
+        port = prop.getMailPort();
+        
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.port", 587);              
-        props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.host", host);
         props.put("mail.smtp.auth", "true");
-
+        
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     @Override
@@ -44,14 +58,6 @@ public class SendMail {
                         return new PasswordAuthentication(user, pass);
                     }
                 });
-
-    }
-    
-    @PostConstruct
-    public void init(){
-        user = prop.getMailUser();
-        pass = prop.getMailPass();
-        mail = prop.getMailFrom();
     }
     
     public boolean enviarMail(String to,String mensaje, String asunto){
