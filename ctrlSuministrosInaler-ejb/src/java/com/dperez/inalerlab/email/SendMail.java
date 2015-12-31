@@ -26,6 +26,8 @@ public class SendMail {
     private static String user;
     private static String pass;
     private static String mail;
+    private static String host;
+    private static int port;
     
     private static Properties props;
     private static Session session;
@@ -33,8 +35,8 @@ public class SendMail {
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.port", 587);              
-        props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.port", port);              
+        props.put("mail.smtp.host", host);
         props.put("mail.smtp.auth", "true");
 
         session = Session.getInstance(props,
@@ -52,6 +54,8 @@ public class SendMail {
         user = prop.getMailUser();
         pass = prop.getMailPass();
         mail = prop.getMailFrom();
+        host = prop.getMailSmtp();
+        port = prop.getMailPort();
     }
     
     public boolean enviarMail(String to,String mensaje, String asunto){

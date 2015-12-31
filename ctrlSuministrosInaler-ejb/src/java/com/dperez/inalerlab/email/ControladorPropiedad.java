@@ -2,11 +2,13 @@
 package com.dperez.inalerlab.email;
 
 import javax.ejb.Stateless;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
 @Stateless
+@ManagedBean
 public class ControladorPropiedad {
     @Inject
     private ManejadorPropiedad mProp;
@@ -24,6 +26,9 @@ public class ControladorPropiedad {
     }
     public String getMailPass(){
         return mProp.ObtenerPropiedad("mail_pass").getValorPropiedad();
+    }
+    public int getMailPort(){
+        return Integer.parseInt(mProp.ObtenerPropiedad("mail_port").getValorPropiedad());
     }
 }
 
