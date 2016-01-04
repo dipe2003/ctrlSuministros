@@ -1,7 +1,6 @@
 
 package com.dperez.inalerlab.timer;
 
-import com.dperez.inalerlab.email.ControladorPropiedad;
 import com.dperez.inalerlab.email.SendMail;
 import com.dperez.inalerlab.operario.FacadeManejoOperario;
 import com.dperez.inalerlab.operario.Operario;
@@ -12,6 +11,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.inject.Inject;
 
 /**
  *
@@ -19,10 +19,7 @@ import javax.ejb.Singleton;
  */
 @Singleton
 public class TimerService {
-    
-    
-    
-    @EJB
+    @Inject
     private SendMail mail;
     
     @EJB
@@ -32,8 +29,8 @@ public class TimerService {
     private FacadeManejoOperario fOp;
     
     // todos los domingos de todas las semanas, todos los años, a la hora 4:00 0s
-    //@Schedule(dayOfWeek = "Sun", month = "*", hour = "4", dayOfMonth = "*", year = "*", minute = "0", second = "0")
-    @Schedule(month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "0/2", second = "0")
+    @Schedule(dayOfWeek = "Sun", month = "*", hour = "4", dayOfMonth = "*", year = "*", minute = "0", second = "0")
+    //@Schedule(month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "0/2", second = "0")
     
     public void myTimer() {
         List<Suministro> suministros = fSum.ListarSuministros(true);
