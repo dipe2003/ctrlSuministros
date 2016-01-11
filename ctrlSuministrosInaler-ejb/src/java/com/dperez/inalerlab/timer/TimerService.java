@@ -30,6 +30,8 @@ public class TimerService {
     
     // todos los domingos de todas las semanas, todos los años, a la hora 4:00 0s
     @Schedule(dayOfWeek = "Sun", month = "*", hour = "4", dayOfMonth = "*", year = "*", minute = "0", second = "0")
+    
+    // solo para testing envio cada 2 minutos:
     //@Schedule(month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "0/2", second = "0")
     
     public void myTimer() {
