@@ -7,14 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
+import javax.ejb.Stateful;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 /**
  * Manejo intermedio de coleccion de datos para acceso de lectura sin llegar a base de datos.
  * @author dperez
  */
-@Singleton
+@Stateful
+@SessionScoped
 public class BufferProveedores {
 
     @Inject
