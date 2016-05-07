@@ -1,6 +1,7 @@
 
 package com.dperez.inalerlab.email;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
@@ -30,5 +31,19 @@ public class ControladorPropiedad {
     public int getMailPort(){
         return Integer.parseInt(mProp.ObtenerPropiedad("mail_port").getValorPropiedad());
     }
+    
+    //  Edicion de propiedades
+    public List<Propiedad> getPropiedades(){
+        return mProp.ListarPropiedades();
+    }
+    
+    public boolean guardarPropiedad(String nombrePropiedad, String valorPropiedad){
+        Propiedad prop = mProp.ObtenerPropiedad(nombrePropiedad);
+        try{
+            prop.setValorPropiedad(valorPropiedad);
+        }catch(NullPointerException ex){}
+        return !mProp.ActualizarPropiedad(prop).equals("na"); 
+    }
+    
 }
 

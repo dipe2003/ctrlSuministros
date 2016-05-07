@@ -49,7 +49,7 @@ public class ManejadorPropiedad {
         return null;
     }
     
-    public List<Propiedad> ListarPropiedadws(){
+    public List<Propiedad> ListarPropiedades(){
         List<Propiedad> Propiedades = new ArrayList<>();
         TypedQuery<Propiedad> query = em.createQuery("FROM Propiedad o", Propiedad.class);
         try{
