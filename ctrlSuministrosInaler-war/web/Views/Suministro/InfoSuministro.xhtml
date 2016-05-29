@@ -43,8 +43,9 @@
                             <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
                             <table class="tabla-infoSuministro">
                                 <thead>
-                                    <th class="label" style="width: 30%">Lote</th>
+                                    <th class="label" style="width: 20%">Lote</th>
                                     <th class="label" style="width: 10%">Fecha</th>
+                                    <th class="label" style="width: 10%">Factura</th>
                                     <th class="label" style="width: 10%">Cantidad</th>
                                     <th class="label" style="width: 20%">Vencimiento</th>
                                     <th class="label" style="width: 20%">Operario</th>
@@ -58,6 +59,9 @@
                                                 </td>
                                                 <td class="div-output" >
                                                     <div>#{entry.strFechaIngreso}</div>
+                                                </td>
+                                                <td class="div-output" >
+                                                    <div>#{entry.numeroFactura}</div>
                                                 </td>
                                                 <td class="div-output">
                                                     <div>#{entry.cantidadIngreso}</div>
