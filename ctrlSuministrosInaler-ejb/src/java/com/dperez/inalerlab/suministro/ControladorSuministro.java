@@ -22,9 +22,9 @@ public class ControladorSuministro implements Serializable{
     @Inject
     private ManejadorSuministro mSuministro;
     @Inject
-    private ControladorUnidad cUnidad;    
+    private ControladorUnidad cUnidad;
     @Inject
-    private ControladorProveedor cProveedor;    
+    private ControladorProveedor cProveedor;
     @Inject
     private ControladorStockMinimo cStock;
     @Inject
@@ -80,10 +80,13 @@ public class ControladorSuministro implements Serializable{
      * Devuelve todos los suministros registrados en la base de datos.
      * Si no hay suministros devuelve una lista vacia.
      * @param Vigente True: indica si solo se devuelven los suministros en uso.
+     * @param UsarBuffer True: indica si se utiliza el buffer (False para solucionar error de contexto en Timer singleton).
      * @return
      */
-    public List<Suministro> ListarSuministros(boolean Vigente){
-        if(buffer.bufferSize()>0) return buffer.getListaSuministros(Vigente);
+    public List<Suministro> ListarSuministros(boolean Vigente, boolean UsarBuffer){
+        if(UsarBuffer){
+            if(buffer.bufferSize()>0) return buffer.getListaSuministros(Vigente);
+        }
         return mSuministro.ListarSuministros(Vigente);
     }
     
@@ -174,10 +177,10 @@ public class ControladorSuministro implements Serializable{
         List<Integer> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
             try{
-            if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
-                    suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
-                lista.add(suministro.getIdSuministro());
-            }
+                if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
+                        suministro.getStockMinimoSuministro().getCantidadStockMinimo()>0){
+                    lista.add(suministro.getIdSuministro());
+                }
             }catch(NullPointerException ex){
                 System.out.println("Error: " + ex.getMessage() + " en " + suministro.getNombreSuministro() + suministro.getIdSuministro());
             }

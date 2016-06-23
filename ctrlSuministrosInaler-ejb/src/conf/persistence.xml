@@ -3,8 +3,7 @@
   <persistence-unit name="CtrlSuministros_PU" transaction-type="JTA">
     <jta-data-source>java:/datasource/ctrlsuministros</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-    </properties>
+
   </persistence-unit>
 </persistence>
 

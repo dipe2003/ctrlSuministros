@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -63,7 +62,7 @@ public class ListadoEstadoSuministros implements Serializable{
     
     @PostConstruct
     public void init() {
-        ListaSuministros = fSuministro.ListarSuministros(true);
+        ListaSuministros = fSuministro.ListarSuministros(true, true);
         MapSuministros = new HashMap<>();
         try{
             for(Suministro sum: ListaSuministros){

@@ -47,7 +47,7 @@ public class ListadoSuministros implements Serializable{
     
     @PostConstruct
     public void init() {
-        ListaSuministros = fSuministro.ListarSuministros(false);
+        ListaSuministros = fSuministro.ListarSuministros(false, true);
         MapSuministros = new HashMap<>();
         for(Suministro sum: ListaSuministros){
             MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")", sum);

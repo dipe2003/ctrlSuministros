@@ -7,10 +7,7 @@ import com.dperez.inalerlab.suministro.lote.Ingreso;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.suministro.lote.Salida;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -18,12 +15,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import web.interfaz.pdf.PdfBox;
 
 @Named
@@ -55,25 +51,28 @@ public class InfoSuministro implements Serializable{
     public void setLotesVencido(Map<Integer, Boolean> LotesVencido) {this.LotesVencido = LotesVencido;}
     
     //PDF
-    public void exportarPdf() throws IOException{
+    public void exportarPdf(){
         ByteArrayOutputStream documento =  new ByteArrayOutputStream();
         try{
             documento = pdf.CrearPdf(SuministroSeleccionado.getNombreSuministro());
-        }catch(IOException | COSVisitorException ex){
+        }catch(IOException ex){
             System.out.println("Error al crear pdf: " + ex.getMessage());
         }
         
         FacesContext fc = FacesContext.getCurrentInstance();
-        HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+        ExternalContext ec = fc.getExternalContext();
         
-        response.reset(); // Limpiar el buffer por contenido dejado en otras llamadas.
-        response.setContentType("application/pdf"); // Check http://www.iana.org/assignments/media-types for all types.
-        response.setContentLength(documento.size()); // Es opcional pero si no se especifica no se calcula el tiempo de descarga.
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + "Info de Suministro " + String.valueOf(SuministroSeleccionado.getIdSuministro())+".pdf" + "\""); // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
-        
-        OutputStream output = response.getOutputStream();
-        output.write(documento.toByteArray());
-        
+        ec.responseReset(); // Limpiar el buffer por contenido dejado en otras llamadas.
+        ec.setResponseContentType("application/pdf"); // Check http://www.iana.org/assignments/media-types for all types.
+        ec.setResponseContentLength(documento.size()); // Es opcional pero si no se especifica no se calcula el tiempo de descarga.
+        ec.setResponseHeader("Content-Disposition", "attachment; filename= Info de Suministro " + String.valueOf(SuministroSeleccionado.getIdSuministro())+".pdf"); // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
+        try{
+            OutputStream output = ec.getResponseOutputStream();
+            output.flush();
+            output.write(documento.toByteArray());
+        }catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
         fc.responseComplete(); // Importante! sino se intentara renderizar la respuesta y se genera una excepcion porque el archivo ya se cerro.
     }
     
