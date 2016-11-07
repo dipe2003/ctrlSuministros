@@ -27,7 +27,7 @@
                         <div class="label">Stock Actual</div> <div style="text-align: left; margin-left:1%;">
                             <c:if test="#{infoSuministro.suministroSeleccionado.debajoStockMinimo == true}">
                                 <div class="output alerta">
-                                <h:outputText value="#{infoSuministro.suministroSeleccionado.stock} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}"/>
+                                    <h:outputText value="#{infoSuministro.suministroSeleccionado.stock} #{infoSuministro.suministroSeleccionado.unidadSuministro.nombreUnidad}"/>
                                 </div>
                             </c:if>
                             <c:if test="#{infoSuministro.suministroSeleccionado.debajoStockMinimo==false}">
@@ -49,6 +49,9 @@
                                     <th class="label" style="width: 10%">Cantidad</th>
                                     <th class="label" style="width: 20%">Vencimiento</th>
                                     <th class="label" style="width: 20%">Operario</th>
+                                    <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                        <th class="label" style="width: 0.5%"></th>
+                                    </c:if>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
@@ -86,6 +89,13 @@
                                                 <td class="div-output" >
                                                     <div>#{entry.operarioIngresoSuministro.idOperario}</div>
                                                 </td>
+                                                <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                                    <td class="div-output" style="width: 0.5%">
+                                                        <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarIngreso.xhtml?id=#{entry.idIngreso}">
+                                                            <img title="Editar el ingreso" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
+                                                        </a>
+                                                    </td>
+                                                </c:if>
                                             </tr>
                                         </c:forEach>
                                         <tr bgcolor="azure" style="border-top: 1px !important;">

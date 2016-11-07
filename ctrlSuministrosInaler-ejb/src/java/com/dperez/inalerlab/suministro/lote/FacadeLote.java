@@ -99,4 +99,13 @@ public class FacadeLote implements Serializable{
         return cLote.ListarMapLotesStock(IdSuministro, Vencimiento);
     }
     
+    /**
+     * Devuelve el ingreso especificado por su Id.
+     * @param IdIngreso
+     * @return 
+     */
+    public Ingreso BuscarIngreso(int IdIngreso){
+        return cInSal.BuscarIngreso(IdIngreso);
+    }
+    
 }

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="../../Views/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"          
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" >
+    <ui:define name="page_content">
+        <c:choose>
+            <c:when test="#{loginOperario.permisoOperario != 'Administrador'}" >
+                <meta http-equiv="refresh" content="0;url=#{facesContext.externalContext.requestContextPath}/Errores/Error_500.xhtml"></meta>
+            </c:when>
+            <c:otherwise>
+                <div class="contenido">            
+                    <h:form id="frmEditIngreso">
+                        <fieldset><legend>Editar Ingreso</legend>
+                            
+                            <div class="label">Numero de Lote</div>
+                            <h:outputText class="output" id="outputNumeroLote" value="#{editarIngreso.numeroLote}"/>
+                            
+                            <div class="label">Fecha de Ingreso</div>
+                            <h:inputText id="inputEditFechaIngreso" class="input" value="#{editarIngreso.fechaIngreso}"  p:placeholder="Fecha de Ingreso" required="true"/>
+                            
+                            <div class="label">Numero de Factura</div>
+                            <h:inputText id="inputEditNumeroFactura" class="input" value="#{editarIngreso.numeroFactura}" p:placeholder="Numero de Factura" required="true"/>
+                            
+                            <div class="label">Cantidad</div>
+                            <h:inputText id="inputEditCantidadIngreso" class="input" value="#{editarIngreso.cantidadIngreso}" p:placeholder="Cantidad" required="true"/>#{editarIngreso.unidadesSuministros.get(editarIngreso.unidadSuministro)}
+                            
+                            <div class="label">Fecha de Vencimiento</div>
+                            <h:inputText id="inputEditFechaVencimiento" class="input" value="#{editarIngreso.fechaVencimiento}" p:placeholder="Fecha de Vencimiento" required="true"/>
+                                                       
+                            <div class="div-boton">
+                                <h:commandButton id="btnEditarIngreso" class="boton-input" value="Guardar" action="#{editarIngreso.editarIngreso()}"/>
+                            </div>
+                            
+                            <div>
+                                <h:message for="inputEditFechaIngreso" class="error"/>
+                                <h:message for="inputEditNumeroFactura" class="error"/>
+                                <h:message for="inputEditCantidad" class="error"/>
+                                <h:message for="inputEditFechaVencimiento" class="error"/>
+                                <h:message for="btnEditarIngreso" class="error"/>                     
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </c:otherwise>
+        </c:choose>        
+    </ui:define>
+</ui:composition>    
