@@ -5,16 +5,12 @@ import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.FacadeLote;
 import com.dperez.inalerlab.suministro.lote.Ingreso;
-import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -75,21 +71,21 @@ public class EditarIngreso implements Serializable{
     }
     
     public void editarIngreso() throws IOException{
-        int idSuministro = -1;
-        String msj ="";
-        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        Suministro suministro;
-        
-        suministro.setDescripcionSuministro(NumeroLote);
-        suministro.setNombreSuministro(NumeroFactura);
-        suministro.setIdSuministro(IdIngreso);
-        
-        if(fSuministro.ActualizarSuministro(suministro, IdProveedor, UnidadSuministro, CantidadIngreso)!=-1){
-            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/ListadoSuministros.xhtml");
-        }else{
-            msj = "No se pudo actualizar.";
-        }
-        FacesContext.getCurrentInstance().addMessage("frmEditIngreso:btnEditarIngreso", new FacesMessage(msj));
+//        int idSuministro = -1;
+//        String msj ="";
+//        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+//        Suministro suministro;
+//        
+//        suministro.setDescripcionSuministro(NumeroLote);
+//        suministro.setNombreSuministro(NumeroFactura);
+//        suministro.setIdSuministro(IdIngreso);
+//        
+//        if(fSuministro.ActualizarSuministro(suministro, IdProveedor, UnidadSuministro, CantidadIngreso)!=-1){
+//            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/ListadoSuministros.xhtml");
+//        }else{
+//            msj = "No se pudo actualizar.";
+//        }
+//        FacesContext.getCurrentInstance().addMessage("frmEditIngreso:btnEditarIngreso", new FacesMessage(msj));
     }
     
     @PostConstruct

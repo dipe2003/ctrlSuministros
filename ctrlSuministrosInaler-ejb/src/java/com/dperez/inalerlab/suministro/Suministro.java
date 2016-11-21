@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +33,7 @@ abstract public class Suministro implements Serializable{
     @OneToMany(mappedBy = "SuministroLote")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Lote> LotesSuministros;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<StockMinimo> StocksMinimosSuministro;
     @ManyToOne
@@ -82,7 +83,7 @@ abstract public class Suministro implements Serializable{
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){
         for (StockMinimo stock : this.StocksMinimosSuministro) {
-            stock.setVigente(Boolean.FALSE);
+            stock.setVigente(false);
         }
         this.StocksMinimosSuministro.add(StockMinimoSuministro);
     }
