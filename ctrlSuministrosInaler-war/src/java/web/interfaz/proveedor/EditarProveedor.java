@@ -44,7 +44,7 @@ public class EditarProveedor implements Serializable{
         ContactoProveedor = prov.getContactoProveedor();
     }
     
-    private void editarProveedor() throws IOException{
+    public void editarProveedor() throws IOException{
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();        
         if (fProveedor.ModificarDatosProveedor(IdProveedor, NombreProveedor, ContactoProveedor)!=-1) {
             FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Proveedor/ListadoProveedores.xhtml");
