@@ -18,25 +18,26 @@
                         <fieldset><legend>Editar Ingreso</legend>
                             
                             <div class="label">Numero de Lote</div>
-                            <h:outputText class="output" id="outputNumeroLote" value="#{editarIngreso.numeroLote}"/>
+                            <h:inputText class="input" id="inputEditNumeroLote" value="#{editarIngreso.numeroLote}"/>
                             
                             <div class="label">Fecha de Ingreso</div>
-                            <h:inputText id="inputEditFechaIngreso" class="input" value="#{editarIngreso.fechaIngreso}"  p:placeholder="Fecha de Ingreso" required="true"/>
+                            <h:inputText id="inputEditFechaIngreso" class="calendario input" value="#{editarIngreso.strFechaIngreso}"  p:placeholder="Fecha de Ingreso" required="true"/>
                             
                             <div class="label">Numero de Factura</div>
                             <h:inputText id="inputEditNumeroFactura" class="input" value="#{editarIngreso.numeroFactura}" p:placeholder="Numero de Factura" required="true"/>
                             
-                            <div class="label">Cantidad</div>
-                            <h:inputText id="inputEditCantidadIngreso" class="input" value="#{editarIngreso.cantidadIngreso}" p:placeholder="Cantidad" required="true"/>#{editarIngreso.unidadesSuministros.get(editarIngreso.unidadSuministro)}
+                            <div class="label">Cantidad (#{editarIngreso.unidadSuministro})</div>
+                            <h:inputText id="inputEditCantidadIngreso" class="input" value="#{editarIngreso.cantidadIngreso}" p:placeholder="Cantidad" required="true"/>
                             
                             <div class="label">Fecha de Vencimiento</div>
-                            <h:inputText id="inputEditFechaVencimiento" class="input" value="#{editarIngreso.fechaVencimiento}" p:placeholder="Fecha de Vencimiento" required="true"/>
+                            <h:inputText id="inputEditFechaVencimiento"  class="calendario input" value="#{editarIngreso.strFechaVencimiento}" p:placeholder="Fecha de Vencimiento" required="true"/>
                                                        
                             <div class="div-boton">
                                 <h:commandButton id="btnEditarIngreso" class="boton-input" value="Guardar" action="#{editarIngreso.editarIngreso()}"/>
                             </div>
                             
                             <div>
+                                <h:message for="inputEditNumeroLote" class="error"/>
                                 <h:message for="inputEditFechaIngreso" class="error"/>
                                 <h:message for="inputEditNumeroFactura" class="error"/>
                                 <h:message for="inputEditCantidad" class="error"/>

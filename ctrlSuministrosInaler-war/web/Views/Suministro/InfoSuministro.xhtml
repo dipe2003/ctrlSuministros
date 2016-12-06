@@ -48,7 +48,7 @@
                                     <th class="label" style="width: 10%">Factura</th>
                                     <th class="label" style="width: 10%">Cantidad</th>
                                     <th class="label" style="width: 20%">Vencimiento</th>
-                                    <th class="label" style="width: 20%">Operario</th>
+                                    <th class="label" style="width: 18%">Operario</th>
                                     <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
                                         <th class="label" style="width: 0.5%"></th>
                                     </c:if>
@@ -90,9 +90,9 @@
                                                     <div>#{entry.operarioIngresoSuministro.idOperario}</div>
                                                 </td>
                                                 <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                    <td class="div-output" style="width: 0.5%">
-                                                        <a href="#">
-                                                            <img title="Editar el ingreso (En Desarrollo)" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
+                                                    <td class="div-output" style="width: 0.6%">
+                                                        <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarIngreso.xhtml?id=#{entry.idIngreso}">
+                                                            <img title="Editar Ingreso/Lote (En Desarrollo)" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
                                                         </a>
                                                     </td>
                                                 </c:if>

@@ -185,4 +185,16 @@ abstract public class Suministro implements Serializable{
         return null;
     }
     
+    /**
+     * Comprueba la existencia del lote con el numero indicado.
+     * @param NumeroLote
+     * @return True: Si existe lote. False: Si no existe el lote.
+     */
+    public boolean ExisteNumeroLote(String NumeroLote){
+        for(Lote lote: this.LotesSuministros){
+            if(lote.getNumeroLote().equalsIgnoreCase(NumeroLote)) return true;            
+        }
+        return false;        
+    }
+    
 }
