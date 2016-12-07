@@ -98,6 +98,8 @@ public class EditarIngreso implements Serializable{
         this.FechaVencimiento = cal.getTime();
     }
     
+    
+    //  Metodos
     public void editarIngreso() throws IOException{
         int idSuministro = -1;
         String msj ="";
@@ -105,7 +107,7 @@ public class EditarIngreso implements Serializable{
         
         /*
         TODO:
-        1) Comprobar que el numero de lote ingresado no existe antes de actualizar.
+        1) Comprobar que el numero de lote ingresado no existe antes de actualizar o que no haya sido cambiado.
         2) Permitir que se utilice un numero de lote ingresado y realizar las actualizaciones correspondientes en la
         base de datos para que el ingreso pertenezca a ese lote. En este caso la fecha de vencimiento debe comprobarse por
         modificaciones ya que pasaria a ser la guardada del lote existente seleccionado y no la ingresada en la pantalla edicion.
@@ -113,19 +115,18 @@ public class EditarIngreso implements Serializable{
         
         if(SuministroSeleccionado.ExisteNumeroLote(NumeroLote) && !NumeroLoteOriginal.equalsIgnoreCase(NumeroLote)){
             msj = "El numero de lote ingresado ya existe";
-            FacesContext.getCurrentInstance().addMessage("frmEditIngreso:btnEditarIngreso", new FacesMessage(msj));
-            FacesContext.getCurrentInstance().renderResponse();
-        }else{            
+        }else{
             // actualizar el ingreso/lote
-            //if(fSuministro.ActualizarSuministro(suministro, IdProveedor, UnidadSuministro, CantidadIngreso)!=-1){
-            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/InfoSuministro.xhtml?id="+SuministroSeleccionado.getIdSuministro());
-            FacesContext.getCurrentInstance().renderResponse();
-            FacesContext.getCurrentInstance().responseComplete();
-            //}else{
-            //msj = "No se pudo actualizar.";
-            //}
-            //FacesContext.getCurrentInstance().addMessage("frmEditIngreso:btnEditarIngreso", new FacesMessage(msj));
+            if(fLote.ActualizarLoteIngreso(SuministroSeleccionado.getIdSuministro(), LoteSuministro.getIdLote(), IdIngreso, NumeroLote, CantidadIngreso, FechaVencimiento, NumeroFactura)!=-1){
+                FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/InfoSuministro.xhtml?id="+SuministroSeleccionado.getIdSuministro());
+                FacesContext.getCurrentInstance().renderResponse();
+                FacesContext.getCurrentInstance().responseComplete();
+            }else{
+                msj = "No se pudo actualizar.";
+            }
         }
+        FacesContext.getCurrentInstance().addMessage("frmEditIngreso:btnEditarIngreso", new FacesMessage(msj));
+        FacesContext.getCurrentInstance().renderResponse();
     }
     
     

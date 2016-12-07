@@ -43,7 +43,7 @@ public class ControladorIngresoSalida implements Serializable{
             Ingreso ingreso = new Ingreso(FechaIngreso, CantidadIngreso, NumeroFactura, ObservacionesIngreso);
             ingreso.setLoteIngreso(cLote.BuscarLote(IdLoteIngreso));
             ingreso.setOperarioIngresoSuministro(operario);
-            id= mInSal.CrearIngreso(ingreso);            
+            id= mInSal.CrearIngreso(ingreso);
             if(id!=-1) {
                 if(id!=-1)buffer.updateSuministro(mSum.ObtenerSuministro(IdSuministro));
             }
@@ -67,6 +67,20 @@ public class ControladorIngresoSalida implements Serializable{
      */
     public List<Ingreso> ListarIngresos(){
         return mInSal.ListarIngresos();
+    }
+    
+    /**
+     * Actualiza los datos del ingreso indicado.
+     * @param IdIngreso
+     * @param CantidadIngreso
+     * @param NumeroFactura
+     * @return -1 si no se actualizo. IdIngreso si se actualizo.
+     */
+    public int ActualizarIngreso(int IdIngreso, float CantidadIngreso, String NumeroFactura){
+        Ingreso ingreso = mInSal.ObtenerIngreso(IdIngreso);
+        if(ingreso.getCantidadIngreso()!= CantidadIngreso) ingreso.setCantidadIngreso(CantidadIngreso);
+        if(!ingreso.getNumeroFactura().equalsIgnoreCase(NumeroFactura)) ingreso.setNumeroFactura(NumeroFactura);
+        return mInSal.ActualizarIngreso(ingreso);
     }
     
     /*

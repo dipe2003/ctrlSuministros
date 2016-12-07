@@ -34,7 +34,7 @@ public class FacadeLote implements Serializable{
      * @param IdLoteIngreso
      * @param IdOperario
      * @param Observaciones
-     * @return 
+     * @return
      */
     public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario, String Observaciones, int IdSuministro ){
         return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones, IdSuministro);
@@ -47,11 +47,11 @@ public class FacadeLote implements Serializable{
      * @param IdLoteSalida
      * @param IdOperario
      * @param ObservacionesSalida
-     * @return 
+     * @return
      */
     public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario, String ObservacionesSalida){
         return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario, ObservacionesSalida);
-    }    
+    }
     
     /**
      * Buscar un lote por numero de lote.
@@ -102,10 +102,25 @@ public class FacadeLote implements Serializable{
     /**
      * Devuelve el ingreso especificado por su Id.
      * @param IdIngreso
-     * @return 
+     * @return
      */
     public Ingreso BuscarIngreso(int IdIngreso){
         return cInSal.BuscarIngreso(IdIngreso);
+    }
+    
+    /**
+     * Actualiza los datos del ingreso especificado y del lote relacionado.
+     * @param IdSuministro
+     * @param IdLote
+     * @param IdIngreso
+     * @param NumeroLote
+     * @param CantidadIngreso
+     * @param FechaVencimientoLote
+     * @param NumeroFactura
+     * @return -1 si no se actualizo. IdLote si se actualizo.
+     */
+    public int ActualizarLoteIngreso(int IdSuministro, int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, Date FechaVencimientoLote, String NumeroFactura){
+        return cLote.ActualizarLoteIngreso(IdSuministro, IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
     }
     
 }
