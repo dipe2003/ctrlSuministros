@@ -21,7 +21,7 @@
                             <h:inputText class="input" id="inputEditNumeroLote" value="#{editarIngreso.numeroLote}"/>
                             
                             <div class="label">Fecha de Ingreso</div>
-                            <h:inputText id="inputEditFechaIngreso" class="calendario input" value="#{editarIngreso.strFechaIngreso}" readonly="true" />
+                            <h:inputText id="inputEditFechaIngreso" class="calendario input" value="#{editarIngreso.strFechaIngreso}" readonly="true" disabled="true" />
                             
                             <div class="label">Numero de Factura</div>
                             <h:inputText id="inputEditNumeroFactura" class="input" value="#{editarIngreso.numeroFactura}" p:placeholder="Numero de Factura" required="true"/>
@@ -40,7 +40,7 @@
                                 <h:message for="inputEditNumeroLote" class="error"/>
                                 <h:message for="inputEditFechaIngreso" class="error"/>
                                 <h:message for="inputEditNumeroFactura" class="error"/>
-                                <h:message for="inputEditCantidad" class="error"/>
+                                <h:message for="inputEditCantidadIngreso" class="error"/>
                                 <h:message for="inputEditFechaVencimiento" class="error"/>
                                 <h:message for="btnEditarIngreso" class="error"/>                     
                             </div>

@@ -301,4 +301,12 @@ public class ControladorSuministro implements Serializable{
         }catch(NullPointerException ex){}
         return id;
     }
+    
+    /**
+     * Actualiza el buffer de suministros con el suministro especificado.
+     * @param IdSuministro 
+     */
+    public void ActualizarSuministroBuffer(int IdSuministro){
+        buffer.updateSuministro(mSuministro.ObtenerSuministro(IdSuministro));
+    }
 }	

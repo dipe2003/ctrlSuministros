@@ -221,4 +221,12 @@ public class FacadeManejoSuministros implements Serializable {
             return cSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidad, StockMinimo);
     }
     
+    /**
+     * Actualiza el buffer de suministros con el suministro especificado.
+     * @param IdSuministro 
+     */
+    public void ActualizarSuministroBuffer(int IdSuministro){
+        cSuministro.ActualizarSuministroBuffer(IdSuministro);
+    }
+    
 }

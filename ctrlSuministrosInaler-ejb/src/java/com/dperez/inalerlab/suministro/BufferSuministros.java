@@ -20,8 +20,7 @@ import javax.inject.Inject;
 public class BufferSuministros {
 
     @Inject
-    ManejadorSuministro mSuministros;
- 
+    ManejadorSuministro mSuministros; 
       
     @PostConstruct
     public void init(){

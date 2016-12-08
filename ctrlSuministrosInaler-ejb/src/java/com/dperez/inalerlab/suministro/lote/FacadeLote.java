@@ -109,8 +109,7 @@ public class FacadeLote implements Serializable{
     }
     
     /**
-     * Actualiza los datos del ingreso especificado y del lote relacionado.
-     * @param IdSuministro
+     * Actualiza los datos del ingreso especificado y del lote relacionado.No se actualiza el buffer.
      * @param IdLote
      * @param IdIngreso
      * @param NumeroLote
@@ -119,8 +118,8 @@ public class FacadeLote implements Serializable{
      * @param NumeroFactura
      * @return -1 si no se actualizo. IdLote si se actualizo.
      */
-    public int ActualizarLoteIngreso(int IdSuministro, int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, Date FechaVencimientoLote, String NumeroFactura){
-        return cLote.ActualizarLoteIngreso(IdSuministro, IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
+    public int ActualizarLoteIngreso(int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, Date FechaVencimientoLote, String NumeroFactura){
+        return cLote.ActualizarLoteIngreso(IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
     }
     
 }
