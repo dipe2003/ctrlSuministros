@@ -1,7 +1,6 @@
 package com.dperez.inalerlab.suministro;
 
 import com.dperez.inalerlab.proveedor.Proveedor;
-import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
 import javax.persistence.Entity;
 

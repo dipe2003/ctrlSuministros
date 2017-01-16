@@ -263,6 +263,24 @@ public class ControladorSuministro implements Serializable{
     }
     
     /**
+     * Devuelve los suministros con lotes a un mes de su vencimiento, que esten vigentes y con stock,
+     * @return Lista de Suminstros.
+     */
+    public List<Suministro> getSuministrosUnMesVigencia(){
+        List<Suministro> suministros;
+        if(buffer.bufferSize()>0){
+            suministros = buffer.getListaSuministros(true);
+        }else{
+            suministros = mSuministro.ListarSuministros(true);
+        }
+        List<Suministro> lista = new ArrayList<>();
+        for(Suministro suministro: suministros){
+            if(suministro.isVigente() && suministro.getLotesUnMesVigenciaEnStock().size()>0) lista.add(suministro);
+        }
+        return lista;
+    }
+    
+    /**
      * Actualiza un suministro en la base de datos.
      * Compara unidad y proveedor y actualiza si es necesario.
      * Compara el stockminimo y si es diferente se crea con la fecha actual del sistema como vigencia.

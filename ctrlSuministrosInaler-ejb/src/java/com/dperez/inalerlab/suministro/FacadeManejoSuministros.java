@@ -210,6 +210,14 @@ public class FacadeManejoSuministros implements Serializable {
     }
     
     /**
+     * Devuelve los suministros con lotes a un mes de su vencimiento.
+     * @return Retorna una lista con los suministros. Retorna una lista vacia si no existen lotes vencidos en stock.
+     */
+    public List<Suministro> getSuministrosUnMesVigencia(){
+        return cSuministro.getSuministrosUnMesVigencia();
+    }
+    
+    /**
      * Actualiza un suministro en la base de datos.
      * @param suministro objeto con la informacion basica del suministro (nombre, id, codigoSAP, Descripcion)
      * @param IdUnidad id de unidad de medida

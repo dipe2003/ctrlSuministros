@@ -19,16 +19,20 @@ public class GraficosIndex implements Serializable {
    
    private int TotalSuministrosLotesVencidosStock;
    
+   private int TotalSuministrosUnMesVigencia;
+   
    //   Getters
     public int getTotalSuministrosDebajoStockMinimo() {return TotalSuministrosDebajoStockMinimo;}
     public int getTotalSuministrosRegistrados() {return TotalSuministrosRegistrados;}
     public int getTotalSuministrosLotesVencidosStock() {return TotalSuministrosLotesVencidosStock;}
+    public int getTotalSuministrosUnMesVigencia(){return this.TotalSuministrosUnMesVigencia;}
     
     //  Setters
     public void setTotalSuministrosDebajoStockMinimo(int TotalSuministrosDebajoStockMinimo) {this.TotalSuministrosDebajoStockMinimo = TotalSuministrosDebajoStockMinimo;}
     public void setTotalSuministrosRegistrados(int TotalSuministrosRegistrados) {this.TotalSuministrosRegistrados = TotalSuministrosRegistrados;}
     public void setTotalSuministrosLotesVencidosStock(int TotalSuministrosLotesVencidosStock) {this.TotalSuministrosLotesVencidosStock = TotalSuministrosLotesVencidosStock;}
-    
+    public void setTotalSuministrosUnMesVigencia(int TotalSuministrosUnMesVigencia){this.TotalSuministrosUnMesVigencia = TotalSuministrosUnMesVigencia;}
+        
     @PostConstruct
     public void init(){
         int[] arr = fSuministro.GetTotalSuministrosDebajoStockMinimo();
@@ -36,6 +40,7 @@ public class GraficosIndex implements Serializable {
         TotalSuministrosDebajoStockMinimo = arr[1];
         
         TotalSuministrosLotesVencidosStock = fSuministro.getSuministrosConLotesVencidos().size();
+        TotalSuministrosUnMesVigencia = fSuministro.getSuministrosUnMesVigencia().size();
         
     }
     

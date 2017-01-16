@@ -7,6 +7,7 @@ import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -32,6 +33,8 @@ public class DatosIndex implements Serializable{
     //  detalles vencimiento
     private List<Suministro> ListSuministrosVencidos;
     private Map<Integer, List<Lote>> MapLotesVencidos;
+    private List<Suministro> ListSuministroUnMesVigencia;
+    private Map<Integer, List<Lote>> MapLotesUnMesVigencia;
     
     //  Getters
     public float getStockSuministro(){return StockSuministro;}
@@ -44,6 +47,8 @@ public class DatosIndex implements Serializable{
     public List<Suministro> getListSuministrosDebajoStock() {return ListSuministrosDebajoStock;}
     public List<Suministro> getListSuministrosVencidos() {return ListSuministrosVencidos;}
     public Map<Integer, List<Lote>> getMapLotesVencidos() {return MapLotesVencidos;}
+    public List<Suministro> getSuministroUnMesVigencia(){return ListSuministroUnMesVigencia;}
+    public Map<Integer, List<Lote>> getMapLotesUnMesVigencia() {return MapLotesUnMesVigencia;}
     
     //  Setters
     public void setStockSuministro(float StockSuministro){this.StockSuministro = StockSuministro;}
@@ -56,7 +61,9 @@ public class DatosIndex implements Serializable{
     public void setListSuministrosDebajoStock(List<Suministro> ListSuministrosDebajoStock) {this.ListSuministrosDebajoStock = ListSuministrosDebajoStock;}
     public void setListSuministrosVencidos(List<Suministro> ListSuministrosVencidos) {this.ListSuministrosVencidos = ListSuministrosVencidos;    }
     public void setMapLotesVencidos(Map<Integer, List<Lote>> MapLotesVencidos) {this.MapLotesVencidos = MapLotesVencidos;}
-            
+    public void setListSuministroUnMesVigencia(List<Suministro> ListSuministroUnMesVigencia){this.ListSuministroUnMesVigencia = ListSuministroUnMesVigencia;}
+    public void setMapLotesUnMesVigencia(Map<Integer, List<Lote>> MapLotesUnMesVigencia) {this.MapLotesUnMesVigencia = MapLotesUnMesVigencia;}
+    
     public void cargarDatosSuministro(){
         try{            
             suministro = MapSuministrosFull.get(IdSuministroSeleccionado);
@@ -83,6 +90,18 @@ public class DatosIndex implements Serializable{
         for(Suministro sum: ListSuministrosVencidos){
             if(sum.isVigente())
             MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
+        }
+        
+        ListSuministroUnMesVigencia = fSuministro.getSuministrosUnMesVigencia();
+        MapLotesUnMesVigencia = new HashMap<>();
+        Iterator<Suministro> it = ListSuministroUnMesVigencia.iterator();
+        while(it.hasNext()){
+            Suministro sum = it.next();
+            if(!sum.isVigente()){
+                it.remove();
+            }else{
+                MapLotesUnMesVigencia.put(sum.getIdSuministro(), sum.getLotesUnMesVigenciaEnStock());
+            }
         }
     }
     

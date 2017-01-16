@@ -148,6 +148,24 @@ abstract public class Suministro implements Serializable{
         return lotes;
     }
     /**
+     * Devuelve los lotes que estan a un mes de su vencimiento.
+     * No se tiene en cuenta si existe en stock o se dio de baja.
+     * @return
+     */
+    public List<Lote> getLotesUnMesVigencia(){
+        List<Lote> lotes = new ArrayList<>();
+        Calendar UnMes = Calendar.getInstance();
+        UnMes.add(Calendar.MONTH, 1);
+        Date UnMesVigencia = UnMes.getTime();
+        Date Hoy = Calendar.getInstance().getTime();
+        for(Lote lote: this.LotesSuministros){
+            try{
+                if(lote.getVencimientoLote().before(UnMesVigencia) && lote.getVencimientoLote().after(Hoy)) lotes.add(lote);
+            }catch(NullPointerException ex){}
+        }
+        return lotes;
+    }
+    /**
      * Devuelve los lotes vencidos.
      * Solo se devuelven los que existan en stock.
      * @return
@@ -158,6 +176,24 @@ abstract public class Suministro implements Serializable{
         for(Lote lote: this.LotesSuministros){
             try{
                 if(lote.getVencimientoLote().before(hoy) && lote.getCantidadStock()>0) lotes.add(lote);
+            }catch(NullPointerException ex){}
+        }
+        return lotes;
+    }
+    /**
+     * Devuelve los lotes que estan a un mes de su vencimiento.
+     * Solo se devuelven los que existan en stock.
+     * @return
+     */
+    public List<Lote> getLotesUnMesVigenciaEnStock(){
+        List<Lote> lotes = new ArrayList<>();
+        Calendar UnMes = Calendar.getInstance();
+        UnMes.add(Calendar.MONTH, 1);
+        Date UnMesVigencia = UnMes.getTime();
+        Date Hoy = Calendar.getInstance().getTime();
+        for(Lote lote: this.LotesSuministros){
+            try{
+                if((lote.getVencimientoLote().before(UnMesVigencia) && lote.getVencimientoLote().after(Hoy))  && lote.getCantidadStock()>0) lotes.add(lote);
             }catch(NullPointerException ex){}
         }
         return lotes;

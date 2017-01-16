@@ -52,7 +52,13 @@
                         color: "#2c5697",
                         highlight: "#4297d7",
                         label: "Vigentes"
-                    }                    
+                    },
+                    {
+                        value: #{graficosIndex.totalSuministrosUnMesVigencia},
+                        color: "#ff9900",
+                        highlight: "#ffcc00",
+                        label: "1 Mes Vigencia"
+                    }
                 ];
                 var opciones = {
                     animationSteps : 200,
@@ -129,6 +135,7 @@
                                 <div  class="contenedor-5050">
                                     <div class="contenedor-50 leyenda-grafico" style="background-color: crimson; ">Vencidos</div>
                                     <div class="contenedor-50 leyenda-grafico" style="background-color:#4297d7">Vigentes</div> 
+                                    <div class="contenedor-50 leyenda-grafico" style="background-color:#ff9900">1 Mes</div> 
                                 </div>                                                          
                             </div>
                         </fieldset>
@@ -169,6 +176,26 @@
                                                         <tr>
                                                             <td><h:outputText value="#{SuministroStock.nombreSuministro}" /></td>
                                                             <td><h:outputText value="#{lote.strFechaVencimientoLote}" /></td>
+                                                        </tr>
+                                                    </c:forEach>          
+                                                </c:forEach>
+                                            </table>                                        
+                                        </f:view>
+                                    </c:if>
+                                    <div class="label">1 Mes de Vigencia</div><br/>
+                                    <c:if test="#{empty datosIndex.suministroUnMesVigencia}">
+                                        <div class="output"> No Hay Suministros a un mes de su vencimiento </div>
+                                    </c:if>
+                                    <c:if test="#{not empty datosIndex.suministroUnMesVigencia}" >
+                                        <f:view>
+                                            <table class="tabla-listaSuministro">
+                                                <th class="label" style="width: 79%;">Suministro</th>
+                                                <th class="label" style='width: 20%;'>Vencimiento</th>
+                                                <c:forEach items="#{datosIndex.suministroUnMesVigencia}" var="SuministroUnMes" >
+                                                    <c:forEach items="#{datosIndex.mapLotesUnMesVigencia.get(SuministroUnMes.idSuministro)}" var ="loteUnMes">
+                                                        <tr>
+                                                            <td><h:outputText value="#{SuministroUnMes.nombreSuministro}" /></td>
+                                                            <td><h:outputText value="#{loteUnMes.strFechaVencimientoLote}" /></td>
                                                         </tr>
                                                     </c:forEach>          
                                                 </c:forEach>
