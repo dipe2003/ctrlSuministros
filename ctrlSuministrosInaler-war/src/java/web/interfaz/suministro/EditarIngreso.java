@@ -154,7 +154,12 @@ public class EditarIngreso implements Serializable{
         strFechaIngreso = fDate.format(FechaIngreso);
         FechaVencimiento = LoteSuministro.getVencimientoLote();
         SimpleDateFormat fVtoDate = new SimpleDateFormat("dd/MM/yyyy");
-        strFechaVencimiento = fVtoDate.format(FechaVencimiento);
+        try{
+            strFechaVencimiento = fVtoDate.format(FechaVencimiento);
+        }catch(Exception ex){
+            strFechaVencimiento = new String();
+        }
+        
         UnidadSuministro =ingreso.getLoteIngreso().getSuministroLote().getUnidadSuministro().getNombreUnidad();
         
         SuministroSeleccionado = fSuministro.BuscarSuministro(LoteSuministro.getSuministroLote().getIdSuministro());

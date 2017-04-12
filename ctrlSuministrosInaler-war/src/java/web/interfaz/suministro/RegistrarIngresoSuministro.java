@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -58,7 +59,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     private boolean existeLote;
     private int IdLoteSeleccionado;
     private Map<Integer, Lote> LotesSuministro;
-    private Set<Lote> SetLotesSuministro;
+    private Map<Integer, Lote> SetLotesSuministro;
     
     //  getters
     public Date getFechaIngresoSuministro() {return FechaIngresoSuministro;}
@@ -92,7 +93,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public String getUnidadCantidad() {return UnidadCantidad;}
     public int getIdLoteSeleccionado() {return IdLoteSeleccionado;}
     public Map<Integer, Lote> getLotesSuministro() {return LotesSuministro;}
-    public Set<Lote> getSetLotesSuministro() {return SetLotesSuministro;}
+    public Map<Integer, Lote> getSetLotesSuministro() {return SetLotesSuministro;}
     
     //  setters
     public void setFechaIngresoSuministro(Date FechaIngresoSuministro) {this.FechaIngresoSuministro = FechaIngresoSuministro;}
@@ -131,7 +132,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     public void setIdLoteSeleccionado(int IdLoteSeleccionado) {this.IdLoteSeleccionado = IdLoteSeleccionado;}
     public void setLotesSuministro(Map<Integer, Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}
-    public void setSetLotesSuministro(Set<Lote> SetLotesSuministro) {this.SetLotesSuministro = SetLotesSuministro;}
+    public void setSetLotesSuministro(Map<Integer, Lote> SetLotesSuministro) {this.SetLotesSuministro = SetLotesSuministro;}
     
     /**
      * Registra un nuevo ingreso de suministro.
@@ -171,12 +172,13 @@ public class RegistrarIngresoSuministro implements Serializable{
      */
     public void cargarLotes(){
         LotesSuministro = new HashMap<>();
-        SetLotesSuministro = new HashSet<>();
+        SetLotesSuministro = new HashMap<>();
         Suministro sum = fSuministro.BuscarSuministro(IdSuministro);
         for(Lote  lot: sum.getLotesSuministros()){
             LotesSuministro.put(lot.getIdLote(), lot);
-            SetLotesSuministro.add(lot);
+            SetLotesSuministro.put(lot.getIdLote(), lot);
         }
+        SetLotesSuministro = new TreeMap<>(SetLotesSuministro);
     }
     
     @PostConstruct

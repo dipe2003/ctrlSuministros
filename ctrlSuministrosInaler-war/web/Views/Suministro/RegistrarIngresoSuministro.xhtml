@@ -31,7 +31,7 @@
                         <div class="label">Numeros de Lote</div>
                         <h:selectOneMenu id="selectLoteSuministro" value="#{registrarIngresoSuministro.idLoteSeleccionado}" class="select-opt-menu">
                             <c:forEach items="#{registrarIngresoSuministro.setLotesSuministro}" var="lot">
-                                <f:selectItem itemValue="#{lot.idLote}" itemLabel="#{lot.numeroLote}" />
+                                <f:selectItem itemValue="#{lot.key}" itemLabel="#{lot.value.numeroLote} (Vto.: #{lot.value.strFechaVencimientoLote})" />
                             </c:forEach>
                             <f:selectItem itemValue="0"  itemDisabled="false"  noSelectionOption="false" itemLabel="-- Nuevo Lote --"  />
                             <f:ajax render="panelLote grupoDatosLote" onevent="indicador"/>

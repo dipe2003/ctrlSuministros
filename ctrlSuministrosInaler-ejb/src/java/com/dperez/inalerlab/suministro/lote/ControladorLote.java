@@ -134,15 +134,23 @@ public class ControladorLote implements Serializable{
      * @param NumeroFactura
      * @return -1 si no se actualizo. IdLote si se actualizo.
      */
-    public int ActualizarLoteIngreso(int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, 
+    public int ActualizarLoteIngreso(int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso,
             Date FechaVencimientoLote, String NumeroFactura){
         Lote lot  = mLote.ObtenerLote(IdLote);
-        if(lot!=null && !lot.getNumeroLote().equalsIgnoreCase(NumeroLote)) lot.setNumeroLote(NumeroLote);
-        if(lot!=null && lot.getVencimientoLote().compareTo(FechaVencimientoLote)!=0) lot.setVencimientoLote(FechaVencimientoLote);
+        if(lot != null){
+            if(!lot.getNumeroLote().equalsIgnoreCase(NumeroLote)) lot.setNumeroLote(NumeroLote);
+            if(lot.getVencimientoLote()!=null){
+                if(lot.getVencimientoLote().compareTo(FechaVencimientoLote)!=0){
+                    lot.setVencimientoLote(FechaVencimientoLote);
+                }
+            }else{
+                lot.setVencimientoLote(FechaVencimientoLote);
+            }
+        }        
         
         if(mLote.ActualizarLote(lot)!= -1){
             return cInSal.ActualizarIngreso(IdIngreso, CantidadIngreso, NumeroFactura);
-        }        
+        }
         return -1;
     }
 }	
