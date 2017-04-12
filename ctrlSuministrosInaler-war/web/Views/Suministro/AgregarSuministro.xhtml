@@ -39,6 +39,12 @@
                             <h:inputText id="inputCantidadStockMinimo" class="input" value="#{registrarSuministro.cantidadStockMinimo}" required="true" requiredMessage="No se ingreso cantidad de stock minimo." p:placeholder="Ingrese cantidad"/>
                             <h:inputText id="inputFechaVigenteStockMinimo" class="datepicker input" value="#{registrarSuministro.strFechaVigenteStock}" required="true" requiredMessage="No se ingreso fecha de vigencia de stock minimo de suministro." p:placeholder="Ingrese fecha de vigencia"/>
                             
+                            <div class="label">Aviso en Cambio de Lotes</div>
+                            <h:selectOneRadio value="#{registrarSuministro.avisoCambioLote}">
+                                <f:selectItem  itemValue="true" itemLabel="Enviar Notificacion"/>
+                                <f:selectItem  itemValue="false" itemLabel="No Enviar Notificacion" />
+                            </h:selectOneRadio>
+                            
                             <div class="label">Proveedor</div>
                             <h:selectOneMenu value="#{registrarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
                                 <f:selectItems value="#{registrarSuministro.proveedoresSuministros}" />

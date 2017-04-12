@@ -1,5 +1,8 @@
 package com.dperez.inalerlab.suministro;
 
+import com.dperez.inalerlab.email.SendMail;
+import com.dperez.inalerlab.operario.ControladorOperario;
+import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.suministro.stockminimo.StockMinimo;
 import com.dperez.inalerlab.proveedor.ControladorProveedor;
 import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
@@ -29,6 +32,10 @@ public class ControladorSuministro implements Serializable{
     private ControladorStockMinimo cStock;
     @Inject
     private BufferSuministros buffer;
+    @Inject
+    private ControladorOperario cOps;
+    @Inject
+    private SendMail mail;
     
     /**
      * Crea un Crea un Reactivo Quimico en la base de datos.
@@ -38,25 +45,26 @@ public class ControladorSuministro implements Serializable{
      * @param IdUnidadSuministro
      * @param IdProveedorSuministro
      * @param TipoSuministro
+     * @param AvisoCambioLote
      * @return Devuelve el Id del suministro creado. Devuelve -1 cuando no se guardo el suministro.
      */
     public int CrearSuministro(String NombreSuministro, String DescripcionSuministro,
-            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro){
+            String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro, boolean AvisoCambioLote){
         Suministro suministro = null;
         switch(TipoSuministro.toString()){
             case  "Material":
                 suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
                 
             case "MedioEnsayo":
                 suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
                 
             case "ReactivoQuimico":
                 suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro));
+                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
         }
         int id = mSuministro.CrearSuministro(suministro);
@@ -88,6 +96,33 @@ public class ControladorSuministro implements Serializable{
             if(buffer.bufferSize()>0) return buffer.getListaSuministros(Vigente);
         }
         return mSuministro.ListarSuministros(Vigente);
+    }
+    
+    /**
+     * Envia notificaciones a los usuarios que reciben alertas cuando ingresa un nuevo lote de suministro.
+     * @param IdSuministro
+     * @param NumeroLoteSuministro
+     */
+    public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){
+        Suministro suministro;
+        if(buffer.containsSuministro(IdSuministro)){
+            suministro =  buffer.getSuministro(IdSuministro);
+        }else{
+            suministro = mSuministro.ObtenerSuministro(IdSuministro);
+        }
+        
+        String asunto = "Control de Suministros: Cambio Lote";
+        String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
+        mensaje += "<h3>Ingreso de Nuevo Lote: ";
+        mensaje += suministro.getNombreSuministro();
+        mensaje += " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")";
+        mensaje += "</h3><br></br>";
+        mensaje += "Lote: " + NumeroLoteSuministro;
+        List<Operario> operarios = cOps.ListarOperarios();
+        
+        for(Operario op: operarios){
+            if(op.isRecibeAlertas() && !op.getCorreoOperario().isEmpty()) mail.enviarMail(op.getCorreoOperario(), mensaje, asunto);
+        }        
     }
     
     /**
@@ -303,6 +338,7 @@ public class ControladorSuministro implements Serializable{
             sumBD.setDescripcionSuministro(suministro.getDescripcionSuministro());
             sumBD.setNombreSuministro(suministro.getNombreSuministro());
             sumBD.setVigente(suministro.isVigente());
+            sumBD.setAvisoCambioLote(suministro.isAvisoCambioLote());
             if(sumBD.getUnidadSuministro().getIdUnidad()!= IdUnidad){
                 sumBD.setUnidadSuministro(cUnidad.BuscarUnidad(IdUnidad));
             }
@@ -322,7 +358,7 @@ public class ControladorSuministro implements Serializable{
     
     /**
      * Actualiza el buffer de suministros con el suministro especificado.
-     * @param IdSuministro 
+     * @param IdSuministro
      */
     public void ActualizarSuministroBuffer(int IdSuministro){
         buffer.updateSuministro(mSuministro.ObtenerSuministro(IdSuministro));

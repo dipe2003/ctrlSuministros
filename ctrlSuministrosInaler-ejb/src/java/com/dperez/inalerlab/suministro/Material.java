@@ -9,8 +9,8 @@ public class Material extends Suministro{
 	//	Constructores
 	public Material(){}
 	public Material(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro, 
-            Unidad UnidadSuministro, Proveedor ProveedorSuministro){
+            Unidad UnidadSuministro, Proveedor ProveedorSuministro, boolean AvisoCambioLote){
 		super(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, 
-            UnidadSuministro, ProveedorSuministro);
+            UnidadSuministro, ProveedorSuministro, AvisoCambioLote);
 	}
 }

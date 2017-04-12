@@ -56,12 +56,13 @@ public class FacadeManejoSuministros implements Serializable {
      * @param CodigoSAPSuministro
      * @param IdUnidadSuministro
      * @param IdProveedorSuministro
+     * @param AvisoCambioLote
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
     public int RegistrarMaterial(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro){
+            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.Material);
+                IdProveedorSuministro, EnumSuministro.Material, AvisoCambioLote);
     }
     /**
      * Registra un medio de ensayo en la base de datos.
@@ -70,12 +71,13 @@ public class FacadeManejoSuministros implements Serializable {
      * @param CodigoSAPSuministro
      * @param IdUnidadSuministro
      * @param IdProveedorSuministro
+     * @param AvisoCambioLote
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
     public int RegistrarMedioEnsayo(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro){
+            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.MedioEnsayo);
+                IdProveedorSuministro, EnumSuministro.MedioEnsayo, AvisoCambioLote);
     }
     /**
      * Registra un reactivo quimico en la base de datos.
@@ -84,12 +86,17 @@ public class FacadeManejoSuministros implements Serializable {
      * @param CodigoSAPSuministro
      * @param IdUnidadSuministro
      * @param IdProveedorSuministro
+     * @param AvisoCambioLote
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
     public int RegistrarReactivoQuimico(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro){
+            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.ReactivoQuimico);
+                IdProveedorSuministro, EnumSuministro.ReactivoQuimico, AvisoCambioLote);
+    }
+    
+    public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){
+        cSuministro.EnviarNotificacionCambioLote(IdSuministro, NumeroLoteSuministro);
     }
     
     /*

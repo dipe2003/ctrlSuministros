@@ -42,6 +42,12 @@
                                 <f:selectItem  itemValue="false" itemLabel="No Se Utiliza" />
                             </h:selectOneRadio>
                             
+                            <div class="label">Aviso en Cambio de Lotes</div>
+                            <h:selectOneRadio value="#{editarSuministro.avisoCambioLote}">
+                                <f:selectItem  itemValue="true" itemLabel="Enviar Notificacion"/>
+                                <f:selectItem  itemValue="false" itemLabel="No Enviar Notificacion" />
+                            </h:selectOneRadio>
+                            
                             <div class="label">Proveedor</div>
                             <h:selectOneMenu value="#{editarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
                                 <f:selectItems value="#{editarSuministro.proveedoresSuministros}" />

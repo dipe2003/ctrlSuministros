@@ -15,10 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -47,6 +45,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     private String NumeroFacturaSuministro;
     private String ObservacionesIngreso;
     private String UnidadCantidad;
+    private boolean AvisoCambioLote;
     
     //  Proveedor
     private int idProveedor;
@@ -151,13 +150,19 @@ public class RegistrarIngresoSuministro implements Serializable{
         }else{
             int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
             String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-            if(IdLoteSeleccionado!=0){
+            if(IdLoteSeleccionado!=0){ // nuevo ingreso de un lote existente
                 NumeroLoteSuministro = LotesSuministro.get(IdLoteSeleccionado).getNumeroLote();
                 idLote = IdLoteSeleccionado;
-            }else{
+            }else{ // lote nuevo, se crea lote
                 idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
+                if(idLote != -1){
+                    // enviar mail de aviso de cambio de lote cuando corresponde
+                    if(AvisoCambioLote){
+                        fSuministro.EnviarNotificacionCambioLote(IdSuministro, NumeroLoteSuministro);
+                    }
+                }
             }
-            if(idLote!=-1){
+            if(idLote!=-1){  // ingreso con nuevo lote
                 Date fechaHoy =Calendar.getInstance().getTime();
                 if((fLote.CrearIngreso(fechaHoy, CantidadIngresoSuministro, NumeroFacturaSuministro, idLote, IdOperario, ObservacionesIngreso, IdSuministro))!=-1){
                     context.getExternalContext().redirect(url+"/Views/index.xhtml");
@@ -174,6 +179,7 @@ public class RegistrarIngresoSuministro implements Serializable{
         LotesSuministro = new HashMap<>();
         SetLotesSuministro = new HashMap<>();
         Suministro sum = fSuministro.BuscarSuministro(IdSuministro);
+        AvisoCambioLote = sum.isAvisoCambioLote();
         for(Lote  lot: sum.getLotesSuministros()){
             LotesSuministro.put(lot.getIdLote(), lot);
             SetLotesSuministro.put(lot.getIdLote(), lot);

@@ -33,6 +33,7 @@ public class RegistrarSuministro implements Serializable{
     private String NombreSuministro;
     private String DescripcionSuministro;
     private String CodigoSAPSuministro;
+    private boolean AvisoCambioLote;
     
     private float CantidadStockMinimo;
     private Date FechaVigenteStock;
@@ -49,6 +50,7 @@ public class RegistrarSuministro implements Serializable{
     public String getNombreSuministro() {return NombreSuministro;}
     public String getDescripcionSuministro() {return DescripcionSuministro;}
     public String getCodigoSAPSuministro() {return CodigoSAPSuministro;}
+    public boolean isAvisoCambioLote() {return AvisoCambioLote;}    
     public int getIdProveedor() {return IdProveedor;}
     public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
     public Map<String, Integer> getUnidadesSuministros() {return UnidadesSuministros;}
@@ -71,6 +73,7 @@ public class RegistrarSuministro implements Serializable{
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
     public void setDescripcionSuministro(String DescripcionSuministro) {this.DescripcionSuministro = DescripcionSuministro;}
     public void setCodigoSAPSuministro(String CodigoSAPSuministro) {this.CodigoSAPSuministro = CodigoSAPSuministro;}
+    public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}    
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
     public void setProveedoresSuministros(Map<String, Integer> ProveedoresSuministros) {this.ProveedoresSuministros = ProveedoresSuministros;}
     public void setUnidadesSuministros(Map<String, Integer> UnidadesSuministros) {this.UnidadesSuministros = UnidadesSuministros;}
@@ -94,21 +97,21 @@ public class RegistrarSuministro implements Serializable{
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         switch(TipoSuministro){
             case "Reactivo Quimico":
-                if((idSuministro = fSuministro.RegistrarReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                if((idSuministro = fSuministro.RegistrarReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
                     fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
                 break;
                 
             case "Medio de Ensayo":
-                if((idSuministro = fSuministro.RegistrarMedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                if((idSuministro = fSuministro.RegistrarMedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
                     fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
                 break;
                 
             default:
-                if((idSuministro = fSuministro.RegistrarMaterial(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor))!=-1){
+                if((idSuministro = fSuministro.RegistrarMaterial(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
                     fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
@@ -133,8 +136,6 @@ public class RegistrarSuministro implements Serializable{
         
         TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};
         TipoSuministro = TiposSuministros[0];
-        
-        
     }
     
     

@@ -39,15 +39,17 @@ abstract public class Suministro implements Serializable{
     @ManyToOne
     private Proveedor ProveedorSuministro;
     private boolean Vigente;
+    private boolean AvisoCambioLote;
     
     //	Constructores
     public Suministro(){
         this.StocksMinimosSuministro = new ArrayList<>();
         this.LotesSuministros = new ArrayList<>();
         this.Vigente = true;
+        this.AvisoCambioLote = false;
     }
     public Suministro(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            Unidad UnidadSuministro, Proveedor ProveedorSuministro){
+            Unidad UnidadSuministro, Proveedor ProveedorSuministro, boolean AvisoCambioLote){
         this.NombreSuministro = NombreSuministro;
         this.DescripcionSuministro = DescripcionSuministro;
         this.CodigoSAPSuministro = CodigoSAPSuministro;
@@ -56,6 +58,7 @@ abstract public class Suministro implements Serializable{
         this.LotesSuministros = new ArrayList<>();
         this.ProveedorSuministro = ProveedorSuministro;
         this.Vigente = true;
+        this.AvisoCambioLote = AvisoCambioLote;
     }
     
     //	Getters
@@ -68,6 +71,7 @@ abstract public class Suministro implements Serializable{
     public List<StockMinimo> getStocksMinimosSuministro() {return StocksMinimosSuministro;}
     public Proveedor getProveedorSuministro() {return ProveedorSuministro;}
     public boolean isVigente() {return Vigente;}
+    public boolean isAvisoCambioLote() {return AvisoCambioLote;}
     
     //	Setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -79,6 +83,7 @@ abstract public class Suministro implements Serializable{
     public void setStocksMinimosSuministro(List<StockMinimo> StocksMinimosSuministro) {this.StocksMinimosSuministro = StocksMinimosSuministro;}
     public void setProveedorSuministro(Proveedor ProveedorSuministro) {this.ProveedorSuministro = ProveedorSuministro;}
     public void setVigente(boolean Vigente) {this.Vigente = Vigente;}
+    public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}
     
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){

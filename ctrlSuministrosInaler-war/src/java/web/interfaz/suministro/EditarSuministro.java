@@ -40,6 +40,7 @@ public class EditarSuministro implements Serializable{
     private String DescripcionSuministro;
     private String CodigoSAPSuministro;
     private boolean EstaVigente;
+    private boolean AvisoCambioLote;
     
     private float CantidadStockMinimo;
     private Date FechaVigenteStock;
@@ -73,6 +74,7 @@ public class EditarSuministro implements Serializable{
         }
     }
     public boolean isEstaVigente() {return EstaVigente;}
+    public boolean isAvisoCambioLote() {return AvisoCambioLote;}
     
     //  setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
@@ -97,6 +99,7 @@ public class EditarSuministro implements Serializable{
         this.FechaVigenteStock = cal.getTime();
     }
     public void setEstaVigente(boolean EstaVigente) {this.EstaVigente = EstaVigente;}
+    public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}    
     
     public void editarSuministro() throws IOException{
         int idSuministro = -1;
@@ -121,6 +124,7 @@ public class EditarSuministro implements Serializable{
         suministro.setNombreSuministro(NombreSuministro);
         suministro.setIdSuministro(IdSuministro);
         suministro.setVigente(EstaVigente);
+        suministro.setAvisoCambioLote(AvisoCambioLote);
         if(fSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidadSuministro, CantidadStockMinimo)!=-1){
             FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/ListadoSuministros.xhtml");
         }else{
@@ -160,6 +164,7 @@ public class EditarSuministro implements Serializable{
         DescripcionSuministro = sum.getDescripcionSuministro();
         CodigoSAPSuministro = sum.getCodigoSAPSuministro();
         EstaVigente = sum.isVigente();
+        AvisoCambioLote = sum.isAvisoCambioLote();
         
         CantidadStockMinimo = sum.getStockMinimoSuministro().getCantidadStockMinimo();
         FechaVigenteStock = sum.getStockMinimoSuministro().getFechaVigenteStockMinimo();
