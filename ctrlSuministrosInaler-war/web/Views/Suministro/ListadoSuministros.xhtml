@@ -27,13 +27,13 @@
                         </table>
                         <h:panelGroup id="tablaListadoOpciones">
                             <table class="tabla-listaSuministro">
-                                <th class="label" style="width: 15%">Tipo</th>
-                                <th class="label" style="width: 38%">Suministro</th>
+                                <th class="label" style="width: 14%">Tipo</th>
+                                <th class="label" style="width: 37%">Suministro</th>
                                 <th class="label" style="width: 18%">Proveedor</th>
                                 <th class="label" style="width: 10%">Codigo SAP</th>
                                 <th class="label" style="width: 10%">Stock Minimo</th>
                                 <th class="label" style="width: 5%">En Uso</th>
-                                <th class="label" style="width: 2%"></th>                                
+                                <th class="label" style="width: 6%"></th>                                
                                 <c:forEach items="#{listadoSuministros.listaSuministros}" var ="sum">
                                     <tr>
                                         <td class="div-output">
@@ -72,6 +72,9 @@
                                             </c:choose>                                                
                                         </td>
                                         <td class="div-output" >
+                                            <c:if test="#{sum.avisoCambioLote}">
+                                                <img title="Enviar notificacion por cambio de lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/correo.ico"/>
+                                            </c:if>
                                             <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarSuministro.xhtml?id=#{sum.idSuministro}">
                                                     <img title="Editar el suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
