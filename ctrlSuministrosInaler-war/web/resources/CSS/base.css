@@ -209,18 +209,21 @@ div .sub-titulo-fondo{
 #header{
     height: 100px;
     width: 100%;
+    position:fixed;
+    top:0px;
+    left:0px;
     -webkit-box-shadow:#999999 0px 10px 5px;
     -moz-box-shadow: #999999 0px 10px 5px;;
     box-shadow: #999999 0px 10px 5px;
 }
 #menuApp{
+    position:fixed;
     width: 15%;
     box-shadow: 5px 10px 5px #999;
     height: 100%;
     display: block;
-    position: absolute;
-    top: 108px;
-    left: 8px;
+    top: 100px;
+    left: 0px;
     bottom: 0;
     margin: 0;
     padding: 0;
