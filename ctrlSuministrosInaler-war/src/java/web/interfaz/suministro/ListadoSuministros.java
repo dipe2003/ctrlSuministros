@@ -35,11 +35,11 @@ public class ListadoSuministros implements Serializable{
     public void filtrarLista(){
         ListaSuministros.clear();
         if(!NombreSuministro.isEmpty()){
-            for(String nom: MapSuministros.keySet()){
-                if(nom.contains(NombreSuministro.toLowerCase())) {
-                    ListaSuministros.add(MapSuministros.get(nom));
-                }
-            }
+            MapSuministros.keySet().stream()
+                    .filter(nombre->nombre.toLowerCase().contains(NombreSuministro.toLowerCase()))
+                    .forEachOrdered(nombre ->{
+                        ListaSuministros.add(MapSuministros.get(nombre));
+                    });
         }else{
             ListaSuministros = new ArrayList<>(MapSuministros.values());
         }

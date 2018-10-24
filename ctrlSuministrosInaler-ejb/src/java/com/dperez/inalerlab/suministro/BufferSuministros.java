@@ -56,10 +56,12 @@ public class BufferSuministros {
     public List<Suministro> getListaSuministros(boolean Vigente){
         if(Vigente){
             return MapSuministros.values().stream()
+                    .sorted()
                     .filter(suministro->suministro.isVigente())
                     .collect(Collectors.toList());
         }else{
             return MapSuministros.values().stream()
+                    .sorted()
                     .collect(Collectors.toList());
         }
     }

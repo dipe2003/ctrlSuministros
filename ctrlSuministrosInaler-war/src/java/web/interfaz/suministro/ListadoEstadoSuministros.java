@@ -50,11 +50,11 @@ public class ListadoEstadoSuministros implements Serializable{
         ListaSuministros.clear();
         if(!NombreSuministro.isEmpty()){
             NombreSuministro = NombreSuministro.toLowerCase();            
-            for(String nom: MapSuministros.keySet()){
-                if(nom.contains(NombreSuministro)) {
-                    ListaSuministros.add(MapSuministros.get(nom));
-                }
-            }
+            MapSuministros.keySet().stream()
+                    .filter(nombre->nombre.toLowerCase().contains(NombreSuministro.toLowerCase()))
+                    .forEachOrdered(nombre ->{
+                        ListaSuministros.add(MapSuministros.get(nombre));
+                    });
         }else{
             ListaSuministros = new ArrayList<>(MapSuministros.values());
         }        

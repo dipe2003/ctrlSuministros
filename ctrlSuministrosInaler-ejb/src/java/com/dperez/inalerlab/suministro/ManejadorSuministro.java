@@ -61,7 +61,9 @@ public class ManejadorSuministro {
             query.setParameter("vigente", Vigente);
             suministros = query.getResultList();
         }catch(Exception ex){}
-        return suministros;
+        return suministros.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
     
     public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
@@ -87,13 +89,15 @@ public class ManejadorSuministro {
         try{
             query.setParameter("vigente", Vigente);
             List<Suministro> list = query.getResultList();
-            for(Suministro suministro: list){
-                suministros.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
-            }
+            list.stream()
+                    .sorted()
+                    .forEachOrdered(suministro-> {
+                        suministros.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
+                    });
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }
-        return new TreeMap<>(suministros);
+        return suministros;
     }
     
     public Map<Integer, Suministro> ListarMapSuministrosFull(){

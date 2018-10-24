@@ -238,7 +238,7 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     
     @Override
     public int compareTo(Suministro otroSuministro) {
-        return otroSuministro.getNombreSuministro().toLowerCase().compareTo(this.getNombreSuministro().toLowerCase());
+        return this.getNombreSuministro().compareToIgnoreCase(otroSuministro.getNombreSuministro());
     }
     
 }
