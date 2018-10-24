@@ -50,6 +50,7 @@ public class ListadoSuministros implements Serializable{
         ListaSuministros = fSuministro.ListarSuministros(false, true);
         MapSuministros = new HashMap<>();
         ListaSuministros.stream()
+                .sorted()
                 .forEachOrdered(sum->{
                     MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")", sum);
                 });

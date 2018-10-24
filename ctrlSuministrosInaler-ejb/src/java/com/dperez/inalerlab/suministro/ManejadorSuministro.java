@@ -80,7 +80,7 @@ public class ManejadorSuministro {
                 System.out.println("Error: " + ex.getMessage());
             }
         }
-        return new TreeMap<>(suministros);
+        return suministros;
     }
     
     public Map<String, Integer> ListarMapSuministros(boolean Vigente){
@@ -111,6 +111,6 @@ public class ManejadorSuministro {
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }
-        return new TreeMap<>(suministros);
+        return suministros;
     }
 }
