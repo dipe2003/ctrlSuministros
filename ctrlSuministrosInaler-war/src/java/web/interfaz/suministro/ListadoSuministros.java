@@ -58,6 +58,6 @@ public class ListadoSuministros implements Serializable{
     public String checkTipo(int IdSuministro){
         return ListaSuministros.stream()
                 .filter(suministro->suministro.getIdSuministro()==IdSuministro)
-                .findFirst().getClass().getSimpleName();
+                .findFirst().get().getClass().getSimpleName();
     }
 }

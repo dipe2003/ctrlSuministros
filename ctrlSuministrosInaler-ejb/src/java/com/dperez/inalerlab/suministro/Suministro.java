@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
-abstract public class Suministro implements Serializable{
+abstract public class Suministro implements Serializable, Comparable<Suministro>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int IdSuministro;
@@ -234,6 +234,11 @@ abstract public class Suministro implements Serializable{
     public boolean ExisteNumeroLote(String NumeroLote){
         return LotesSuministros.stream()
                 .anyMatch(lote->lote.getNumeroLote().equalsIgnoreCase(NumeroLote));
+    }
+    
+    @Override
+    public int compareTo(Suministro otroSuministro) {
+        return otroSuministro.getNombreSuministro().toLowerCase().compareTo(this.getNombreSuministro().toLowerCase());
     }
     
 }
