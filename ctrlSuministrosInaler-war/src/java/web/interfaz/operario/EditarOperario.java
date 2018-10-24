@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -118,9 +119,8 @@ public class EditarOperario implements Serializable{
     public void init(){
         PermisosOperarios = new HashMap<>();
         Permisos = cPermiso.ListarPermisos();
-        for(Permiso permiso: Permisos){
-            PermisosOperarios.put(permiso.getNombrePermiso(), permiso.getIdPermiso());
-        }
+        Permisos.stream()
+                .collect(Collectors.toMap(Permiso::getNombrePermiso, permiso->permiso.getIdPermiso()));
         NombresCompletosOperarios = fOperario.GetNombresOperarios();
         PasswordsOperario = new String[2];
         try{

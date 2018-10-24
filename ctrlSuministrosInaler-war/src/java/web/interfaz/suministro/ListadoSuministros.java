@@ -34,7 +34,7 @@ public class ListadoSuministros implements Serializable{
     
     public void filtrarLista(){
         ListaSuministros.clear();
-        if(!NombreSuministro.isEmpty()){            
+        if(!NombreSuministro.isEmpty()){
             for(String nom: MapSuministros.keySet()){
                 if(nom.contains(NombreSuministro.toLowerCase())) {
                     ListaSuministros.add(MapSuministros.get(nom));
@@ -49,19 +49,15 @@ public class ListadoSuministros implements Serializable{
     public void init() {
         ListaSuministros = fSuministro.ListarSuministros(false, true);
         MapSuministros = new HashMap<>();
-        for(Suministro sum: ListaSuministros){
-            MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")", sum);
-        }
+        ListaSuministros.stream()
+                .forEachOrdered(sum->{
+                    MapSuministros.put(sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")", sum);
+                });
     }
     
     public String checkTipo(int IdSuministro){
-        String clase = "";
-        for(Suministro sum: ListaSuministros){
-            if(sum.getIdSuministro()==IdSuministro){
-                clase =  sum.getClass().getSimpleName();
-                break;
-            }
-        }
-        return clase;
+        return ListaSuministros.stream()
+                .filter(suministro->suministro.getIdSuministro()==IdSuministro)
+                .findFirst().getClass().getSimpleName();
     }
 }

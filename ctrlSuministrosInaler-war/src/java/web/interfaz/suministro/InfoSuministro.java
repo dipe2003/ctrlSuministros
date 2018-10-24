@@ -84,10 +84,12 @@ public class InfoSuministro implements Serializable{
         IngresosSuministro = new HashMap<>();
         SalidasSuministro = new HashMap<>();
         LotesVencido = new HashMap<>();
-        for(Lote lote: LotesSuministro){
-            IngresosSuministro.put(lote.getIdLote(), lote.getIngresosLote());
-            SalidasSuministro.put(lote.getIdLote(), lote.getSalidasLote());
-            LotesVencido.put(lote.getIdLote(), lote.EstaVencido());
-        }
+        
+        LotesSuministro.stream()
+                .forEachOrdered(lote-> {
+                    IngresosSuministro.put(lote.getIdLote(), lote.getIngresosLote());
+                    SalidasSuministro.put(lote.getIdLote(), lote.getSalidasLote());
+                    LotesVencido.put(lote.getIdLote(), lote.EstaVencido());
+                });
     }
 }

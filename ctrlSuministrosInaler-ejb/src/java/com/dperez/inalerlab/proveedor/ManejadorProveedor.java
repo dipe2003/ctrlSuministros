@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.persistence.Query;
 
 @Named
@@ -82,9 +83,8 @@ public class ManejadorProveedor {
         Query query = em.createQuery("SELECT p FROM Proveedor p");
         try{
             List<Proveedor> resultado = query.getResultList();
-            for(Proveedor proveedor: resultado){
-                map.put(proveedor.getIdProveedor(), proveedor);
-            }
+            map = resultado.stream()
+                    .collect(Collectors.toMap(Proveedor::getIdProveedor, proveedor->proveedor));
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }

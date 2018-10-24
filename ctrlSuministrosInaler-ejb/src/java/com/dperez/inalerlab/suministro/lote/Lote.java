@@ -78,6 +78,7 @@ public class Lote implements Serializable{
     
     /**
      *	Devuelve la cantidad ingresada del Suministro con el lote.
+     * @return 
      */
     public float getCantidadIngresosLote(){
         float stock = 0f;
@@ -89,6 +90,7 @@ public class Lote implements Serializable{
     
     /**
      *	Devuelve la cantidad egresada del Suministro con el lote.
+     * @return 
      */
     public float getCantidadSalidasLote(){
         float stock = 0f;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -108,9 +109,8 @@ public class ManejadorLote {
             Query query = em.createQuery("SELECT lot FROM Lote lot WHERE lot.SuministroLote.IdSuministro= :idSuministro");
             query.setParameter("idSuministro", IdSuministro);
             List<Lote> resultado = query.getResultList();
-            for(Lote res: resultado){
-                map.put(res.getIdLote(), res);
-            }
+            map = resultado.stream()
+                    .collect(Collectors.toMap(Lote::getIdLote, lote->lote));
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }

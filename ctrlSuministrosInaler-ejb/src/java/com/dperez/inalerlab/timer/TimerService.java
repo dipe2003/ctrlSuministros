@@ -38,19 +38,22 @@ public class TimerService {
         List<Suministro> suministros = fSum.ListarSuministros(true, false);
         List<String> sumVencidos = new ArrayList<>();
         List<String> sumStockMinimo = new ArrayList<>();
-        for (Suministro sum: suministros) {
-            if(sum.isDebajoStockMinimo()) sumStockMinimo.add(sum.getNombreSuministro());
-            if(!sum.getLotesVencidosEnStock().isEmpty()) sumVencidos.add(sum.getNombreSuministro());
-        }
+        suministros.stream()
+                .forEach(suministro-> {
+                    if(suministro.isDebajoStockMinimo()) sumStockMinimo.add(suministro.getNombreSuministro());
+                    if(!suministro.getLotesVencidosEnStock().isEmpty()) sumVencidos.add(suministro.getNombreSuministro());
+                });
         if(!sumVencidos.isEmpty() || !sumStockMinimo.isEmpty()){
-            try {                
+            try {
                 String asunto = "Control de Suministros";
                 String mensaje = getMensaje(sumVencidos, sumStockMinimo);
                 List<Operario> operarios = fOp.ListarOperarios();
                 
-                for(Operario op: operarios){
-                    if(op.isRecibeAlertas() && !op.getCorreoOperario().isEmpty()) mail.enviarMail(op.getCorreoOperario(), mensaje, asunto);
-                }
+                operarios.stream()
+                        .filter(operario->operario.isRecibeAlertas() && !operario.getCorreoOperario().isEmpty())
+                        .forEach(operario->{
+                            mail.enviarMail(operario.getCorreoOperario(), mensaje, asunto);
+                        });
             }catch(NullPointerException ex){
                 System.out.println("Error: No se pudo enviar correos:" + ex.getMessage());
             }

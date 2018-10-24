@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -70,9 +71,9 @@ public class ManejadorSuministro {
             query.setParameter("idProveedor", IdProveedor);
             try{
                 List<Suministro> list = query.getResultList();
-                for(Suministro suministro: list){
-                    suministros.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
-                }
+                suministros = list.stream()
+                        .sorted()
+                        .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro->suministro.getIdSuministro()));
             }catch(Exception ex){
                 System.out.println("Error: " + ex.getMessage());
             }
@@ -100,9 +101,9 @@ public class ManejadorSuministro {
         TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
         try{
             List<Suministro> lista = query.getResultList();
-            for(Suministro suministro: lista){
-                suministros.put(suministro.getIdSuministro(),suministro);
-            }
+            suministros = lista.stream()
+                    .sorted()
+                    .collect(Collectors.toMap(Suministro::getIdSuministro, suministro->suministro));
         }catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
         }

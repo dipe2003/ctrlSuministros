@@ -87,9 +87,9 @@ abstract public class Suministro implements Serializable{
     
     //	StocksMinimos
     public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){
-        for (StockMinimo stock : this.StocksMinimosSuministro) {
+        this.StocksMinimosSuministro.forEach(stock -> {
             stock.setVigente(false);
-        }
+        });
         this.StocksMinimosSuministro.add(StockMinimoSuministro);
     }
     public StockMinimo getStockMinimoSuministro(){
@@ -232,10 +232,8 @@ abstract public class Suministro implements Serializable{
      * @return True: Si existe lote. False: Si no existe el lote.
      */
     public boolean ExisteNumeroLote(String NumeroLote){
-        for(Lote lote: this.LotesSuministros){
-            if(lote.getNumeroLote().equalsIgnoreCase(NumeroLote)) return true;            
-        }
-        return false;        
+        return LotesSuministros.stream()
+                .anyMatch(lote->lote.getNumeroLote().equalsIgnoreCase(NumeroLote));
     }
     
 }

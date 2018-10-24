@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -49,7 +50,7 @@ public class ControladorProveedor implements Serializable{
      * @return 
      */
     public List<Proveedor> ListarProveedores(){
-        if(buffer.bufferSize()>0)return buffer.getListaProveedors();
+        if(buffer.bufferSize()>0)return buffer.getListaProveedores();
         return mProveedor.ListarProveedores();
     }
     
@@ -88,16 +89,13 @@ public class ControladorProveedor implements Serializable{
     public Map<String, Integer>MapProveedorSuministro(int IdSuministro){
         List<Proveedor> proveedores;
         if(buffer.bufferSize()>=0){
-            proveedores = buffer.getListaProveedors();
+            proveedores = buffer.getListaProveedores();
         }else{
             proveedores = mProveedor.ListarProveedores();
         }
-        Map<String, Integer> map = new HashMap<>();
-        for(Proveedor proveedor: proveedores){
-            if(proveedor.esProveedorSuministro(IdSuministro)) map.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
-        }
-        return new TreeMap<> (map);
-    }
-    
-    
+        return proveedores.stream()
+                .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
+                .sorted()
+                .collect(Collectors.toMap(Proveedor::getNombreProveedor, proveedor->proveedor.getIdProveedor()));
+    }    
 }	

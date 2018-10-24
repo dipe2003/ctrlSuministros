@@ -65,10 +65,11 @@ public class ListadoEstadoSuministros implements Serializable{
         ListaSuministros = fSuministro.ListarSuministros(true, true);
         MapSuministros = new HashMap<>();
         try{
-            for(Suministro sum: ListaSuministros){
-                String nombre = sum.getNombreSuministro().toLowerCase()+" ("+sum.getProveedorSuministro().getNombreProveedor().toLowerCase()+")";
-                MapSuministros.put(nombre, sum);
-            }
+            ListaSuministros.stream()
+                    .forEachOrdered(suministro->{
+                        String nombre = suministro.getNombreSuministro().toLowerCase()+" ("+suministro.getProveedorSuministro().getNombreProveedor().toLowerCase()+")";
+                        MapSuministros.put(nombre, suministro);
+                    });
         }catch(IndexOutOfBoundsException ex){
             System.out.println("Error: " +ex.getMessage());
         }

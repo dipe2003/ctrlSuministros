@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -53,21 +54,15 @@ public class BufferProveedores {
         return MapProveedores.size();
     }
     
-    public List<Proveedor> getListaProveedors(){
-        List<Proveedor> lista = new ArrayList<>();
-        for(Proveedor proveedor: MapProveedores.values()){
-            lista.add(proveedor);
-        }
-        return lista;
+    public List<Proveedor> getListaProveedores(){
+        return MapProveedores.values().stream()
+                .collect(Collectors.toList());
     }
     
-    
     public Map<String, Integer> getMapNombreProveedores(){
-        Map<String, Integer> map = new HashMap<>();
-        for(Proveedor proveedor: MapProveedores.values()){
-            map.put(proveedor.getNombreProveedor(), proveedor.getIdProveedor());
-        }
-        return new TreeMap<>(map);
+        return MapProveedores.values().stream()
+                .sorted()
+                .collect(Collectors.toMap(Proveedor::getNombreProveedor, proveedor->proveedor.getIdProveedor()));
     }
     
     public Map<Integer, Proveedor> getMapProveedors(){

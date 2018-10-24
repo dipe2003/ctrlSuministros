@@ -180,10 +180,11 @@ public class RegistrarIngresoSuministro implements Serializable{
         SetLotesSuministro = new HashMap<>();
         Suministro sum = fSuministro.BuscarSuministro(IdSuministro);
         AvisoCambioLote = sum.isAvisoCambioLote();
-        for(Lote  lot: sum.getLotesSuministros()){
-            LotesSuministro.put(lot.getIdLote(), lot);
-            SetLotesSuministro.put(lot.getIdLote(), lot);
-        }
+        sum.getLotesSuministros().stream()
+                .forEachOrdered(lot->{
+                    LotesSuministro.put(lot.getIdLote(), lot);
+                    SetLotesSuministro.put(lot.getIdLote(), lot);
+                });
         SetLotesSuministro = new TreeMap<>(SetLotesSuministro);
     }
     
@@ -206,12 +207,12 @@ public class RegistrarIngresoSuministro implements Serializable{
      * @param IdSuministro
      */
     public void cargarProveedoresSuministro(int IdSuministro){
-        for(Proveedor proveedor: Proveedores){
-            if(proveedor.esProveedorSuministro(IdSuministro)) {
-                NombreProveedor = proveedor.getNombreProveedor();
-                idProveedor = proveedor.getIdProveedor();
-            }
-        }
+        Proveedores.stream()
+                .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
+                .forEachOrdered(proveedor->{
+                    NombreProveedor = proveedor.getNombreProveedor();
+                    idProveedor = proveedor.getIdProveedor();
+                });
     }
     
 }

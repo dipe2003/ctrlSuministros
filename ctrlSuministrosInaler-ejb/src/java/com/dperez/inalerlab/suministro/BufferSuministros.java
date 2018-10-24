@@ -1,11 +1,11 @@
 
 package com.dperez.inalerlab.suministro;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -18,15 +18,15 @@ import javax.inject.Inject;
 @Stateful
 @SessionScoped
 public class BufferSuministros {
-
+    
     @Inject
-    ManejadorSuministro mSuministros; 
-      
+            ManejadorSuministro mSuministros;
+    
     @PostConstruct
     public void init(){
         MapSuministros = mSuministros.ListarMapSuministrosFull();
     }
-        
+    
     private Map<Integer, Suministro> MapSuministros = new HashMap<>();
     
     public Suministro getSuministro(int IdSuministro){
@@ -54,31 +54,29 @@ public class BufferSuministros {
     }
     
     public List<Suministro> getListaSuministros(boolean Vigente){
-        List<Suministro> lista = new ArrayList<>();
-        for(Suministro suministro: MapSuministros.values()){
-            if(Vigente){
-                if(suministro.isVigente())lista.add(suministro);
-            }else{
-                lista.add(suministro);
-            }            
+        if(Vigente){
+            return MapSuministros.values().stream()
+                    .filter(suministro->suministro.isVigente())
+                    .collect(Collectors.toList());
+        }else{
+            return MapSuministros.values().stream()
+                    .collect(Collectors.toList());
         }
-        return lista;
     }
     
     public  Map<String, Integer> getMapSuministrosPorProveedor(int IdProveedor){
         Map<String, Integer> map = new HashMap<>();
-        for(Suministro suministro: MapSuministros.values()){
-            if(suministro.getProveedorSuministro().getIdProveedor()==IdProveedor) map.put(suministro.getProveedorSuministro().getNombreProveedor(), suministro.getProveedorSuministro().getIdProveedor());
-        }
+        MapSuministros.values().stream().filter(suministro -> suministro.getProveedorSuministro().getIdProveedor()==IdProveedor).forEachOrdered((suministro) -> {
+            map.put(suministro.getProveedorSuministro().getNombreProveedor(), suministro.getProveedorSuministro().getIdProveedor());
+        });
         return new TreeMap<>(map);
     }
     
     public Map<String, Integer> getMapNombreSuministros(boolean Vigente){
         Map<String, Integer> map = new HashMap<>();
-        for(Suministro suministro: MapSuministros.values()){
-            if(suministro.isVigente())
+        MapSuministros.values().stream().filter((suministro) -> (suministro.isVigente())).forEachOrdered((suministro) -> {
             map.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
-        }
+        });
         return new TreeMap<>(map);
     }
     

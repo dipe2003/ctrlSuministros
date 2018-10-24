@@ -61,8 +61,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     public Map<String, Integer> getListaSuministros() {return listaSuministros;}
     public float getCantidadSalidaSuministro() {return CantidadSalidaSuministro;}
     public String getNumeroLoteSuministro() {return NumeroLoteSuministro;}
-
-    public Map<Integer, Suministro> getLstSuministros() {return lstSuministros;}   
+    
+    public Map<Integer, Suministro> getLstSuministros() {return lstSuministros;}
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
     public String getObservacionesSalida() {return ObservacionesSalida;}
@@ -72,7 +72,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     public float getCantidadStockLote() {
         try{
             List<Lote> lotes = lstSuministros.get(IdSuministro).getLotesSuministros();
-            for(Lote lote: lotes) if(lote.getIdLote()==IdLoteSuministro) CantidadStockLote = lote.getCantidadStock();            
+            for(Lote lote: lotes) if(lote.getIdLote()==IdLoteSuministro) CantidadStockLote = lote.getCantidadStock();
         }catch(NullPointerException ex){
             CantidadStockLote = 0f;
         }
@@ -93,7 +93,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
     public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
-    public void setLstSuministros(Map<Integer, Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}    
+    public void setLstSuministros(Map<Integer, Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
     public void setCantidadSalidaSuministro(float CantidadSalidaSuministro) {this.CantidadSalidaSuministro = CantidadSalidaSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
     
@@ -109,7 +109,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     /**
      * Registra la salida de un suministro.
-     * @throws IOException 
+     * @throws IOException
      */
     public void registrarSalidaSuministro() throws IOException{
         if(CantidadSalidaSuministro > 0 && CantidadSalidaSuministro <= CantidadStockLote){
@@ -123,7 +123,7 @@ public class RegistrarSalidaSuministro implements Serializable{
                 context.responseComplete();
             }
         }else{
-            FacesContext.getCurrentInstance().addMessage("frmRegSalidaSuministro:inputCantidadSalidaSuministro", 
+            FacesContext.getCurrentInstance().addMessage("frmRegSalidaSuministro:inputCantidadSalidaSuministro",
                     new FacesMessage("La cantidad de salida no es correcta.", "La cantidad de salida no es correcta."));
             FacesContext.getCurrentInstance().renderResponse();
         }
@@ -155,11 +155,11 @@ public class RegistrarSalidaSuministro implements Serializable{
      * @param IdSuministro
      */
     public void cargarProveedorSuministro(int IdSuministro){
-        for(Proveedor proveedor: Proveedores){
-            if(proveedor.esProveedorSuministro(IdSuministro)) {
-                NombreProveedor = proveedor.getNombreProveedor();
-                idProveedor = proveedor.getIdProveedor();
-            }
-        }
+        Proveedores.stream()
+                .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
+                .forEachOrdered(proveedor->{
+                    NombreProveedor = proveedor.getNombreProveedor();
+                    idProveedor = proveedor.getIdProveedor();
+                });
     }
 }
