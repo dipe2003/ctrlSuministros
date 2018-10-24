@@ -1,10 +1,7 @@
 package com.dperez.inalerlab.suministro;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -66,8 +63,19 @@ public class ManejadorSuministro {
                 .collect(Collectors.toList());
     }
     
-    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
-        Map<String, Integer> suministros = new HashMap<>();
+     public List<Suministro> ListarSuministros(){
+        List<Suministro> suministros = new ArrayList<>();
+        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
+        try{
+            suministros = query.getResultList();
+        }catch(Exception ex){}
+        return suministros.stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+    
+    public List<Suministro> ListarSuministros(int IdProveedor){
+        List<Suministro> suministros = new ArrayList<>();
         if(IdProveedor>0){
             TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s, Proveedor p WHERE s.ProveedorSuministro.IdProveedor= :idProveedor", Suministro.class);
             query.setParameter("idProveedor", IdProveedor);
@@ -75,41 +83,10 @@ public class ManejadorSuministro {
                 List<Suministro> list = query.getResultList();
                 suministros = list.stream()
                         .sorted()
-                        .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro->suministro.getIdSuministro()));
+                        .collect(Collectors.toList());
             }catch(Exception ex){
                 System.out.println("Error: " + ex.getMessage());
             }
-        }
-        return suministros;
-    }
-    
-    public Map<String, Integer> ListarMapSuministros(boolean Vigente){
-        Map<String, Integer> suministros = new HashMap<>();
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s WHERE s.Vigente= :vigente ", Suministro.class);
-        try{
-            query.setParameter("vigente", Vigente);
-            List<Suministro> list = query.getResultList();
-            list.stream()
-                    .sorted()
-                    .forEachOrdered(suministro-> {
-                        suministros.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
-                    });
-        }catch(Exception ex){
-            System.out.println("Error: " + ex.getMessage());
-        }
-        return suministros;
-    }
-    
-    public Map<Integer, Suministro> ListarMapSuministrosFull(){
-        Map<Integer, Suministro> suministros = new HashMap<>();
-        TypedQuery<Suministro> query = em.createQuery("SELECT s FROM Suministro s ", Suministro.class);
-        try{
-            List<Suministro> lista = query.getResultList();
-            suministros = lista.stream()
-                    .sorted()
-                    .collect(Collectors.toMap(Suministro::getIdSuministro, suministro->suministro));
-        }catch(Exception ex){
-            System.out.println("Error: " + ex.getMessage());
         }
         return suministros;
     }

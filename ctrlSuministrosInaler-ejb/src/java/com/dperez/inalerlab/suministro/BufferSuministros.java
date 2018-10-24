@@ -24,7 +24,9 @@ public class BufferSuministros {
     
     @PostConstruct
     public void init(){
-        MapSuministros = mSuministros.ListarMapSuministrosFull();
+        MapSuministros = mSuministros.ListarSuministros().stream()
+                .sorted()
+                .collect(Collectors.toMap(Suministro::getIdSuministro, suministro->suministro));
     }
     
     private Map<Integer, Suministro> MapSuministros = new HashMap<>();
@@ -66,12 +68,11 @@ public class BufferSuministros {
         }
     }
     
-    public  Map<String, Integer> getMapSuministrosPorProveedor(int IdProveedor){
-        Map<String, Integer> map = new HashMap<>();
-        MapSuministros.values().stream().filter(suministro -> suministro.getProveedorSuministro().getIdProveedor()==IdProveedor).forEachOrdered((suministro) -> {
-            map.put(suministro.getProveedorSuministro().getNombreProveedor(), suministro.getProveedorSuministro().getIdProveedor());
-        });
-        return new TreeMap<>(map);
+    public  List<Suministro> getSuministrosPorProveedor(int IdProveedor){
+        return MapSuministros.values().stream()
+                .filter(suministro->suministro.getProveedorSuministro().getIdProveedor() == IdProveedor)
+                .sorted()
+                .collect(Collectors.toList());
     }
     
     public Map<String, Integer> getMapNombreSuministros(boolean Vigente){

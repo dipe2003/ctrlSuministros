@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -85,9 +86,9 @@ public class ControladorSuministro implements Serializable{
     }
     
     /**
-     * Devuelve todos los suministros registrados en la base de datos.
+     * Devuelve todos los suministros registrados en la base de datos según su vigencia.
      * Si no hay suministros devuelve una lista vacia.
-     * @param Vigente True: indica si solo se devuelven los suministros en uso.
+     * @param Vigente True: indica si solo se devuelven los suministros en uso, de lo contrario False.
      * @param UsarBuffer True: indica si se utiliza el buffer (False para solucionar error de contexto en Timer singleton).
      * @return
      */
@@ -103,26 +104,32 @@ public class ControladorSuministro implements Serializable{
      * @param IdSuministro
      * @param NumeroLoteSuministro
      */
-    public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){
-        Suministro suministro;
-        if(buffer.containsSuministro(IdSuministro)){
-            suministro =  buffer.getSuministro(IdSuministro);
-        }else{
-            suministro = mSuministro.ObtenerSuministro(IdSuministro);
-        }
-        
-        String asunto = "Control de Suministros: Cambio Lote";
+    public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){        
+        final String asunto = "Control de Suministros: Cambio Lote";
+        final String mensaje = GetMensajeCambioDeLote(IdSuministro, NumeroLoteSuministro);
+        List<Operario> operarios = cOps.ListarOperarios();
+        operarios.stream()
+                .filter(operario->operario.isRecibeAlertas() && !operario.getCorreoOperario().isEmpty())
+                .forEach(operario->{
+                    mail.enviarMail(operario.getCorreoOperario(), mensaje, asunto);
+                });    
+    }
+    
+    /**
+     * Genera el mensaje en html con la información del suministro y el numero de lote.
+     * @param IdSuministro
+     * @param NumeroLoteSuministro
+     * @return 
+     */
+    private String GetMensajeCambioDeLote(int IdSuministro, String NumeroLoteSuministro){
+        Suministro suministro = buffer.containsSuministro(IdSuministro)? buffer.getSuministro(IdSuministro):mSuministro.ObtenerSuministro(IdSuministro);
         String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
         mensaje += "<h3>Ingreso de Nuevo Lote: ";
         mensaje += suministro.getNombreSuministro();
         mensaje += " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")";
         mensaje += "</h3><br></br>";
         mensaje += "Lote: " + NumeroLoteSuministro;
-        List<Operario> operarios = cOps.ListarOperarios();
-        
-        for(Operario op: operarios){
-            if(op.isRecibeAlertas() && !op.getCorreoOperario().isEmpty()) mail.enviarMail(op.getCorreoOperario(), mensaje, asunto);
-        }        
+        return mensaje;
     }
     
     /**
@@ -153,8 +160,11 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
      */
     public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
-        if(buffer.bufferSize()>0) return buffer.getMapSuministrosPorProveedor(IdProveedor);
-        return mSuministro.ListarSuministrosProveedor(IdProveedor);
+        if(buffer.bufferSize()>0) return buffer.getSuministrosPorProveedor(IdProveedor).stream()
+                .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro->suministro.getIdSuministro()));
+        
+        return mSuministro.ListarSuministros(IdProveedor).stream()
+                .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro->suministro.getIdSuministro()));
     }
     
     /**
@@ -164,7 +174,9 @@ public class ControladorSuministro implements Serializable{
      */
     public Map<String, Integer> ListarMapSuministros(boolean Vigente){
         if(buffer.bufferSize()>0) return buffer.getMapNombreSuministros(Vigente);
-        return mSuministro.ListarMapSuministros(Vigente);
+        return mSuministro.ListarSuministros(Vigente).stream()
+                .sorted()
+                .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro->suministro.getIdSuministro()));
     }
     /**
      * Devuelve los suministros registrados en la base de datos. Solo los suministros vigentes.
@@ -172,7 +184,9 @@ public class ControladorSuministro implements Serializable{
      */
     public Map<Integer, Suministro> ListarMapSuministrosFull(){
         if(buffer.bufferSize()>0) return buffer.getMapSuministros();
-        return mSuministro.ListarMapSuministrosFull();
+        return mSuministro.ListarSuministros().stream()
+                .sorted()
+                .collect(Collectors.toMap(Suministro::getIdSuministro, suministro->suministro));
     }
     
     /**
@@ -181,12 +195,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
      */
     public int[] GetTotalSuministrosDebajoStockMinimo(){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         int cantidad = 0;
         for(Suministro suministro: suministros){
             if(suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo() &&
@@ -203,12 +212,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna una lista con los ids de suministros debajo de stock minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo(){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
             try{
@@ -230,12 +234,7 @@ public class ControladorSuministro implements Serializable{
      * @return Map: key: idSuministros, value: nombreSuministro
      */
     public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         Map<String, Integer> map = new HashMap<>();
         if(ConStock){
             for(Suministro suministro: suministros){
@@ -254,12 +253,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
@@ -278,12 +272,7 @@ public class ControladorSuministro implements Serializable{
      * @return Retorna una lista con los suministros. Retorna una lista vacia si no existen lotes vencidos en stock
      */
     public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         List<Suministro> lista = new ArrayList<>();
         if(ConStock){
             for(Suministro suministro: suministros){
@@ -302,12 +291,7 @@ public class ControladorSuministro implements Serializable{
      * @return Lista de Suminstros.
      */
     public List<Suministro> getSuministrosUnMesVigencia(){
-        List<Suministro> suministros;
-        if(buffer.bufferSize()>0){
-            suministros = buffer.getListaSuministros(true);
-        }else{
-            suministros = mSuministro.ListarSuministros(true);
-        }
+        List<Suministro> suministros = buffer.bufferSize()>0? buffer.getListaSuministros(true):mSuministro.ListarSuministros(true);
         List<Suministro> lista = new ArrayList<>();
         for(Suministro suministro: suministros){
             if(suministro.isVigente() && suministro.getLotesUnMesVigenciaEnStock().size()>0) lista.add(suministro);

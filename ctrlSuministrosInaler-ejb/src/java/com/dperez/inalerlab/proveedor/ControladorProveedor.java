@@ -1,10 +1,8 @@
 package com.dperez.inalerlab.proveedor;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -87,12 +85,7 @@ public class ControladorProveedor implements Serializable{
      * @return Retorna un Map con los nombres de los proveedores (key) y sus id(values).
      */
     public Map<String, Integer>MapProveedorSuministro(int IdSuministro){
-        List<Proveedor> proveedores;
-        if(buffer.bufferSize()>=0){
-            proveedores = buffer.getListaProveedores();
-        }else{
-            proveedores = mProveedor.ListarProveedores();
-        }
+        List<Proveedor> proveedores = buffer.bufferSize()>0? buffer.getListaProveedores():mProveedor.ListarProveedores();
         return proveedores.stream()
                 .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
                 .sorted()
