@@ -119,7 +119,7 @@ public class EditarOperario implements Serializable{
     public void init(){
         PermisosOperarios = new HashMap<>();
         Permisos = cPermiso.ListarPermisos();
-        Permisos.stream()
+        PermisosOperarios = Permisos.stream()
                 .collect(Collectors.toMap(Permiso::getNombrePermiso, permiso->permiso.getIdPermiso()));
         NombresCompletosOperarios = fOperario.GetNombresOperarios();
         PasswordsOperario = new String[2];
