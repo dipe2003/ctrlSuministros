@@ -18,14 +18,14 @@
                         <fieldset><legend>Editar Propiedades</legend>
                             <c:forEach items="#{editarPropiedades.mapPropiedades}" var="prop">
                                 <div class="label">#{prop.key}</div>
-                                
+
                                 <h:inputText id="inputEditValorPropiedad" class="output" value="#{prop.value.valorPropiedad}" required="true" requiredMessage="No se ingreso valor de propiedad." p:placeholder="Valor de la propiedad" />
-                                
+
                                 <div class="div-boton">
                                     <h:commandButton id="btnEditarPropiedad" class="boton-input" value="Guardar" action="#{editarPropiedades.guardarPropiedad(prop.key, prop.value.valorPropiedad)}" />
                                 </div>
                             </c:forEach>
-                            
+                           
                             <div>
                                 <h:message for="inputEditValorPropiedad" class="error"/>                 
                             </div>

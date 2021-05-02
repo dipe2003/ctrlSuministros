@@ -73,15 +73,15 @@
                                         </td>
                                         <td class="div-output" >
                                             <c:if test="#{sum.avisoCambioLote}">
-                                                <img title="Enviar notificacion por cambio de lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/correo.ico"/>
+                                                <img title="Enviar notificacion por cambio de lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/correo.ico"/>
                                             </c:if>
                                             <c:if test="#{loginOperario.permisoOperario=='Administrador' or loginOperario.permisoOperario=='Verificador'}">
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarSuministro.xhtml?id=#{sum.idSuministro}">
-                                                    <img title="Editar el suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
+                                                    <img title="Editar el suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/edit_icon.ico"/>
                                                 </a>
                                             </c:if>
                                             <c:if test="#{loginOperario.permisoOperario=='Analista' or loginOperario.permisoOperario=='Lectura'}">
-                                                <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/Resources/Images/edit_icon.ico"/>
+                                                <img title="Solo el administrador o verificador puede modificar un suministro" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/edit_icon.ico"/>
                                             </c:if>
                                         </td>
                                     </tr>

@@ -54,6 +54,11 @@
                             Configuracion                                    
                         </div>
                     </h:link>
+                    <h:link  class="link" rendered="#{loginOperario.permisoOperario == 'Administrador'}" outcome="/Views/Suministro/ListadoUnidades.xhtml">
+                        <div class="divMenuItem">
+                            Unidades                                    
+                        </div>
+                    </h:link>
                     <h:commandLink action="#{loginOperario.logout()}"  class="link">
                         <div class="divMenuItem">
                             Salir
