@@ -43,6 +43,7 @@ public class EditarOperario implements Serializable {
     private String ApellidoOperario;
     private String CorreoOperario;
     private boolean AlertasOperario;
+    private boolean VigenciaOperario;
     private int PermisoOperario;
     private Map<String, Integer> PermisosOperarios;
     List<Permiso> Permisos;
@@ -105,6 +106,10 @@ public class EditarOperario implements Serializable {
         return AlertasOperario;
     }
 
+    public boolean isVigenciaOperario() {
+        return VigenciaOperario;
+    }    
+    
     //  setters
     public void setIdOperario(String IdOperario) {
         this.IdOperario = IdOperario;
@@ -158,6 +163,10 @@ public class EditarOperario implements Serializable {
         this.AlertasOperario = AlertasOperario;
     }
 
+    public void setVigenciaOperario(boolean VigenciaOperario) {
+        this.VigenciaOperario = VigenciaOperario;
+    }
+
     /**
      * Guarda los datos modificados del operario. Se comprueban que sean
      * correctas las contraseñas (si se modificaron).
@@ -209,6 +218,25 @@ public class EditarOperario implements Serializable {
         FacesContext.getCurrentInstance().addMessage("frmEditOp:btnResetPassword", new FacesMessage(msj));
         FacesContext.getCurrentInstance().renderResponse();
     }
+    
+        /**
+     * Guarda el valor de la constante DEFAULT_PASSWORD como nuevo password del operario.
+     *
+     * @param nuevaVigencia
+     * @throws IOException
+     */
+    public void cambiarVigencia(boolean nuevaVigencia) throws IOException {
+        String msj = "No se pudo actualizar.";   
+        if ((fOperario.CambiarVigenciaOperario(Integer.parseInt(IdOperario), nuevaVigencia)) != -1) {
+                   msj = "Se actualizó la vigencia";                   
+        }
+        if(nuevaVigencia){
+            FacesContext.getCurrentInstance().addMessage("frmEditOp:btnDarAlta", new FacesMessage(msj));
+        }else{
+            FacesContext.getCurrentInstance().addMessage("frmEditOp:btnDarBaja", new FacesMessage(msj));
+        }
+        FacesContext.getCurrentInstance().renderResponse();
+    }
 
     @PostConstruct
     public void init() {
@@ -239,6 +267,7 @@ public class EditarOperario implements Serializable {
         PasswordsOperario[1] = op.getPasswordOperario();
         CorreoOperario = op.getCorreoOperario();
         AlertasOperario = op.isRecibeAlertas();
+        VigenciaOperario = op.isEsVigente();
     }
 
     /**

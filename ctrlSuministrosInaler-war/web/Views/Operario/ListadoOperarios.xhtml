@@ -29,8 +29,9 @@
                             <table class="tabla-listaSuministro">
                                 <th class="label" style="width: 15%">Numero</th>
                                 <th class="label" style="width: 50%">Nombre</th>
-                                <th class="label" style="width: 15%">Permiso</th> 
-                                <th class="label" style="width: 15%">Alertas</th> 
+                                <th class="label" style="width: 13%">Permiso</th> 
+                                <th class="label" style="width: 10%">Alertas</th> 
+                                <th class="label" style="width: 7%">Vigente</th> 
                                 <th class="label" style="width: 2%"></th>                                
                                 <c:forEach items="#{listadoOperarios.listaOperario}" var ="op">
                                     <tr>                                        
@@ -45,12 +46,20 @@
                                         </td>                                        
                                         <td class="div-output">
                                             <c:if test="#{op.recibeAlertas== true}">
-                                            Recibe Alertas
+                                                Recibe Alertas
                                             </c:if>
                                             <c:if test="#{op.recibeAlertas != true}">
-                                            No Recibe Alertas
+                                                No Recibe Alertas
                                             </c:if>                                            
-                                        </td>                                        
+                                        </td>
+                                        <td class="div-output">
+                                            <c:if test="#{op.esVigente== true}">
+                                                Vigente
+                                            </c:if>
+                                            <c:if test="#{op.esVigente != true}">
+                                                No Vigente
+                                            </c:if>                                            
+                                        </td>                                           
                                         <c:if test="#{loginOperario.permisoOperario=='Administrador'}">
                                             <td class="div-output" >
                                                 <a href="#{facesContext.externalContext.requestContextPath}/Views/Operario/EditarOperario.xhtml?id=#{op.idOperario}">
@@ -66,7 +75,7 @@
                                     </tr>
                                 </c:forEach>                             
                             </table>
-                            
+
                         </h:panelGroup>
                     </h:form>
                 </f:view>                

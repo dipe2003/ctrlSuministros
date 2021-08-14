@@ -60,6 +60,9 @@ public class ControladorOperario implements Serializable{
     public boolean ValidarOperario(int IdOperario, String Password){
         try{
             Operario operario = mOperario.ObtenerOperario(IdOperario);
+            if (!operario.isEsVigente()){
+                return false;
+            }
             String seg = cSeg.getPasswordSeguro(Password, operario.getPasswordKeyOperario());
             return operario.getPasswordOperario().equals(seg);
         }catch(NullPointerException ex){}
@@ -125,5 +128,14 @@ public class ControladorOperario implements Serializable{
           nombres.put(operario.getNombreOperario() + " " + operario.getApellidoOperario(), operario.getIdOperario());
       }
       return nombres;
+    }
+    
+    public int CambiarVigenciaOperario(int idOperario, boolean esVigente){
+        try{
+            Operario operario = mOperario.ObtenerOperario(idOperario);
+            operario.setEsVigente(esVigente);
+            return mOperario.ActualizarOperario(operario);
+        }catch(IllegalArgumentException ex){}
+        return -1;
     }
 }	

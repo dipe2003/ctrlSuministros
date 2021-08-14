@@ -126,4 +126,8 @@ public class FacadeManejoOperario implements Serializable {
     public Map<String, Integer> GetNombresOperarios(){
         return cOperario.GetMapNombresOperarios();
     }
+    
+    public int CambiarVigenciaOperario(int idOperario, boolean esVigente){
+        return cOperario.CambiarVigenciaOperario(idOperario, esVigente);
+    }
 }

@@ -12,7 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Operario implements Serializable{
+public class Operario implements Serializable {
+
     @Id
     private int IdOperario;
     private String NombreOperario;
@@ -21,17 +22,20 @@ public class Operario implements Serializable{
     private String PasswordOperario;
     private String CorreoOperario;
     private boolean RecibeAlertas;
-    
-    @OneToMany(mappedBy = "OperarioIngresoSuministro" )
+    private boolean EsVigente;
+
+    @OneToMany(mappedBy = "OperarioIngresoSuministro")
     private List<Ingreso> IngresosSuministrosOperario;
     @OneToMany(mappedBy = "OperarioSalidaSuministro")
     private List<Salida> SalidasSuministrosOperario;
     @ManyToOne
     private Permiso PermisoOperario;
-    
+
     //	Constructores
-    public Operario(){}
-    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario, String CorreoOperario){
+    public Operario() {
+    }
+
+    public Operario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordKeyOperario, String PasswordOperario, String CorreoOperario) {
         this.IdOperario = IdOperario;
         this.NombreOperario = NombreOperario;
         this.ApellidoOperario = ApellidoOperario;
@@ -41,53 +45,127 @@ public class Operario implements Serializable{
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.IngresosSuministrosOperario = new ArrayList<>();
         this.RecibeAlertas = false;
+        this.EsVigente = true;
     }
-    
+
     //	Getters
-    public int getIdOperario(){return this.IdOperario;}
-    public String getNombreOperario(){return this.NombreOperario;}
-    public String getApellidoOperario(){return this.ApellidoOperario;}
-    public Permiso getPermisoOperario(){return this.PermisoOperario;}
-    public List<Ingreso> getIngresosSuministrosOperario() {return IngresosSuministrosOperario;}
-    public List<Salida> getSalidasSuministrosOperario() {return SalidasSuministrosOperario;}
-    public String getPasswordKeyOperario() {return PasswordKeyOperario;}
-    public String getPasswordOperario() {return PasswordOperario;}
-    public String getCorreoOperario() {return CorreoOperario;}
-    public boolean isRecibeAlertas() {return RecibeAlertas;}
-    
+    public int getIdOperario() {
+        return this.IdOperario;
+    }
+
+    public String getNombreOperario() {
+        return this.NombreOperario;
+    }
+
+    public String getApellidoOperario() {
+        return this.ApellidoOperario;
+    }
+
+    public Permiso getPermisoOperario() {
+        return this.PermisoOperario;
+    }
+
+    public List<Ingreso> getIngresosSuministrosOperario() {
+        return IngresosSuministrosOperario;
+    }
+
+    public List<Salida> getSalidasSuministrosOperario() {
+        return SalidasSuministrosOperario;
+    }
+
+    public String getPasswordKeyOperario() {
+        return PasswordKeyOperario;
+    }
+
+    public String getPasswordOperario() {
+        return PasswordOperario;
+    }
+
+    public String getCorreoOperario() {
+        return CorreoOperario;
+    }
+
+    public boolean isRecibeAlertas() {
+        return RecibeAlertas;
+    }
+
+    public boolean isEsVigente() {
+        return EsVigente;
+    }
+
     //	Setters
-    public void setIdOperario(int IdOperario){this.IdOperario = IdOperario;}
-    public void setNombreOperario(String NombreOperario){this.NombreOperario = NombreOperario;}
-    public void setApellidoOperario(String ApellidoOperario){this.ApellidoOperario = ApellidoOperario;}
-    public void setPermisosOperario(Permiso PermisoOperario){
+    public void setIdOperario(int IdOperario) {
+        this.IdOperario = IdOperario;
+    }
+
+    public void setNombreOperario(String NombreOperario) {
+        this.NombreOperario = NombreOperario;
+    }
+
+    public void setApellidoOperario(String ApellidoOperario) {
+        this.ApellidoOperario = ApellidoOperario;
+    }
+
+    public void setPermisosOperario(Permiso PermisoOperario) {
         this.PermisoOperario = PermisoOperario;
         if (!PermisoOperario.getOperariosPermiso().contains(this)) {
             PermisoOperario.getOperariosPermiso().add(this);
         }
     }
-    public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {this.IngresosSuministrosOperario = IngresosSuministrosOperario;}
-    public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {this.SalidasSuministrosOperario = SalidasSuministrosOperario;}
-    public void setPasswordKeyOperario(String PasswordKeyOperario) {this.PasswordKeyOperario = PasswordKeyOperario;}
-    public void setPasswordOperario(String PasswordOperario) {this.PasswordOperario = PasswordOperario;}
-    public void setCorreoOperario(String CorreoOperario) {this.CorreoOperario = CorreoOperario;}
-    public void setPermisoOperario(Permiso PermisoOperario) {this.PermisoOperario = PermisoOperario;}
-    public void setRecibeAlertas(boolean RecibeAlertas) {this.RecibeAlertas = RecibeAlertas;}
-    
+
+    public void setIngresosSuministrosOperario(List<Ingreso> IngresosSuministrosOperario) {
+        this.IngresosSuministrosOperario = IngresosSuministrosOperario;
+    }
+
+    public void setSalidasSuministrosOperario(List<Salida> SalidasSuministrosOperario) {
+        this.SalidasSuministrosOperario = SalidasSuministrosOperario;
+    }
+
+    public void setPasswordKeyOperario(String PasswordKeyOperario) {
+        this.PasswordKeyOperario = PasswordKeyOperario;
+    }
+
+    public void setPasswordOperario(String PasswordOperario) {
+        this.PasswordOperario = PasswordOperario;
+    }
+
+    public void setCorreoOperario(String CorreoOperario) {
+        this.CorreoOperario = CorreoOperario;
+    }
+
+    public void setPermisoOperario(Permiso PermisoOperario) {
+        this.PermisoOperario = PermisoOperario;
+    }
+
+    public void setRecibeAlertas(boolean RecibeAlertas) {
+        this.RecibeAlertas = RecibeAlertas;
+    }
+
+    public void setEsVigente(boolean EsVigente) {
+        this.EsVigente = EsVigente;
+    }    
+
     //	Ingresos - Egresos
-    public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario){
+    public void addIngresoInsumoOperario(Ingreso IngresoSuministroOperario) {
         this.IngresosSuministrosOperario.add(IngresoSuministroOperario);
-        if(IngresoSuministroOperario.getOperarioIngresoSuministro()==null || !IngresoSuministroOperario.getOperarioIngresoSuministro().equals(this)){
+        if (IngresoSuministroOperario.getOperarioIngresoSuministro() == null || !IngresoSuministroOperario.getOperarioIngresoSuministro().equals(this)) {
             IngresoSuministroOperario.setOperarioIngresoSuministro(this);
         }
     }
-    public void removeIngresoSuministroOperario(Ingreso IngresoSuministroOperario){this.IngresosSuministrosOperario.remove(IngresoSuministroOperario);}
-    
-    public void addSalidaSuministroOperario(Salida SalidaSuministroOperario){
+
+    public void removeIngresoSuministroOperario(Ingreso IngresoSuministroOperario) {
+        this.IngresosSuministrosOperario.remove(IngresoSuministroOperario);
+    }
+
+    public void addSalidaSuministroOperario(Salida SalidaSuministroOperario) {
         this.SalidasSuministrosOperario.add(SalidaSuministroOperario);
-        if(SalidaSuministroOperario.getOperarioSalidaSuministro()==null || !SalidaSuministroOperario.getOperarioSalidaSuministro().equals(this)){
+        if (SalidaSuministroOperario.getOperarioSalidaSuministro() == null || !SalidaSuministroOperario.getOperarioSalidaSuministro().equals(this)) {
             SalidaSuministroOperario.setOperarioSalidaSuministro(this);
         }
     }
-    public void removeSalidaSuministroOperario(Salida SalidaSuministroOperario){this.SalidasSuministrosOperario.remove(SalidaSuministroOperario);}
-    
+
+    public void removeSalidaSuministroOperario(Salida SalidaSuministroOperario) {
+        this.SalidasSuministrosOperario.remove(SalidaSuministroOperario);
+    }
+
 }
