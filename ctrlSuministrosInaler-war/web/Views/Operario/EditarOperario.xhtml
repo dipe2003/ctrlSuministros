@@ -26,19 +26,32 @@
                                 <f:ajax execute="editNombreOperario editApellidoOperario" event="keyup" delay="200" listener="#{editarOperario.generarCorreo()}" render="editCorreoOperario" onevent="indicador"/>
                             </h:inputText>
                             
-                            <div class="label">Contraseña Actual</div>
-                            <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
+                            <c:choose>
+                                <c:when test="#{loginOperario.permisoOperario == 'Administrador' and editarOperario.idOperario != loginOperario.idOperario}">
+                                   <div class="div-boton">
+                                       <h:commandButton id="btnResetPassword" class="boton-input" value="Reset Password" >
+                                           <f:ajax execute="@form" listener="#{editarOperario.resetPassword()}" onevent="indicador" render="mensajes"/>
+                                       </h:commandButton>
+                                   </div>
+                               </c:when>  
+                                <c:otherwise>
+                                    <div class="label">Contraseña Actual</div>
+                                    <h:inputSecret id="editPassActualOperario" class="input" value="#{editarOperario.passwordActual}" p:placeholder="Contraseña Actual (dejar vacio para no cambiar)" />
+
+                                    <div class="label">Correo de Operario</div>
+                                    <h:inputText id="editCorreoOperario" class="input" value="#{editarOperario.correoOperario}" p:placeholder="Correo del operario"/>
+
+                                    <div class="label">Contraseña Nueva</div>
+                                    <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
+
+                                    <div class="label">Confirmar Contraseña</div>
+                                    <h:inputSecret id="editRePassOperario" class="input" value="#{editarOperario.repPassword}" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
+                                        <f:ajax execute="editPassOperario editRePassOperario" event="keyup" render="editmsjPass"/>
+                                    </h:inputSecret>
+                                </c:otherwise>
+                            </c:choose>
                             
-                            <div class="label">Correo de Operario</div>
-                            <h:inputText id="editCorreoOperario" class="input" value="#{editarOperario.correoOperario}" p:placeholder="Correo del operario"/>
-                            
-                            <div class="label">Contraseña Nueva</div>
-                            <h:inputSecret id="editPassNuevoOperario" class="input" value="#{editarOperario.passwordNuevo}" p:placeholder="Contraseña Nueva (dejar vacio para no cambiar)" />
-                            
-                            <div class="label">Confirmar Contraseña</div>
-                            <h:inputSecret id="editRePassOperario" class="input" value="#{editarOperario.repPassword}" p:placeholder="Repeticion de contraseña (debe coincidir con la contraseña)">
-                                <f:ajax execute="editPassOperario editRePassOperario" event="keyup" render="editmsjPass"/>
-                            </h:inputSecret>
+                           
                             
                             <c:catch var="catch_error">
                                 <h:outputText id="editmsjPass" value="#{editarOperario.mensajePass}" />
@@ -73,7 +86,8 @@
                                 <h:message for="editPassActualOperario" class="error"/>
                                 <h:message for="editPassNuevoOperario" class="error"/>
                                 <h:message for="editRePassOperario" class="error"/>
-                                <h:message for="btnEditarOperario" class="error"/>                     
+                                <h:message for="btnEditarOperario" class="error"/>  
+                                <h:message for="btnResetPassword" class="error"/>
                             </div>
                             </h:panelGroup>
                         </fieldset>

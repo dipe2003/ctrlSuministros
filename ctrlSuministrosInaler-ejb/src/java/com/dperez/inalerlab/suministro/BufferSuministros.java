@@ -1,6 +1,7 @@
 
 package com.dperez.inalerlab.suministro;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,26 +59,28 @@ public class BufferSuministros {
     public List<Suministro> getListaSuministros(boolean Vigente){
         if(Vigente){
             return MapSuministros.values().stream()
-                    .sorted()
+                    .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
                     .filter(suministro->suministro.isVigente())
                     .collect(Collectors.toList());
         }else{
             return MapSuministros.values().stream()
-                    .sorted()
+                    .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
                     .collect(Collectors.toList());
         }
     }
     
     public  List<Suministro> getSuministrosPorProveedor(int IdProveedor){
         return MapSuministros.values().stream()
+                .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
                 .filter(suministro->suministro.getProveedorSuministro().getIdProveedor() == IdProveedor)
-                .sorted()
                 .collect(Collectors.toList());
     }
     
     public Map<String, Integer> getMapNombreSuministros(boolean Vigente){
         Map<String, Integer> map = new HashMap<>();
-        MapSuministros.values().stream().filter((suministro) -> (suministro.isVigente())).forEachOrdered((suministro) -> {
+        MapSuministros.values()
+                .stream()
+                .filter((suministro) -> (suministro.isVigente())).forEachOrdered((suministro) -> {
             map.put(suministro.getNombreSuministro() + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")", suministro.getIdSuministro());
         });
         return new TreeMap<>(map);
