@@ -28,6 +28,7 @@ public class SendMail {
     private static String mail;
     private static String host;
     private static int port;
+    private static boolean ttls;
     
     private static Properties props;
     private static Session session;
@@ -43,10 +44,11 @@ public class SendMail {
         mail = prop.getMailFrom();
         host = prop.getMailSmtp();
         port = prop.getMailPort();
+        ttls=prop.getUseTtls();
         
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
-        //props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", ttls);
         props.put("mail.smtp.port", port);              
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.auth", "true");

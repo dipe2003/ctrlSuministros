@@ -32,6 +32,13 @@ public class ControladorPropiedad {
         return Integer.parseInt(mProp.ObtenerPropiedad("mail_port").getValorPropiedad());
     }
     
+    public boolean getUseTtls(){
+        try{
+            return Boolean.getBoolean(mProp.ObtenerPropiedad("usar_ttls").getValorPropiedad());
+        }catch(Exception ex){}
+        return false;
+    }
+    
     //  Edicion de propiedades
     public List<Propiedad> getPropiedades(){
         return mProp.ListarPropiedades();

@@ -50,7 +50,7 @@ public class TimerService {
                 List<Operario> operarios = fOp.ListarOperarios();
                 
                 operarios.stream()
-                        .filter(operario->operario.isRecibeAlertas() && !operario.getCorreoOperario().isEmpty())
+                        .filter(operario-> operario.isEsVigente() && operario.isRecibeAlertas() && !operario.getCorreoOperario().isEmpty())
                         .forEach(operario->{
                             mail.enviarMail(operario.getCorreoOperario(), mensaje, asunto);
                         });
@@ -61,25 +61,31 @@ public class TimerService {
     }
     
     private String getMensaje(List<String> SuministrosVencidosStock, List<String> SuministrosDebajoStock){
-        String msj = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>");
         if(!SuministrosVencidosStock.isEmpty()){
-            msj += "<h3>Los siguientes suministros se encuentran vencidos y con stock: </h3><br></br>";
-            msj += "<ul>";
+            strBuilder.append("<h3>Los siguientes suministros se encuentran vencidos y con stock: </h3><br></br>")
+                    .append("<ul>");
+
             for (String str: SuministrosVencidosStock) {
-                msj += "<li>" + str + "</li>";
+                strBuilder.append("<li>")
+                        .append(str)
+                        .append("</li>");
             }
-            msj += "</ul><br></br>";
+           strBuilder.append("</ul><br></br>");
         }
         if(!SuministrosDebajoStock.isEmpty()){
-            msj += "<h3>Los siguientes suministros se encuentran por debajo del stock minimo: </h3><br></br>";
-            msj += "<ul>";
+            strBuilder.append("<h3>Los siguientes suministros se encuentran por debajo del stock minimo: </h3><br></br>")
+                      .append("<ul>");
             for (String str: SuministrosDebajoStock) {
-                msj += "<li>" + str + "</li>";
+                strBuilder.append("<li>")
+                        .append(str)
+                        .append("</li>");
             }
-            msj += "</ul><br></br>";
+            strBuilder.append("</ul><br></br>");
         }
-        msj += "</p>";
-        return msj;
+        strBuilder.append("</p>");
+        return strBuilder.toString();
     }
     
 }
