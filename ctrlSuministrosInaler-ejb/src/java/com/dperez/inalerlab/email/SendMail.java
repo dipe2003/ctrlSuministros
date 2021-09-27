@@ -36,7 +36,7 @@ public class SendMail {
     public SendMail() {
         
     }
-        
+    
     @PostConstruct
     public void init(){
         user = prop.getMailUser();
@@ -47,11 +47,14 @@ public class SendMail {
         ttls=prop.getUseTtls();
         
         props = new Properties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.starttls.enable", ttls);
-        props.put("mail.smtp.port", port);              
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.socketFactory.port", String.valueOf(port));
+        props.setProperty("mail.transport.protocol", "smtp");
+        props.setProperty("mail.smtp.starttls.enable", String.valueOf(ttls));
+        props.setProperty("mail.smtp.port", String.valueOf(port));
+        props.setProperty("mail.smtp.host", host);
+        props.setProperty("mail.smtp.auth", "true");        
         
         session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -60,9 +63,9 @@ public class SendMail {
                         return new PasswordAuthentication(user, pass);
                     }
                 });
-
-    }
         
+    }
+    
     public boolean enviarMail(String to,String mensaje, String asunto){
         
         try{
