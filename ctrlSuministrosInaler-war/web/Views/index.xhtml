@@ -119,7 +119,7 @@
                                     <h:inputText id="outputUltimoIngresoIndex" class="output" value="El #{datosIndex.suministro.ultimoIngreso.fechaIngreso} / Numero de Lote: #{datosIndex.suministro.ultimoIngreso.loteIngreso.numeroLote}" pt:disabled="true" />
                                     <h:inputText id="outputUltimoIngresoCantidadIndex" class="output" value="#{datosIndex.suministro.ultimoIngreso.cantidadIngreso} #{datosIndex.unidadCantidad}" pt:disabled="true" />
                                 </h:panelGroup>
-                            </h:panelGroup>
+                            </h:panelGroup>                            
                         </fieldset>
                         
                         <fieldset><legend>Graficos</legend>
@@ -138,6 +138,15 @@
                                     <div class="contenedor-50 leyenda-grafico" style="background-color:#ff9900">1 Mes</div> 
                                 </div>                                                          
                             </div>
+                            <c:if test="${loginOperario.permisoOperario == 'Administrador' or loginOperario.permisoOperario == 'Verificador'}">
+                                <h:panelGroup>
+                                    <div class="div-boton" style="padding-top: 1%">
+                                        <h:commandButton id="btnEnviarAlerta" class="boton-input" value="Enviar Alertas">
+                                            <f:ajax listener="#{datosIndex.enviarAlertas()}" onevent="indicador" />
+                                        </h:commandButton>
+                                    </div>
+                                </h:panelGroup>
+                            </c:if>
                         </fieldset>
                         <fieldset><legend>Detalles</legend>
                             <div class="contenedor-5050">
@@ -182,7 +191,7 @@
                                             </table>                                        
                                         </f:view>
                                     </c:if>
-                                <br/>
+                                    <br/>
                                     <div class="label">1 Mes de Vigencia</div><br/>
                                     <c:if test="#{empty datosIndex.suministroUnMesVigencia}">
                                         <div class="output"> No Hay Suministros a un mes de su vencimiento </div>

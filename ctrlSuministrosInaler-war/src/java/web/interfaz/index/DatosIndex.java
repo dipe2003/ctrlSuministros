@@ -4,6 +4,7 @@ package web.interfaz.index;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.Lote;
+import com.dperez.inalerlab.timer.TimerService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import javax.inject.Named;
 @Named
 @ViewScoped
 public class DatosIndex implements Serializable{
+    @EJB
+    private TimerService timerService;
     @EJB
     private FacadeManejoSuministros fSuministro;
     private Suministro suministro;
@@ -43,7 +46,7 @@ public class DatosIndex implements Serializable{
     public Map<Integer, Suministro> getMapSuministrosFull() {return MapSuministrosFull;}
     public int getIdSuministroSeleccionado() {return IdSuministroSeleccionado;}
     public Map<String, Integer> getMapSuministros() {return MapSuministros;}
-
+    
     public List<Suministro> getListSuministrosDebajoStock() {return ListSuministrosDebajoStock;}
     public List<Suministro> getListSuministrosVencidos() {return ListSuministrosVencidos;}
     public Map<Integer, List<Lote>> getMapLotesVencidos() {return MapLotesVencidos;}
@@ -57,7 +60,7 @@ public class DatosIndex implements Serializable{
     public void setMapSuministrosFull(Map<Integer, Suministro> MapSuministrosFull) {this.MapSuministrosFull = MapSuministrosFull;}
     public void setIdSuministroSeleccionado(int IdSuministroSeleccionado) {this.IdSuministroSeleccionado = IdSuministroSeleccionado;}
     public void setMapSuministros(Map<String, Integer> MapSuministros) {this.MapSuministros = MapSuministros;}
-
+    
     public void setListSuministrosDebajoStock(List<Suministro> ListSuministrosDebajoStock) {this.ListSuministrosDebajoStock = ListSuministrosDebajoStock;}
     public void setListSuministrosVencidos(List<Suministro> ListSuministrosVencidos) {this.ListSuministrosVencidos = ListSuministrosVencidos;    }
     public void setMapLotesVencidos(Map<Integer, List<Lote>> MapLotesVencidos) {this.MapLotesVencidos = MapLotesVencidos;}
@@ -65,13 +68,21 @@ public class DatosIndex implements Serializable{
     public void setMapLotesUnMesVigencia(Map<Integer, List<Lote>> MapLotesUnMesVigencia) {this.MapLotesUnMesVigencia = MapLotesUnMesVigencia;}
     
     public void cargarDatosSuministro(){
-        try{            
+        try{
             suministro = MapSuministrosFull.get(IdSuministroSeleccionado);
             StockSuministro = suministro.getStock();
             UnidadCantidad = suministro.getUnidadSuministro().getNombreUnidad();
         }catch(NullPointerException ex){
             StockSuministro = 0;
             UnidadCantidad = "";
+        }
+    }
+    
+    public void enviarAlertas(){
+        try{
+            timerService.myTimer();
+        }catch(Exception ex){
+            System.out.println("Error al enviar alertas: " + ex.getMessage());
         }
     }
     
@@ -89,7 +100,7 @@ public class DatosIndex implements Serializable{
         }
         for(Suministro sum: ListSuministrosVencidos){
             if(sum.isVigente())
-            MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
+                MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
         }
         
         ListSuministroUnMesVigencia = fSuministro.getSuministrosUnMesVigencia();
