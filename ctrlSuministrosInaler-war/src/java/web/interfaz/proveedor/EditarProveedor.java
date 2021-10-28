@@ -5,7 +5,6 @@ import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.proveedor.Proveedor;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -21,8 +20,6 @@ public class EditarProveedor implements Serializable{
     private FacadeManejoProveedor fProveedor;
     
     private int IdProveedor;
-    private Map<String, Integer> MapProveedores;
-
     private String NombreProveedor;
     private String ContactoProveedor;
     
@@ -30,13 +27,11 @@ public class EditarProveedor implements Serializable{
     public String getNombreProveedor() {return NombreProveedor;}
     public String getContactoProveedor() {return ContactoProveedor;}
     public int getIdProveedor() {return IdProveedor;}
-    public Map<String, Integer> getMapProveedores() {return MapProveedores;}
     
     //  setters
     public void setNombreProveedor(String NombreProveedor) {this.NombreProveedor = NombreProveedor;}
     public void setContactoProveedor(String ContactoProveedor) {this.ContactoProveedor = ContactoProveedor;}
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
-    public void setMapProveedores(Map<String, Integer> MapProveedores) {this.MapProveedores = MapProveedores;}
     
     public void cargarDatosProveedor(){
         Proveedor prov = fProveedor.BuscarProveedor(IdProveedor);
@@ -56,7 +51,6 @@ public class EditarProveedor implements Serializable{
     
     @PostConstruct
     public void init(){
-        MapProveedores = fProveedor.ListarMapProveedores();
         try{
             FacesContext context = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();        

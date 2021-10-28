@@ -39,7 +39,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     private Date FechaIngresoSuministro;
     private String strFechaIngresoSuministro;
     private int IdSuministro;
-    private Map<String, Integer> listaSuministros;
+    private List<Suministro> ListaSuministros;
     private float CantidadIngresoSuministro;
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
@@ -74,7 +74,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public String getNombreProveedor() {return NombreProveedor;}
     public List<Proveedor> getProveedores() {return Proveedores;}
     public int getIdSuministro() {return IdSuministro;}
-    public Map<String, Integer> getListaSuministros() {return listaSuministros;}
+    public List<Suministro> getListaSuministros(){return this.ListaSuministros;}
     public float getCantidadIngresoSuministro() {return CantidadIngresoSuministro;}
     public String getNumeroLoteSuministro() {return NumeroLoteSuministro;}
     public Date getFechaVencimientoSuministro() {return FechaVencimientoSuministro;}
@@ -109,7 +109,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setNombreProveedor(String NombreProveedor) {this.NombreProveedor = NombreProveedor;}
     public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
-    public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
+    public void setListaSuministros(List<Suministro> listaSuministros){this.ListaSuministros = listaSuministros;}
     public void setCantidadIngresoSuministro(float CantidadIngresoSuministro) {this.CantidadIngresoSuministro = CantidadIngresoSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
     public void setFechaVencimientoSuministro(Date FechaVencimientoSuministro) {this.FechaVencimientoSuministro = FechaVencimientoSuministro;}
@@ -191,7 +191,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     @PostConstruct
     public void init(){
         Proveedores = fProveedor.ListarProveedores();
-        listaSuministros = fSuministro.ListarMapSuministros(true);
+        ListaSuministros = fSuministro.ListarSuministros(true, true);
         existeLote = false;
     }
     

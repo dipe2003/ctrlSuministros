@@ -51,7 +51,6 @@ public class EditarOperario implements Serializable {
     List<Permiso> Permisos;
     
     private int IdOperarioSeleccionado;
-    private Map<String, Integer> NombresCompletosOperarios;
     
     private String[] PasswordsOperario;
     
@@ -91,11 +90,7 @@ public class EditarOperario implements Serializable {
     public int getIdOperarioSeleccionado() {
         return IdOperarioSeleccionado;
     }
-    
-    public Map<String, Integer> getNombresCompletosOperarios() {
-        return NombresCompletosOperarios;
-    }
-    
+      
     public String getPasswordActual() {
         return PasswordActual;
     }
@@ -147,10 +142,6 @@ public class EditarOperario implements Serializable {
     
     public void setIdOperarioSeleccionado(int IdOperarioSeleccionado) {
         this.IdOperarioSeleccionado = IdOperarioSeleccionado;
-    }
-    
-    public void setNombresCompletosOperarios(Map<String, Integer> NombresCompletosOperarios) {
-        this.NombresCompletosOperarios = NombresCompletosOperarios;
     }
     
     public void setPasswordActual(String PasswordActual) {
@@ -256,7 +247,6 @@ public class EditarOperario implements Serializable {
         Permisos = cPermiso.ListarPermisos();
         PermisosOperarios = Permisos.stream()
                 .collect(Collectors.toMap(Permiso::getNombrePermiso, permiso -> permiso.getIdPermiso()));
-        NombresCompletosOperarios = fOperario.GetNombresOperarios();
         PasswordsOperario = new String[2];
         try {
             FacesContext context = FacesContext.getCurrentInstance();

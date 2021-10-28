@@ -2,7 +2,6 @@ package com.dperez.inalerlab.proveedor;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -63,20 +62,4 @@ public class FacadeManejoProveedor implements Serializable {
         return cProveedor.ModificarDatosProveedor(IdProveedor, NombreProveedor, ContactoProveedor);
     }
 
-    /**
-     * Devuelve un Map con los proveedores registrados en el sistema.
-     * @return Retorna un Map con los Nombres de los proveedores (key) y los id (value)
-     */
-    public Map<String, Integer> ListarMapProveedores(){
-        return cProveedor.ListarMapProveedores();
-    }
-    
-    /**
-     * Devuelve un Map con el proveedor del suministro.
-     * @param IdSuministro
-     * @return Retorna un Map con los nombres de los proveedores (key) y sus id(values).
-     */
-    public Map<String, Integer> BuscarProveedorSuministro(int IdSuministro){
-        return cProveedor.MapProveedorSuministro(IdSuministro);
-    }
-}
+ }

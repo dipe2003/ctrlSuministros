@@ -32,7 +32,7 @@
                             
                             <div class="label">Unidad</div>
                             <h:selectOneRadio value="#{registrarSuministro.idUnidadSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
-                                <f:selectItems value="#{registrarSuministro.unidadesSuministros}" />
+                                <f:selectItems var="unidad" itemValue="#{unidad.idUnidad}" itemLabel="#{unidad.nombreUnidad}" value="#{registrarSuministro.unidades}"  />
                             </h:selectOneRadio>
                             
                             <div class="label">Stock Minimo</div>
@@ -47,7 +47,7 @@
                             
                             <div class="label">Proveedor</div>
                             <h:selectOneMenu value="#{registrarSuministro.idProveedor}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." style="width:97%;">
-                                <f:selectItems value="#{registrarSuministro.proveedoresSuministros}" />
+                                <f:selectItems value="#{registrarSuministro.proveedores}" var="proveedor" itemLabel="#{proveedor.nombreProveedor}" itemValue="#{proveedor.idProveedor}" />
                             </h:selectOneMenu>
                             
                             <div class="div-boton">

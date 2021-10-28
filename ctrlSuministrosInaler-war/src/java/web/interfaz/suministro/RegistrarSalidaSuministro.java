@@ -10,10 +10,10 @@ import com.dperez.inalerlab.suministro.lote.FacadeLote;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -33,8 +33,8 @@ public class RegistrarSalidaSuministro implements Serializable{
     private FacadeLote fLote;
     
     private int IdSuministro;
-    private Map<String, Integer> listaSuministros;
-    private Map<Integer, Suministro> lstSuministros;
+    private Suministro SuministroSeleccionado;
+    private List<Suministro> Suministros;
     private float CantidadSalidaSuministro;
     private String NumeroLoteSuministro;
     private String NumeroFacturaSuministro;
@@ -48,7 +48,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     //  Lote
     private boolean existeLote;
     private int IdLoteSuministro;
-    private Map<String, Integer> listaNumerosLoteSuministro;
+    private List<Lote> Lotes;
     private float CantidadStockLote;
     private String UnidadCantidad;
     private float StockSuministro;
@@ -58,21 +58,20 @@ public class RegistrarSalidaSuministro implements Serializable{
     public String getNombreProveedor() {return NombreProveedor;}
     public List<Proveedor> getProveedores() {return Proveedores;}
     public int getIdSuministro() {return IdSuministro;}
-    public Map<String, Integer> getListaSuministros() {return listaSuministros;}
     public float getCantidadSalidaSuministro() {return CantidadSalidaSuministro;}
     public String getNumeroLoteSuministro() {return NumeroLoteSuministro;}
+    public List<Suministro> getSuministros(){return this.Suministros;}
     
-    public Map<Integer, Suministro> getLstSuministros() {return lstSuministros;}
     public boolean isExisteLote() {return existeLote;}
     public String getNumeroFacturaSuministro() {return NumeroFacturaSuministro;}
     public String getObservacionesSalida() {return ObservacionesSalida;}
     
     public int getIdLoteSuministro() {return IdLoteSuministro;}
-    public Map<String, Integer> getListaNumerosLoteSuministro() {return listaNumerosLoteSuministro;}
+    public List<Lote> getLotes(){return this.Lotes;}
+    
     public float getCantidadStockLote() {
         try{
-            List<Lote> lotes = lstSuministros.get(IdSuministro).getLotesSuministros();
-            for(Lote lote: lotes) if(lote.getIdLote()==IdLoteSuministro) CantidadStockLote = lote.getCantidadStock();
+            for(Lote lote: Lotes) if(lote.getIdLote()==IdLoteSuministro) CantidadStockLote = lote.getCantidadStock();
         }catch(NullPointerException ex){
             CantidadStockLote = 0f;
         }
@@ -91,18 +90,23 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void setIdProveedor(int idProveedor) {this.idProveedor = idProveedor;}
     public void setNombreProveedor(String NombreProveedor) {this.NombreProveedor = NombreProveedor;}
     public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}
-    public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
-    public void setListaSuministros(Map<String, Integer> listaSuministros) {this.listaSuministros = listaSuministros;}
-    public void setLstSuministros(Map<Integer, Suministro> lstSuministros) {this.lstSuministros = lstSuministros;}
+    public void setIdSuministro(int IdSuministro) {
+        this.IdSuministro = IdSuministro;
+        this.SuministroSeleccionado = Suministros.stream()
+                .filter(s->s.getIdSuministro() == IdSuministro)
+                .findFirst()
+                .get();
+    }
     public void setCantidadSalidaSuministro(float CantidadSalidaSuministro) {this.CantidadSalidaSuministro = CantidadSalidaSuministro;}
     public void setNumeroLoteSuministro(String NumeroLoteSuministro) {this.NumeroLoteSuministro = NumeroLoteSuministro;}
+    public void setSuministros(List<Suministro> suministros){this.Suministros = suministros;}
     
     public void setExisteLote(boolean existeLote) {this.existeLote = existeLote;}
     public void setNumeroFacturaSuministro(String NumeroFacturaSuministro) {this.NumeroFacturaSuministro = NumeroFacturaSuministro;}
     public void setObservacionesSalida(String ObservacionesSalida) {this.ObservacionesSalida = ObservacionesSalida;}
     
     public void setIdLoteSuministro(int IdLoteSuministro) {this.IdLoteSuministro = IdLoteSuministro;}
-    public void setListaNumerosLoteSuministro(Map<String, Integer> listaNumerosLoteSuministro) {this.listaNumerosLoteSuministro = listaNumerosLoteSuministro;}
+    public void setLotes(List<Lote> lotes){this.Lotes = lotes;}
     public void setCantidadStockLote(float CantidadStockLote) {this.CantidadStockLote = CantidadStockLote;}
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     public void setStockSuministro(float StockSuministro) {this.StockSuministro = StockSuministro;}
@@ -134,8 +138,7 @@ public class RegistrarSalidaSuministro implements Serializable{
      */
     @PostConstruct
     public void init(){
-        listaSuministros = fSuministro.ListarMapSuministros(true);
-        lstSuministros = fSuministro.ListarMapSuministrosFull();
+        Suministros = fSuministro.ListarSuministros(true, true);
         existeLote = false;
         Proveedores = fProveedor.ListarProveedores();
     }
@@ -145,9 +148,9 @@ public class RegistrarSalidaSuministro implements Serializable{
      * @param IdSuministro id de suministro seleccionado.
      */
     public void cargarNumerosLoteSuministro(int IdSuministro){
-        listaNumerosLoteSuministro = fLote.ListarMapLotesConStock(IdSuministro, true);
-        UnidadCantidad = fSuministro.BuscarUnidadSuministro(IdSuministro).getNombreUnidad();
-        StockSuministro = fSuministro.BuscarSuministro(IdSuministro).getStock();
+        Lotes = SuministroSeleccionado.getLotesConStock(true);
+        UnidadCantidad = SuministroSeleccionado.getUnidadSuministro().getNombreUnidad();
+        StockSuministro = SuministroSeleccionado.getStock();
     }
     
     /**

@@ -26,8 +26,7 @@ public class DatosIndex implements Serializable{
     private Suministro suministro;
     private float StockSuministro;
     private int IdSuministroSeleccionado;
-    private Map<String, Integer> MapSuministros;
-    private Map<Integer, Suministro> MapSuministrosFull;
+    private List<Suministro> Suministros;
     private String UnidadCantidad;
     
     //  detalles stock
@@ -43,9 +42,8 @@ public class DatosIndex implements Serializable{
     public float getStockSuministro(){return StockSuministro;}
     public Suministro getSuministro() {return suministro;}
     public String getUnidadCantidad() {return UnidadCantidad;}
-    public Map<Integer, Suministro> getMapSuministrosFull() {return MapSuministrosFull;}
     public int getIdSuministroSeleccionado() {return IdSuministroSeleccionado;}
-    public Map<String, Integer> getMapSuministros() {return MapSuministros;}
+    public List<Suministro> getSuministros(){return this.Suministros;}
     
     public List<Suministro> getListSuministrosDebajoStock() {return ListSuministrosDebajoStock;}
     public List<Suministro> getListSuministrosVencidos() {return ListSuministrosVencidos;}
@@ -57,9 +55,8 @@ public class DatosIndex implements Serializable{
     public void setStockSuministro(float StockSuministro){this.StockSuministro = StockSuministro;}
     public void setSuministro(Suministro suministro) {this.suministro = suministro;}
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
-    public void setMapSuministrosFull(Map<Integer, Suministro> MapSuministrosFull) {this.MapSuministrosFull = MapSuministrosFull;}
     public void setIdSuministroSeleccionado(int IdSuministroSeleccionado) {this.IdSuministroSeleccionado = IdSuministroSeleccionado;}
-    public void setMapSuministros(Map<String, Integer> MapSuministros) {this.MapSuministros = MapSuministros;}
+    public void setSuministros(List<Suministro> suministros){this.Suministros = suministros;}
     
     public void setListSuministrosDebajoStock(List<Suministro> ListSuministrosDebajoStock) {this.ListSuministrosDebajoStock = ListSuministrosDebajoStock;}
     public void setListSuministrosVencidos(List<Suministro> ListSuministrosVencidos) {this.ListSuministrosVencidos = ListSuministrosVencidos;    }
@@ -69,7 +66,10 @@ public class DatosIndex implements Serializable{
     
     public void cargarDatosSuministro(){
         try{
-            suministro = MapSuministrosFull.get(IdSuministroSeleccionado);
+            suministro = Suministros.stream()
+                    .filter(s->s.getIdSuministro() == IdSuministroSeleccionado)
+                    .findFirst()
+                    .get();
             StockSuministro = suministro.getStock();
             UnidadCantidad = suministro.getUnidadSuministro().getNombreUnidad();
         }catch(NullPointerException ex){
@@ -88,16 +88,18 @@ public class DatosIndex implements Serializable{
     
     @PostConstruct
     public void init(){
-        MapSuministrosFull = fSuministro.ListarMapSuministrosFull();
-        MapSuministros = fSuministro.ListarMapSuministros(true);
+        Suministros = fSuministro.ListarSuministros(false, false);
         List<Integer> idsStockBajo = fSuministro.GetIdsSuministrosDebajoStockMinimo();
         ListSuministrosVencidos = fSuministro.getSuministrosConLotesVencidos();
         ListSuministrosDebajoStock = new ArrayList<>();
         MapLotesVencidos = new HashMap<>();
-        for(Integer id: idsStockBajo){
-            Suministro sum = MapSuministrosFull.get(id);
-            if(sum.isVigente())ListSuministrosDebajoStock.add(sum);
-        }
+        
+        Suministros.stream()
+                .filter(s->s.isVigente() && idsStockBajo.contains(s.getIdSuministro()))
+                .forEach(s->{
+                    ListSuministrosDebajoStock.add(s);
+                });
+        
         for(Suministro sum: ListSuministrosVencidos){
             if(sum.isVigente())
                 MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());

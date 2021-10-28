@@ -10,13 +10,8 @@ import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,7 +19,7 @@ import javax.inject.Named;
 @Named
 @Stateless
 public class ControladorSuministro implements Serializable {
-
+    
     @Inject
     private ManejadorSuministro mSuministro;
     @Inject
@@ -39,7 +34,7 @@ public class ControladorSuministro implements Serializable {
     private ControladorOperario cOps;
     @Inject
     private SendMail mail;
-
+    
     /**
      * Crea un Crea un Reactivo Quimico en la base de datos.
      *
@@ -61,12 +56,12 @@ public class ControladorSuministro implements Serializable {
                 suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
-
+                
             case "MedioEnsayo":
                 suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
-
+                
             case "ReactivoQuimico":
                 suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
@@ -78,7 +73,7 @@ public class ControladorSuministro implements Serializable {
         }
         return id;
     }
-
+    
     /**
      * Busca un suministro segun el id especificado.
      *
@@ -91,7 +86,7 @@ public class ControladorSuministro implements Serializable {
         }
         return mSuministro.ObtenerSuministro(IdSuministro);
     }
-
+    
     /**
      * Devuelve todos los suministros registrados en la base de datos según su
      * vigencia. Si no hay suministros devuelve una lista vacia.
@@ -108,9 +103,12 @@ public class ControladorSuministro implements Serializable {
                 return buffer.getListaSuministros(Vigente);
             }
         }
-        return mSuministro.ListarSuministros(Vigente);
+        if(Vigente){
+            return mSuministro.ListarSuministros(true);
+        }
+        return mSuministro.ListarSuministros();
     }
-
+    
     /**
      * Envia notificaciones a los usuarios que reciben alertas cuando ingresa un
      * nuevo lote de suministro.
@@ -128,7 +126,7 @@ public class ControladorSuministro implements Serializable {
                     mail.enviarMail(operario.getCorreoOperario(), mensaje, asunto);
                 });
     }
-
+    
     /**
      * Genera el mensaje en html con la información del suministro y el numero
      * de lote.
@@ -147,7 +145,7 @@ public class ControladorSuministro implements Serializable {
         mensaje += "Lote: " + NumeroLoteSuministro;
         return mensaje;
     }
-
+    
     /**
      * STOCK MINIMO
      */
@@ -169,62 +167,7 @@ public class ControladorSuministro implements Serializable {
         }
         return id;
     }
-
-    /**
-     * Devuelve los suministros del proveedore especificado por su id.
-     *
-     * @param IdProveedor
-     * @return Retorna un map con el nombre de los suministros (key) y sus id
-     * (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor) {
-        if (buffer.bufferSize() > 0) {
-            return buffer.getSuministrosPorProveedor(IdProveedor)
-                    .stream()
-                    .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
-                    .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro -> suministro.getIdSuministro()));
-        }
-
-        return mSuministro.ListarSuministros(IdProveedor)
-                .stream()
-                .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro -> suministro.getIdSuministro()));
-    }
-
-    /**
-     * Devuelve los suministros registrados en la base de datos. Solo los
-     * suministros vigentes.
-     *
-     * @param Vigente
-     * @return Retorna un map con el nombre de los suministros (key) y sus id
-     * (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> ListarMapSuministros(boolean Vigente) {
-        if (buffer.bufferSize() > 0) {
-            return buffer.getMapNombreSuministros(Vigente);
-        }
-        return mSuministro.ListarSuministros(Vigente)
-                .stream()
-                .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toMap(Suministro::getNombreSuministro, suministro -> suministro.getIdSuministro()));
-    }
-
-    /**
-     * Devuelve los suministros registrados en la base de datos. Solo los
-     * suministros vigentes.
-     *
-     * @return Retorna un map con los ids de suministros (key) y los suministros
-     * (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<Integer, Suministro> ListarMapSuministrosFull() {
-        if (buffer.bufferSize() > 0) {
-            return buffer.getMapSuministros();
-        }
-        return mSuministro.ListarSuministros().stream()
-                .sorted(Comparator.comparing(Suministro::getNombreSuministro, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toMap(Suministro::getIdSuministro, suministro -> suministro));
-    }
-
+    
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock
      * minimo. Solo se toman en cuenta aquellos suministros que tengan un stock
@@ -244,7 +187,7 @@ public class ControladorSuministro implements Serializable {
         }
         return new int[]{suministros.size(), cantidad};
     }
-
+    
     /**
      * Devuelve los suministros que están por debajo de su stock minimo. Solo se
      * toman en cuenta aquellos suministros que tengan un stock minimo definido
@@ -268,33 +211,8 @@ public class ControladorSuministro implements Serializable {
         }
         return lista;
     }
-
-    /**
-     * Devuelve los suministros con lotes vencidos y que estén vigentes.
-     *
-     * @param ConStock <b>True:</b> para obtener solo los que tengan stock.
-     * <b>False:</b> para obtener todos.
-     * @return Map: key: idSuministros, value: nombreSuministro
-     */
-    public Map<String, Integer> getMapSuministrosConLotesVencidos(boolean ConStock) {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
-        Map<String, Integer> map = new HashMap<>();
-        if (ConStock) {
-            for (Suministro suministro : suministros) {
-                if (suministro.getLotesVencidosEnStock().size() > 0) {
-                    map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
-                }
-            }
-            return new TreeMap<>(map);
-        }
-        for (Suministro suministro : suministros) {
-            if (suministro.getLotesVencidos().size() > 0) {
-                map.put(suministro.getNombreSuministro(), suministro.getIdSuministro());
-            }
-        }
-        return new TreeMap<>(map);
-    }
-
+    
+   
     /**
      * Devuelve los suministros con lotes vencidos y que estén vigentes.
      *
@@ -320,7 +238,7 @@ public class ControladorSuministro implements Serializable {
         }
         return lista;
     }
-
+    
     /**
      * Devuelve los suministros con lotes vencidos y que estén vigentes.
      *
@@ -347,7 +265,7 @@ public class ControladorSuministro implements Serializable {
         }
         return lista;
     }
-
+    
     /**
      * Devuelve los suministros con lotes a un mes de su vencimiento, que esten
      * vigentes y con stock,
@@ -364,7 +282,7 @@ public class ControladorSuministro implements Serializable {
         }
         return lista;
     }
-
+    
     /**
      * Actualiza un suministro en la base de datos. Compara unidad y proveedor y
      * actualiza si es necesario. Compara el stockminimo y si es diferente se
@@ -402,7 +320,7 @@ public class ControladorSuministro implements Serializable {
                 StockMinimo stock = cStock.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
                 sumBD.addStockMinimoSuministro(stock);
             }
-
+            
             id = mSuministro.ActualizarSuministro(sumBD);
             if (id != -1) {
                 buffer.updateSuministro(sumBD);
@@ -411,7 +329,7 @@ public class ControladorSuministro implements Serializable {
         }
         return id;
     }
-
+    
     /**
      * Actualiza el buffer de suministros con el suministro especificado.
      *

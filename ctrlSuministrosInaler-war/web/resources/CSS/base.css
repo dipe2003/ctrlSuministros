@@ -213,7 +213,8 @@ div .sub-titulo-fondo{
     top:0px;
     left:0px;
     -webkit-box-shadow:#999999 0px 10px 5px;
-    -moz-box-shadow: #999999 0px 10px 5px;;
+    -moz-box-shadow: #999999 0px 10px 5px;
+;
     box-shadow: #999999 0px 10px 5px;
 }
 #menuApp{
@@ -232,7 +233,8 @@ div .sub-titulo-fondo{
     overflow: hidden;
     z-index: 99; 
     -webkit-box-shadow:#999999 0px 15px 5px;
-    -moz-box-shadow: #999999 0px 15px 5px;;
+    -moz-box-shadow: #999999 0px 15px 5px;
+;
     box-shadow: #999999 0px 15px 5px;
     overflow-y: auto;
 }
@@ -297,8 +299,8 @@ div .sub-titulo-fondo{
 
 .select-opt-menu:focus{
     width: 97%;
-    background-color: #A8CF45;
-    color: #ffffff;   
+    background-color:#c9eeb5; /* color anterior #A8CF45; modificado 27/10/2021 */
+    color: #000;   /* color anterior blanco #fff; modificado 27/1082021 */
 }
 
 .select-opt {

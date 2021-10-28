@@ -2,7 +2,6 @@ package com.dperez.inalerlab.suministro.lote;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -79,24 +78,6 @@ public class FacadeLote implements Serializable{
      */
     public int ExisteLoteSuministro(String NumeroLote, int IdSuministro){
         return cLote.ExisteLoteSuministro(NumeroLote, IdSuministro);
-    }
-    
-    /**
-     * Devuelve un Map con los lotes registrados en el sistema.
-     * @param IdSuministro
-     * @return Retorna un Map con el numero de lote (key) e id (value)
-     */
-    public Map<String, Integer> ListarMapLotes(int IdSuministro){
-        return cLote.ListarMapLotes(IdSuministro);
-    }
-    /**
-     * Devuelve un Map con los lotes con stock registrados en el sistema.
-     * @param IdSuministro
-     * @param Vencimiento True para incluir la fecha de vencimiento con el numero de lote.
-     * @return Retorna un Map con el numero de lote (key) e id (value)
-     */
-    public Map<String, Integer> ListarMapLotesConStock(int IdSuministro, boolean Vencimiento){
-        return cLote.ListarMapLotesStock(IdSuministro, Vencimiento);
     }
     
     /**

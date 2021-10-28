@@ -10,12 +10,9 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -40,11 +37,12 @@ public class RegistrarSuministro implements Serializable{
     private Date FechaVigenteStock;
     private String strFechaVigenteStock;
     private int IdUnidadSuministro;
-    private Map<String, Integer> UnidadesSuministros;
     private int IdProveedor;
-    private Map<String, Integer> ProveedoresSuministros;
     private String TipoSuministro;
     private String[] TiposSuministros;
+    
+    private List<Unidad> Unidades;
+    private List<Proveedor> Proveedores;
     
 //  getters
     public int getIdSuministro() {return IdSuministro;}
@@ -53,8 +51,6 @@ public class RegistrarSuministro implements Serializable{
     public String getCodigoSAPSuministro() {return CodigoSAPSuministro;}
     public boolean isAvisoCambioLote() {return AvisoCambioLote;}    
     public int getIdProveedor() {return IdProveedor;}
-    public Map<String, Integer> getProveedoresSuministros() {return ProveedoresSuministros;}
-    public Map<String, Integer> getUnidadesSuministros() {return UnidadesSuministros;}
     public int getIdUnidadSuministro() {return IdUnidadSuministro;}
     public String getTipoSuministro() {return TipoSuministro;}
     public String[] getTiposSuministros() {return TiposSuministros;}
@@ -69,6 +65,9 @@ public class RegistrarSuministro implements Serializable{
         }
     }
     
+    public List<Unidad> getUnidades(){return this.Unidades;}
+    public List<Proveedor> getProveedores(){return this.Proveedores;}
+    
     //  setters
     public void setIdSuministro(int IdSuministro) {this.IdSuministro = IdSuministro;}
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
@@ -76,8 +75,6 @@ public class RegistrarSuministro implements Serializable{
     public void setCodigoSAPSuministro(String CodigoSAPSuministro) {this.CodigoSAPSuministro = CodigoSAPSuministro;}
     public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}    
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
-    public void setProveedoresSuministros(Map<String, Integer> ProveedoresSuministros) {this.ProveedoresSuministros = ProveedoresSuministros;}
-    public void setUnidadesSuministros(Map<String, Integer> UnidadesSuministros) {this.UnidadesSuministros = UnidadesSuministros;}
     public void setIdUnidadSuministro(int IdUnidadSuministro) {this.IdUnidadSuministro = IdUnidadSuministro;}
     public void setTipoSuministro(String TipoSuministro) {this.TipoSuministro = TipoSuministro;}
     public void setTiposSuministros(String[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
@@ -92,6 +89,9 @@ public class RegistrarSuministro implements Serializable{
         this.strFechaVigenteStock = strFechaVigenteStock;
         this.FechaVigenteStock = cal.getTime();
     }
+    
+    public void setUnidades(List<Unidad> unidades){this.Unidades = unidades;}
+    public void setProveedores(List<Proveedor> proveedores){this.Proveedores = proveedores;}
     
     public void registrarSuministro() throws IOException{
         int idSuministro = -1;
@@ -122,17 +122,11 @@ public class RegistrarSuministro implements Serializable{
     
     @PostConstruct
     public void init(){
-        UnidadesSuministros = new HashMap<>();
-        List<Unidad> Unidades = fSuministro.ListarUnidades();
-        UnidadesSuministros = Unidades.stream()
-               .collect(Collectors.toMap(Unidad::getNombreUnidad, unidad->unidad.getIdUnidad()));
-        
-        ProveedoresSuministros = new HashMap<>();
-        List<Proveedor> Proveedores = fProveedor.ListarProveedores();
-        ProveedoresSuministros = Proveedores.stream()
-                .collect(Collectors.toMap(Proveedor::getNombreProveedor, proveedor->proveedor.getIdProveedor()));
-        
-        ProveedoresSuministros = new TreeMap<>(ProveedoresSuministros);
+        Unidades = fSuministro.ListarUnidades();
+               Proveedores = fProveedor.ListarProveedores()
+                .stream()
+                .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
+                .toList();
         
         TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};
         TipoSuministro = TiposSuministros[0];

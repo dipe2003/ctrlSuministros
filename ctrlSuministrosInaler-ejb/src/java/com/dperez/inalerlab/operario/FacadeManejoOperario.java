@@ -5,7 +5,6 @@ import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -118,15 +117,7 @@ public class FacadeManejoOperario implements Serializable {
     public int ModificarPassword(int IdOperario, String PasswordNuevo){
         return cOperario.ModificarPassword(IdOperario,PasswordNuevo);
     }
-    
-    /**
-     * Devuelve los nombres de los operarios registrados
-     * @return Retorna un Map con los nombres completos de los operarios (key) y sus id (value).
-     */
-    public Map<String, Integer> GetNombresOperarios(){
-        return cOperario.GetMapNombresOperarios();
-    }
-    
+        
     public int CambiarVigenciaOperario(int idOperario, boolean esVigente){
         return cOperario.CambiarVigenciaOperario(idOperario, esVigente);
     }

@@ -5,7 +5,6 @@ import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,7 +28,7 @@ public class FacadeManejoSuministros implements Serializable {
     public List<Suministro> ListarSuministros(boolean Vigentes, boolean UsarBuffer){
         return cSuministro.ListarSuministros(Vigentes, UsarBuffer);
     }
-    
+        
     /**
      * Busca un suministro registrado en la base de datos.
      * El suministro debe estar registrado previamente.
@@ -142,32 +141,7 @@ public class FacadeManejoSuministros implements Serializable {
     public Unidad BuscarUnidadSuministro(int IdSuministro){
         return cUnidad.BuscarUnidadSuministro(IdSuministro);
     }
-    
-    /**
-     * Devuelve los suministros del proveedore especificado por su id.
-     * @param IdProveedor
-     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> ListarSuministrosProveedor(int IdProveedor){
-        return cSuministro.ListarSuministrosProveedor(IdProveedor);
-    }
-    
-    /**
-     * Devuelve los suministros registrados en la base de datos..
-     * @param Vigentes
-     * @return Retorna un map con el nombre de los suministros y el proveedor (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> ListarMapSuministros(boolean Vigentes){
-        return cSuministro.ListarMapSuministros(Vigentes);
-    }
-    /**
-     * Devuelve los suministros registrados en la base de datos.
-     * @return Retorna un map con los ids de suministros (key) y los suministros (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<Integer, Suministro> ListarMapSuministrosFull(){
-        return cSuministro.ListarMapSuministrosFull();
-    }
-    
+   
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock minimo.
      * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
@@ -185,22 +159,7 @@ public class FacadeManejoSuministros implements Serializable {
         return cSuministro.GetIdsSuministrosDebajoStockMinimo();
     }
     
-    /**
-     * Devuelve un map con los suministros vencidos en stock
-     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> getMapSuministrosConLotesVencidosEnStock(){
-        return cSuministro.getMapSuministrosConLotesVencidos(true);
-    }
-    
-    /**
-     * Devuelve un map con los suministros vencidos.
-     * @return Retorna un map con el nombre de los suministros (key) y sus id (value). Retorna un map vacio si no hay suministros registrados.
-     */
-    public Map<String, Integer> getMapSuministrosConLotesVencidos(){
-        return cSuministro.getMapSuministrosConLotesVencidos(false);
-    }
-    
+  
     /**
      * Devuelve los suministros con lotes vencidos en stock.
      * @return Retorna una lista con los ids de los suministros.

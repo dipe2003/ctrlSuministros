@@ -15,7 +15,7 @@
                         <div class="label">Suministro</div>
                         <h:selectOneMenu id="selectSuministroSalida" value="#{registrarSalidaSuministro.idSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
                             <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
-                            <f:selectItems value="#{registrarSalidaSuministro.listaSuministros}" />
+                            <f:selectItems value="#{registrarSalidaSuministro.suministros}" var="suministro" itemLabel="#{suministro.nombreSuministro}" itemValue="#{suministro.idSuministro}"/>
                             <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" onevent="indicador" />
                             <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" onevent="indicador" />
                         </h:selectOneMenu>
@@ -28,7 +28,7 @@
                         <div class="label">Numero de Lote</div>
                         <h:selectOneMenu id="selectNumeroLoteSuministroSalida" value="#{registrarSalidaSuministro.idLoteSuministro}" class="select-opt-menu" required="true" requiredMessage="No se selecciono numero de lote." >
                             <f:selectItem itemValue="--Seleccionar Numero Lote---" itemDisabled="false"  noSelectionOption="true" />
-                            <f:selectItems value="#{registrarSalidaSuministro.listaNumerosLoteSuministro}" />
+                            <f:selectItems value="#{registrarSalidaSuministro.lotes}" var="lote" itemLabel="#{lote.numeroLote} (Vto: #{lote.strFechaVencimientoLote})" itemValue="#{lote.idLote}" />
                             <f:ajax render="outputCantidadStockLote outputNuevaCantidadStockLote inputCantidadSalidaSuministro" onevent="indicador" />
                         </h:selectOneMenu>
                         

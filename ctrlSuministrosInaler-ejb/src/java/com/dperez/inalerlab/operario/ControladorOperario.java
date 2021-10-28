@@ -3,9 +3,7 @@ package com.dperez.inalerlab.operario;
 import com.dperez.inalerlab.operario.seguridad.ControladorSeguridad;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -120,16 +118,7 @@ public class ControladorOperario implements Serializable{
         }catch(IllegalArgumentException ex){}
         return -1;
     }
-    
-    public Map<String, Integer> GetMapNombresOperarios(){
-      Map<String, Integer> nombres = new HashMap<>();
-      List<Operario> operarios = mOperario.ListarOperarios();
-      for(Operario operario: operarios){
-          nombres.put(operario.getNombreOperario() + " " + operario.getApellidoOperario(), operario.getIdOperario());
-      }
-      return nombres;
-    }
-    
+
     public int CambiarVigenciaOperario(int idOperario, boolean esVigente){
         try{
             Operario operario = mOperario.ObtenerOperario(idOperario);

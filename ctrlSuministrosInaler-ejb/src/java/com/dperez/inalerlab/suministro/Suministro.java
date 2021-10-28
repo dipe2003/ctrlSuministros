@@ -226,6 +226,29 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
         return null;
     }
     
+    /***
+     * Devuelve una lista de lotes del suministro con stock.
+     * @param incluirVencidos True para incluir todos los lotes, False para retornar solo los que estan vigentes.
+     * @return 
+     */
+    public List<Lote> getLotesConStock(boolean incluirVencidos){
+        List<Lote> Lotes = new ArrayList<>();
+        if(incluirVencidos){
+            this.LotesSuministros.stream()
+                    .forEach(l->{
+                        if(l.getCantidadStock()>0)
+                            Lotes.add(l);
+                    });
+        }else{
+            this.LotesSuministros.stream()
+                    .forEach(l->{
+                        if(!l.EstaVencido() && l.getCantidadStock()>0)
+                            Lotes.add(l);
+                    });
+        }
+        return Lotes;
+    }
+    
     /**
      * Comprueba la existencia del lote con el numero indicado.
      * @param NumeroLote

@@ -103,7 +103,7 @@
                             <div class="label">Suministro</div>
                             <h:selectOneMenu id="selectSuministroIndex" value="#{datosIndex.idSuministroSeleccionado}" class="select-opt-menu" required="true" requiredMessage="No se selecciono tipo." >
                                 <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
-                                <f:selectItems value="#{datosIndex.mapSuministros}" />
+                                <f:selectItems value="#{datosIndex.suministros}" var="suministro" itemValue="#{suministro.idSuministro}" itemLabel="#{suministro.nombreSuministro}" />
                                 <f:ajax listener="#{datosIndex.cargarDatosSuministro()}" render="outputCantidadStockLoteIndex outputUltimoIngresoIndex outputUltimoIngresoCantidadIndex contenedorInfoIndex" onevent="indicador" />
                             </h:selectOneMenu>
                             <h:panelGroup id="contenedorInfoIndex">
