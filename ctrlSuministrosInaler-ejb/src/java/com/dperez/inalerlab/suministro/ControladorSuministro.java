@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -212,7 +213,7 @@ public class ControladorSuministro implements Serializable {
         return lista;
     }
     
-   
+    
     /**
      * Devuelve los suministros con lotes vencidos y que estén vigentes.
      *
@@ -224,17 +225,15 @@ public class ControladorSuministro implements Serializable {
         List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         if (ConStock) {
-            for (Suministro suministro : suministros) {
-                if (suministro.getLotesVencidosEnStock().size() > 0) {
-                    lista.add(suministro.getIdSuministro());
-                }
-            }
-            return lista;
-        }
-        for (Suministro suministro : suministros) {
-            if (suministro.getLotesVencidos().size() > 0) {
-                lista.add(suministro.getIdSuministro());
-            }
+            suministros.forEach(s->{
+                if(s.getLotesVencidosEnStock().size()>0)
+                    lista.add(s.getIdSuministro());
+            });
+        }else{
+            suministros.forEach(s->{
+                if(s.getLotesVencidos().size()>0)
+                    lista.add(s.getIdSuministro());
+            });
         }
         return lista;
     }
@@ -249,21 +248,15 @@ public class ControladorSuministro implements Serializable {
      */
     public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock) {
         List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
-        List<Suministro> lista = new ArrayList<>();
+        
         if (ConStock) {
-            for (Suministro suministro : suministros) {
-                if (suministro.getLotesVencidosEnStock().size() > 0) {
-                    lista.add(suministro);
-                }
-            }
-            return lista;
+            return suministros.stream()
+                    .filter(s->s.getLotesVencidosEnStock().size()>0)
+                    .collect(Collectors.toList());
         }
-        for (Suministro suministro : suministros) {
-            if (suministro.getLotesVencidos().size() > 0) {
-                lista.add(suministro);
-            }
-        }
-        return lista;
+        return suministros.stream()
+                .filter(s->s.getLotesVencidos().size()>0)
+                .collect(Collectors.toList());
     }
     
     /**
@@ -274,13 +267,9 @@ public class ControladorSuministro implements Serializable {
      */
     public List<Suministro> getSuministrosUnMesVigencia() {
         List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
-        List<Suministro> lista = new ArrayList<>();
-        for (Suministro suministro : suministros) {
-            if (suministro.isVigente() && suministro.getLotesUnMesVigenciaEnStock().size() > 0) {
-                lista.add(suministro);
-            }
-        }
-        return lista;
+        return suministros.stream()
+                .filter(s->s.isVigente() && s.getLotesUnMesVigenciaEnStock().size()>0)
+                .collect(Collectors.toList());
     }
     
     /**

@@ -42,7 +42,6 @@ public class Salida implements Serializable{
     public Lote getLoteSalida() {return LoteSalida;}
     public String getObservacionesSalida() {return ObservacionesSalida;}
     public String getStrFechaSalida(){
-        Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(FechaSalida==null) return "---";
         return sdf.format(FechaSalida);    

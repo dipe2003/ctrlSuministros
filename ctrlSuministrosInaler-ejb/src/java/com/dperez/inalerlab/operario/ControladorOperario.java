@@ -26,7 +26,7 @@ public class ControladorOperario implements Serializable{
      */
     public int CrearOperario(int IdOperario, String NombreOperario, String ApellidoOperario, String PasswordOperario, String CorreoOperario){
         String[] seg = cSeg.getPasswordSeguro(PasswordOperario);
-        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[0], seg[1], CorreoOperario);
+        Operario operario = new Operario(IdOperario, NombreOperario, ApellidoOperario, seg[0], seg[1], CorreoOperario);        
         return mOperario.CrearOperario(operario);
     }
     

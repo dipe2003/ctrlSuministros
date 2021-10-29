@@ -45,7 +45,6 @@ public class Ingreso implements Serializable{
     public String getNumeroFactura() {return NumeroFactura;}
     public String getObservacionesIngreso() {return ObservacionesIngreso;}
     public String getStrFechaIngreso(){
-        Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(FechaIngreso==null) return "---";
         return sdf.format(FechaIngreso);    
