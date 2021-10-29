@@ -10,7 +10,6 @@ import com.dperez.inalerlab.suministro.lote.FacadeLote;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -138,7 +137,7 @@ public class RegistrarSalidaSuministro implements Serializable{
      */
     @PostConstruct
     public void init(){
-        Suministros = fSuministro.ListarSuministros(true, true);
+        Suministros = fSuministro.ListarSuministros(true);
         existeLote = false;
         Proveedores = fProveedor.ListarProveedores();
     }

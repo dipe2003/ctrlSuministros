@@ -11,10 +11,7 @@ import javax.inject.Named;
 public class ControladorProveedor implements Serializable{
     @Inject
     private ManejadorProveedor mProveedor;
-    
-    @Inject
-    private BufferProveedores buffer;   
-    
+
     /**
      * Crea un proveedor en la base de datos.
      * @param NombreProveedor
@@ -24,9 +21,6 @@ public class ControladorProveedor implements Serializable{
     public int CrearProveedor(String NombreProveedor, String ContactoProveedor){
         Proveedor proveedor = new Proveedor(NombreProveedor, ContactoProveedor);
         int id = mProveedor.CrearProveedor(proveedor);
-        if(id!=-1){
-            buffer.putProveedor(proveedor);
-        }
         return id;
     }
     
@@ -36,7 +30,6 @@ public class ControladorProveedor implements Serializable{
      * @return 
      */
     public Proveedor BuscarProveedor(int IdProveedor){
-        if(buffer.containsProveedor(IdProveedor)) return buffer.getProveedor(IdProveedor);
         return mProveedor.ObtenerProveedor(IdProveedor);
     }
     
@@ -46,7 +39,6 @@ public class ControladorProveedor implements Serializable{
      * @return 
      */
     public List<Proveedor> ListarProveedores(){
-        if(buffer.bufferSize()>0)return buffer.getListaProveedores();
         return mProveedor.ListarProveedores();
     }
     
@@ -62,9 +54,6 @@ public class ControladorProveedor implements Serializable{
         proveedor.setNombreProveedor(NombreProveedor);
         proveedor.setContactoProveedor(ContactoProveedor);
         int id = mProveedor.ActualizarProveedor(proveedor);
-        if(id!=-1){
-            buffer.updateProveedor(proveedor);
-        }
         return id;
     }
      

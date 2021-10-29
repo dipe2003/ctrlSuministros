@@ -2,7 +2,6 @@ package com.dperez.inalerlab.suministro.lote;
 
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
-import com.dperez.inalerlab.suministro.BufferSuministros;
 import com.dperez.inalerlab.suministro.ManejadorSuministro;
 import java.io.Serializable;
 import java.util.Date;
@@ -20,8 +19,6 @@ public class ControladorIngresoSalida implements Serializable{
     private ControladorLote cLote;
     @Inject
     private ControladorOperario cOp;
-    @Inject
-    private BufferSuministros buffer;
     @Inject
     private ManejadorSuministro mSum;
     
@@ -44,9 +41,6 @@ public class ControladorIngresoSalida implements Serializable{
             ingreso.setLoteIngreso(cLote.BuscarLote(IdLoteIngreso));
             ingreso.setOperarioIngresoSuministro(operario);
             id= mInSal.CrearIngreso(ingreso);
-            if(id!=-1) {
-                if(id!=-1)buffer.updateSuministro(mSum.ObtenerSuministro(IdSuministro));
-            }
         }catch(NullPointerException ex){}
         return id;
     }
@@ -104,7 +98,6 @@ public class ControladorIngresoSalida implements Serializable{
             salida.setLoteSalida(cLote.BuscarLote(IdLoteSalida));
             salida.setOperarioSalidaSuministro(Operario);
             id = mInSal.CrearSalida(salida);
-            if(id!=-1) buffer.updateSuministro(salida.getLoteSalida().getSuministroLote());
         }catch(NullPointerException ex){}
         return id;
     }

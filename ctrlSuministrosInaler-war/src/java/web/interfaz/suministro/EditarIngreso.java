@@ -118,7 +118,6 @@ public class EditarIngreso implements Serializable{
             }else{
                 // actualizar el ingreso/lote luego actualizar buffer
                 if(fLote.ActualizarLoteIngreso(LoteSuministro.getIdLote(), IdIngreso, NumeroLote, CantidadIngreso, FechaVencimiento, NumeroFactura)!=-1){
-                    fSuministro.ActualizarSuministroBuffer(SuministroSeleccionado.getIdSuministro());
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/InfoSuministro.xhtml?id="+SuministroSeleccionado.getIdSuministro());
                     FacesContext.getCurrentInstance().renderResponse();
                     FacesContext.getCurrentInstance().responseComplete();

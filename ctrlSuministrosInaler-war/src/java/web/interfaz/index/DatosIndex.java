@@ -88,7 +88,7 @@ public class DatosIndex implements Serializable{
     
     @PostConstruct
     public void init(){
-        Suministros = fSuministro.ListarSuministros(false, false);
+        Suministros = fSuministro.ListarSuministros(false);
         List<Integer> idsStockBajo = fSuministro.GetIdsSuministrosDebajoStockMinimo();
         ListSuministrosVencidos = fSuministro.getSuministrosConLotesVencidos();
         ListSuministrosDebajoStock = new ArrayList<>();

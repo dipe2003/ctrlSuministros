@@ -191,7 +191,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     @PostConstruct
     public void init(){
         Proveedores = fProveedor.ListarProveedores();
-        ListaSuministros = fSuministro.ListarSuministros(true, true);
+        ListaSuministros = fSuministro.ListarSuministros(true);
         existeLote = false;
     }
     

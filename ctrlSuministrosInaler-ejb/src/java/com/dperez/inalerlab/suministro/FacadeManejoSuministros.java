@@ -22,11 +22,10 @@ public class FacadeManejoSuministros implements Serializable {
     /**
      * Lista todos los suministros registrados en la base de datos.
      * @param Vigentes True: indica si solo se devuelven los suministros en uso.
-     * @param UsarBuffer True: para buscar en buffer primero.
      * @return Retorna una lista vacia si no existen operarios registrados.
      */
-    public List<Suministro> ListarSuministros(boolean Vigentes, boolean UsarBuffer){
-        return cSuministro.ListarSuministros(Vigentes, UsarBuffer);
+    public List<Suministro> ListarSuministros(boolean Vigentes){
+        return cSuministro.ListarSuministros(Vigentes);
     }
         
     /**
@@ -193,14 +192,6 @@ public class FacadeManejoSuministros implements Serializable {
      */
     public int ActualizarSuministro(Suministro suministro, int IdProveedor,int IdUnidad, float StockMinimo){
             return cSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidad, StockMinimo);
-    }
-    
-    /**
-     * Actualiza el buffer de suministros con el suministro especificado.
-     * @param IdSuministro 
-     */
-    public void ActualizarSuministroBuffer(int IdSuministro){
-        cSuministro.ActualizarSuministroBuffer(IdSuministro);
     }
     
 }

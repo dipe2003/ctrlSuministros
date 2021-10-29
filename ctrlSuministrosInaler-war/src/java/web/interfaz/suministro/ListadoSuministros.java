@@ -47,7 +47,7 @@ public class ListadoSuministros implements Serializable{
     
     @PostConstruct
     public void init() {
-        ListaTodosLosSuministros = fSuministro.ListarSuministros(false, true);
+        ListaTodosLosSuministros = fSuministro.ListarSuministros(false);
         ListaSuministros = new ArrayList<>(ListaTodosLosSuministros);
     }
     

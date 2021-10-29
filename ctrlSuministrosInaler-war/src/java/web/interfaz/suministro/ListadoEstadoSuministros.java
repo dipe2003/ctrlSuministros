@@ -62,7 +62,7 @@ public class ListadoEstadoSuministros implements Serializable{
     
     @PostConstruct
     public void init() {
-        ListaSuministros = fSuministro.ListarSuministros(true, true);
+        ListaSuministros = fSuministro.ListarSuministros(true);
         MapSuministros = new HashMap<>();
         try{
             ListaSuministros.stream()

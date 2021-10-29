@@ -30,8 +30,6 @@ public class ControladorSuministro implements Serializable {
     @Inject
     private ControladorStockMinimo cStock;
     @Inject
-    private BufferSuministros buffer;
-    @Inject
     private ControladorOperario cOps;
     @Inject
     private SendMail mail;
@@ -69,9 +67,6 @@ public class ControladorSuministro implements Serializable {
                 break;
         }
         int id = mSuministro.CrearSuministro(suministro);
-        if (id != -1) {
-            buffer.putSuministro(suministro);
-        }
         return id;
     }
     
@@ -82,9 +77,6 @@ public class ControladorSuministro implements Serializable {
      * @return
      */
     public Suministro BuscarSuministro(int IdSuministro) {
-        if (buffer.containsSuministro(IdSuministro)) {
-            return buffer.getSuministro(IdSuministro);
-        }
         return mSuministro.ObtenerSuministro(IdSuministro);
     }
     
@@ -94,16 +86,9 @@ public class ControladorSuministro implements Serializable {
      *
      * @param Vigente True: indica si solo se devuelven los suministros en uso,
      * de lo contrario False.
-     * @param UsarBuffer True: indica si se utiliza el buffer (False para
-     * solucionar error de contexto en Timer singleton).
      * @return
      */
-    public List<Suministro> ListarSuministros(boolean Vigente, boolean UsarBuffer) {
-        if (UsarBuffer) {
-            if (buffer.bufferSize() > 0) {
-                return buffer.getListaSuministros(Vigente);
-            }
-        }
+    public List<Suministro> ListarSuministros(boolean Vigente) {
         if(Vigente){
             return mSuministro.ListarSuministros(true);
         }
@@ -137,7 +122,7 @@ public class ControladorSuministro implements Serializable {
      * @return
      */
     private String GetMensajeCambioDeLote(int IdSuministro, String NumeroLoteSuministro) {
-        Suministro suministro = buffer.containsSuministro(IdSuministro) ? buffer.getSuministro(IdSuministro) : mSuministro.ObtenerSuministro(IdSuministro);
+        Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
         String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
         mensaje += "<h3>Ingreso de Nuevo Lote: ";
         mensaje += suministro.getNombreSuministro();
@@ -163,9 +148,6 @@ public class ControladorSuministro implements Serializable {
         Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
         suministro.addStockMinimoSuministro(stockMinimo);
         int id = mSuministro.ActualizarSuministro(suministro);
-        if (id != -1) {
-            buffer.updateSuministro(suministro);
-        }
         return id;
     }
     
@@ -178,7 +160,7 @@ public class ControladorSuministro implements Serializable {
      * suministros debajo de stock minimo
      */
     public int[] GetTotalSuministrosDebajoStockMinimo() {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
+        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         int cantidad = 0;
         for (Suministro suministro : suministros) {
             if (suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo()
@@ -198,7 +180,7 @@ public class ControladorSuministro implements Serializable {
      * minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo() {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
+        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         for (Suministro suministro : suministros) {
             try {
@@ -222,7 +204,7 @@ public class ControladorSuministro implements Serializable {
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock) {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
+        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         if (ConStock) {
             suministros.forEach(s->{
@@ -247,7 +229,7 @@ public class ControladorSuministro implements Serializable {
      * no existen lotes vencidos en stock
      */
     public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock) {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
+        List<Suministro> suministros =  mSuministro.ListarSuministros(true);
         
         if (ConStock) {
             return suministros.stream()
@@ -266,7 +248,7 @@ public class ControladorSuministro implements Serializable {
      * @return Lista de Suminstros.
      */
     public List<Suministro> getSuministrosUnMesVigencia() {
-        List<Suministro> suministros = buffer.bufferSize() > 0 ? buffer.getListaSuministros(true) : mSuministro.ListarSuministros(true);
+        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         return suministros.stream()
                 .filter(s->s.isVigente() && s.getLotesUnMesVigenciaEnStock().size()>0)
                 .collect(Collectors.toList());
@@ -288,11 +270,7 @@ public class ControladorSuministro implements Serializable {
     public int ActualizarSuministro(Suministro suministro, int IdProveedor, int IdUnidad, float StockMinimoSuministro) {
         Suministro sumBD;
         int id = -1;
-        if (buffer.containsSuministro(suministro.getIdSuministro())) {
-            sumBD = buffer.getSuministro(suministro.getIdSuministro());
-        } else {
-            sumBD = mSuministro.ObtenerSuministro(suministro.getIdSuministro());
-        }
+        sumBD = mSuministro.ObtenerSuministro(suministro.getIdSuministro());
         try {
             sumBD.setCodigoSAPSuministro(suministro.getCodigoSAPSuministro());
             sumBD.setDescripcionSuministro(suministro.getDescripcionSuministro());
@@ -311,20 +289,9 @@ public class ControladorSuministro implements Serializable {
             }
             
             id = mSuministro.ActualizarSuministro(sumBD);
-            if (id != -1) {
-                buffer.updateSuministro(sumBD);
-            }
         } catch (NullPointerException ex) {
+            System.out.println("Error al actualizar suministro: " + ex.getMessage());
         }
         return id;
-    }
-    
-    /**
-     * Actualiza el buffer de suministros con el suministro especificado.
-     *
-     * @param IdSuministro
-     */
-    public void ActualizarSuministroBuffer(int IdSuministro) {
-        buffer.updateSuministro(mSuministro.ObtenerSuministro(IdSuministro));
     }
 }

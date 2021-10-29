@@ -1,6 +1,5 @@
 package com.dperez.inalerlab.suministro.lote;
 
-import com.dperez.inalerlab.suministro.BufferSuministros;
 import com.dperez.inalerlab.suministro.ControladorSuministro;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
@@ -20,9 +19,6 @@ public class ControladorLote implements Serializable{
     private ControladorIngresoSalida cInSal;
     @Inject
     private ControladorSuministro cSuministro;
-    @Inject
-    private BufferSuministros buffer;
-    
     
     /**
      * Crea un lote en la base de datos.
@@ -75,9 +71,6 @@ public class ControladorLote implements Serializable{
         Lote lote = mLote.ObtenerLote(IdLote);
         lote.setSuministroLote(cSuministro.BuscarSuministro(IdSuministro));
         int id= mLote.ActualizarLote(lote);
-        if(id!=-1){
-            buffer.updateSuministro(cSuministro.BuscarSuministro(IdSuministro));
-        }
         return id;
     }
     

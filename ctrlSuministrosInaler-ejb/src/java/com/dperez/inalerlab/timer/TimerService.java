@@ -35,7 +35,7 @@ public class TimerService {
     //@Schedule(month = "*", hour = "*", dayOfMonth = "*", year = "*", minute = "0/2", second = "0")
     
     public void myTimer() {
-        List<Suministro> suministros = fSum.ListarSuministros(true, false);
+        List<Suministro> suministros = fSum.ListarSuministros(true);
         List<String> sumVencidos = new ArrayList<>();
         List<String> sumStockMinimo = new ArrayList<>();
         suministros.stream()
