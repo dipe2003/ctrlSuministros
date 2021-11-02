@@ -149,4 +149,7 @@ public class Lote implements Serializable{
         }catch(NullPointerException ex){}
         return vencido;
     }
+    public boolean isVencido(){
+        return EstaVencido();
+    }
 }

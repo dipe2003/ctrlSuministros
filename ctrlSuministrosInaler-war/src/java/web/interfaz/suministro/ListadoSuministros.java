@@ -6,6 +6,7 @@ import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -35,11 +36,9 @@ public class ListadoSuministros implements Serializable{
     public void filtrarLista(){
         ListaSuministros.clear();
         if(!NombreSuministro.isEmpty()){
-            ListaTodosLosSuministros.stream()
+            ListaSuministros = ListaTodosLosSuministros.stream()
                     .filter(s->s.getNombreSuministro().toLowerCase().contains(NombreSuministro.toLowerCase()))
-                    .forEachOrdered(s->{
-                        ListaSuministros.add(s);
-                    });
+                    .collect(Collectors.toList());
         }else{
             ListaSuministros = new ArrayList<>(ListaTodosLosSuministros);
         }

@@ -6,9 +6,8 @@ import com.dperez.inalerlab.suministro.Suministro;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -22,18 +21,19 @@ public class ListadoEstadoSuministros implements Serializable{
     @EJB
     private FacadeManejoSuministros fSuministro;
     
-    private Map<String, Suministro> MapSuministros;
+    private List<Suministro> Suministros;
     private List<Suministro> ListaSuministros;
     private String NombreSuministro;
     
     //  Getters
     public List<Suministro> getListaSuministros() {return ListaSuministros;}
+    public List<Suministro> getSuministros(){return this.Suministros;}
     public String getNombreSuministro() {return NombreSuministro;}
     
     //  Setters
     public void setListaSuministros(List<Suministro> ListaSuministros) {this.ListaSuministros = ListaSuministros;}
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
-    
+    public void setSuministros(List<Suministro> suministros){this.Suministros = suministros;}   
     
     public void verMasInfo(int IdSuministro){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -49,30 +49,18 @@ public class ListadoEstadoSuministros implements Serializable{
     public void filtrarLista(){
         ListaSuministros.clear();
         if(!NombreSuministro.isEmpty()){
-            NombreSuministro = NombreSuministro.toLowerCase();            
-            MapSuministros.keySet().stream()
-                    .filter(nombre->nombre.toLowerCase().contains(NombreSuministro.toLowerCase()))
-                    .forEachOrdered(nombre ->{
-                        ListaSuministros.add(MapSuministros.get(nombre));
-                    });
+           ListaSuministros= Suministros.stream()
+                    .filter(s->s.getNombreSuministro().toLowerCase().contains(NombreSuministro.toLowerCase()))
+                    .collect(Collectors.toList());
         }else{
-            ListaSuministros = new ArrayList<>(MapSuministros.values());
-        }        
+            ListaSuministros = new ArrayList<>(Suministros);
+        }  
     }
     
     @PostConstruct
     public void init() {
-        ListaSuministros = fSuministro.ListarSuministros(true);
-        MapSuministros = new HashMap<>();
-        try{
-            ListaSuministros.stream()
-                    .forEachOrdered(suministro->{
-                        String nombre = suministro.getNombreSuministro().toLowerCase()+" ("+suministro.getProveedorSuministro().getNombreProveedor().toLowerCase()+")";
-                        MapSuministros.put(nombre, suministro);
-                    });
-        }catch(IndexOutOfBoundsException ex){
-            System.out.println("Error: " +ex.getMessage());
-        }
+        Suministros = fSuministro.ListarSuministros(true);
+        ListaSuministros = new ArrayList<>(Suministros);
     }
     
 }

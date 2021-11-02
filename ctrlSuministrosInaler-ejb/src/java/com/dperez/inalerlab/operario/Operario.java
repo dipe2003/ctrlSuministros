@@ -92,6 +92,10 @@ public class Operario implements Serializable {
     public boolean isEsVigente() {
         return EsVigente;
     }
+    
+    public String getNombreCompleto(){
+        return this.NombreOperario + " " + this.ApellidoOperario;
+    }
 
     //	Setters
     public void setIdOperario(int IdOperario) {

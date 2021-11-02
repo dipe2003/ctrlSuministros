@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -126,7 +127,7 @@ public class RegistrarSuministro implements Serializable{
                Proveedores = fProveedor.ListarProveedores()
                 .stream()
                 .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
-                .toList();
+                .collect(Collectors.toList());
         
         TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};
         TipoSuministro = TiposSuministros[0];
