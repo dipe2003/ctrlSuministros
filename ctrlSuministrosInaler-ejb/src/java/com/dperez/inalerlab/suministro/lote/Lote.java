@@ -55,7 +55,6 @@ public class Lote implements Serializable{
     public List<Salida> getSalidasLote(){return this.SalidasLote;}
     public String getNumeroLote() {return NumeroLote;}
     public String getStrFechaVencimientoLote(){
-        Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(VencimientoLote==null) return "---";
         return sdf.format(VencimientoLote);

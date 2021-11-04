@@ -1,5 +1,7 @@
 package com.dperez.inalerlab.suministro;
 
+import com.dperez.inalerlab.buffer.BufferGenerico;
+import com.dperez.inalerlab.buffer.FabricaBuffer;
 import com.dperez.inalerlab.email.SendMail;
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
@@ -13,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +36,16 @@ public class ControladorSuministro implements Serializable {
     private ControladorOperario cOps;
     @Inject
     private SendMail mail;
+    @Inject
+    private FabricaBuffer fBuffer;
+    
+    private BufferGenerico<Suministro> buffer;
+    
+    @PostConstruct
+    public void init(){
+        buffer = fBuffer.getBufferSuministro(mSuministro.ListarSuministros());
+    }
+    
     
     /**
      * Crea un Crea un Reactivo Quimico en la base de datos.
@@ -67,6 +80,9 @@ public class ControladorSuministro implements Serializable {
                 break;
         }
         int id = mSuministro.CrearSuministro(suministro);
+        if(id>0){
+            buffer.putEntidad(suministro, id);
+        }
         return id;
     }
     
@@ -77,7 +93,7 @@ public class ControladorSuministro implements Serializable {
      * @return
      */
     public Suministro BuscarSuministro(int IdSuministro) {
-        return mSuministro.ObtenerSuministro(IdSuministro);
+        return buffer.getEntidad(IdSuministro);
     }
     
     /**
@@ -90,9 +106,12 @@ public class ControladorSuministro implements Serializable {
      */
     public List<Suministro> ListarSuministros(boolean Vigente) {
         if(Vigente){
-            return mSuministro.ListarSuministros(true);
+            return buffer.getListaEntidades().stream()
+                    .filter((Suministro s)->s.isVigente())
+                    .sorted()
+                    .collect(Collectors.toList());
         }
-        return mSuministro.ListarSuministros();
+        return buffer.getListaEntidades();
     }
     
     /**
@@ -122,7 +141,7 @@ public class ControladorSuministro implements Serializable {
      * @return
      */
     private String GetMensajeCambioDeLote(int IdSuministro, String NumeroLoteSuministro) {
-        Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
+        Suministro suministro = buffer.getEntidad(IdSuministro);
         String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
         mensaje += "<h3>Ingreso de Nuevo Lote: ";
         mensaje += suministro.getNombreSuministro();
@@ -148,6 +167,9 @@ public class ControladorSuministro implements Serializable {
         Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
         suministro.addStockMinimoSuministro(stockMinimo);
         int id = mSuministro.ActualizarSuministro(suministro);
+        if(id>0){
+            buffer.updateEntidad(suministro, id);
+        }
         return id;
     }
     
@@ -160,16 +182,18 @@ public class ControladorSuministro implements Serializable {
      * suministros debajo de stock minimo
      */
     public int[] GetTotalSuministrosDebajoStockMinimo() {
-        List<Suministro> suministros = mSuministro.ListarSuministros(true);
-        int cantidad = 0;
-        for (Suministro suministro : suministros) {
-            if (suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo()
-                    && suministro.getStockMinimoSuministro().getCantidadStockMinimo() > 0) {
-                cantidad++;
-            }
-        }
-        return new int[]{suministros.size(), cantidad};
+        List<Suministro> suministros = buffer.getListaEntidades().stream()
+                .filter((Suministro s)->s.isVigente())
+                .collect(Collectors.toList());
+        
+        int cantidad = suministros.size();
+        return new int[]{cantidad, suministros.stream()
+                .filter((Suministro s)->s.getStock()<s.getStockMinimoSuministro().getCantidadStockMinimo() &&
+                        s.getStockMinimoSuministro().getCantidadStockMinimo()>0)
+                .collect(Collectors.toList())
+                .size()};
     }
+    
     
     /**
      * Devuelve los suministros que están por debajo de su stock minimo. Solo se
@@ -180,18 +204,18 @@ public class ControladorSuministro implements Serializable {
      * minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo() {
-        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
-        for (Suministro suministro : suministros) {
-            try {
-                if (suministro.getStock() < suministro.getStockMinimoSuministro().getCantidadStockMinimo()
-                        && suministro.getStockMinimoSuministro().getCantidadStockMinimo() > 0) {
-                    lista.add(suministro.getIdSuministro());
-                }
-            } catch (NullPointerException ex) {
-                System.out.println("Error: " + ex.getMessage() + " en " + suministro.getNombreSuministro() + suministro.getIdSuministro());
-            }
-        }
+        buffer.getListaEntidades().stream()
+                .filter((Suministro s)->s.isVigente())
+                .filter((Suministro s)->s.getStock()<s.getStockMinimoSuministro().getCantidadStockMinimo() &&
+                        s.getStockMinimoSuministro().getCantidadStockMinimo()>0)
+                .forEach((Suministro s)->{
+                    try {
+                        lista.add(s.getIdSuministro());
+                    } catch (NullPointerException ex) {
+                        System.out.println("Error: " + ex.getMessage() + " en " + s.getNombreSuministro() + s.getIdSuministro());
+                    }
+                });
         return lista;
     }
     
@@ -204,18 +228,19 @@ public class ControladorSuministro implements Serializable {
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock) {
-        List<Suministro> suministros = mSuministro.ListarSuministros(true);
         List<Integer> lista = new ArrayList<>();
         if (ConStock) {
-            suministros.forEach(s->{
-                if(s.getLotesVencidosEnStock().size()>0)
-                    lista.add(s.getIdSuministro());
-            });
+            buffer.getListaEntidades().stream()
+                    .filter((Suministro s)->s.isVigente() && s.getLotesVencidosEnStock().size()>0)
+                    .forEach((Suministro s)->{
+                        lista.add(s.getIdSuministro());
+                    });
         }else{
-            suministros.forEach(s->{
-                if(s.getLotesVencidos().size()>0)
-                    lista.add(s.getIdSuministro());
-            });
+            buffer.getListaEntidades().stream()
+                    .filter((Suministro s)->s.isVigente() && s.getLotesVencidos().size()>0)
+                    .forEach((Suministro s)->{
+                        lista.add(s.getIdSuministro());
+                    });
         }
         return lista;
     }
@@ -229,15 +254,13 @@ public class ControladorSuministro implements Serializable {
      * no existen lotes vencidos en stock
      */
     public List<Suministro> getSuministrosConLotesVencidos(boolean ConStock) {
-        List<Suministro> suministros =  mSuministro.ListarSuministros(true);
-        
         if (ConStock) {
-            return suministros.stream()
-                    .filter(s->s.getLotesVencidosEnStock().size()>0)
+            return buffer.getListaEntidades().stream()
+                    .filter((Suministro s)->s.isVigente() && s.getLotesVencidosEnStock().size()>0)
                     .collect(Collectors.toList());
         }
-        return suministros.stream()
-                .filter(s->s.getLotesVencidos().size()>0)
+        return buffer.getListaEntidades().stream()
+                .filter((Suministro s)->s.isVigente() && s.getLotesVencidos().size()>0)
                 .collect(Collectors.toList());
     }
     
@@ -248,8 +271,7 @@ public class ControladorSuministro implements Serializable {
      * @return Lista de Suminstros.
      */
     public List<Suministro> getSuministrosUnMesVigencia() {
-        List<Suministro> suministros = mSuministro.ListarSuministros(true);
-        return suministros.stream()
+        return buffer.getListaEntidades().stream()
                 .filter(s->s.isVigente() && s.getLotesUnMesVigenciaEnStock().size()>0)
                 .collect(Collectors.toList());
     }
@@ -289,6 +311,9 @@ public class ControladorSuministro implements Serializable {
             }
             
             id = mSuministro.ActualizarSuministro(sumBD);
+            if(id>0){
+                buffer.updateEntidad(sumBD, id);
+            }
         } catch (NullPointerException ex) {
             System.out.println("Error al actualizar suministro: " + ex.getMessage());
         }

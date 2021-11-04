@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -110,27 +111,21 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     }
     
     public float getStock(){
-        float stock = 0f;
-        for(Lote lote: this.LotesSuministros){
-            stock += lote.getCantidadStock();
-        }
-        return stock;
+        return (float) LotesSuministros.stream()
+                .mapToDouble((Lote l)->l.getCantidadStock())
+                .sum();
     }
     
     public float getTotalIngreso(){
-        float total =0f;
-        for(Lote lote: this.LotesSuministros){
-            total += lote.getCantidadIngresosLote();
-        }
-        return total;
+        return (float) LotesSuministros.stream()
+                .mapToDouble((Lote l)->l.getCantidadIngresosLote())
+                .sum();
     }
     
     public float getTotalSalida(){
-        float total =0f;
-        for(Lote lote: this.LotesSuministros){
-            total += lote.getCantidadSalidasLote();
-        }
-        return total;
+        return (float) LotesSuministros.stream()
+                .mapToDouble((Lote l)->l.getCantidadSalidasLote())
+                .sum();
     }
     
     public boolean isDebajoStockMinimo(){
@@ -143,14 +138,9 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
      * @return
      */
     public List<Lote> getLotesVencidos(){
-        List<Lote> lotes = new ArrayList<>();
-        Date hoy = Calendar.getInstance().getTime();
-        for(Lote lote: this.LotesSuministros){
-            try{
-                if(lote.getVencimientoLote().before(hoy)) lotes.add(lote);
-            }catch(NullPointerException ex){}
-        }
-        return lotes;
+        return LotesSuministros.stream()
+                .filter((Lote l)->l.EstaVencido())
+                .collect(Collectors.toList());
     }
     /**
      * Devuelve los lotes que estan a un mes de su vencimiento.
@@ -158,17 +148,14 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
      * @return
      */
     public List<Lote> getLotesUnMesVigencia(){
-        List<Lote> lotes = new ArrayList<>();
         Calendar UnMes = Calendar.getInstance();
         UnMes.add(Calendar.MONTH, 1);
         Date UnMesVigencia = UnMes.getTime();
         Date Hoy = Calendar.getInstance().getTime();
-        for(Lote lote: this.LotesSuministros){
-            try{
-                if(lote.getVencimientoLote().before(UnMesVigencia) && lote.getVencimientoLote().after(Hoy)) lotes.add(lote);
-            }catch(NullPointerException ex){}
-        }
-        return lotes;
+        return LotesSuministros.stream()
+                .filter((Lote l)->l.getVencimientoLote()!=null && l.getVencimientoLote().before(UnMesVigencia) &&
+                        l.getVencimientoLote().after(Hoy))
+                .collect(Collectors.toList());
     }
     /**
      * Devuelve los lotes vencidos.
@@ -176,14 +163,9 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
      * @return
      */
     public List<Lote> getLotesVencidosEnStock(){
-        List<Lote> lotes = new ArrayList<>();
-        Date hoy = Calendar.getInstance().getTime();
-        for(Lote lote: this.LotesSuministros){
-            try{
-                if(lote.getVencimientoLote().before(hoy) && lote.getCantidadStock()>0) lotes.add(lote);
-            }catch(NullPointerException ex){}
-        }
-        return lotes;
+        return LotesSuministros.stream()
+                .filter((Lote l)->l.EstaVencido() && l.getCantidadStock()>0)
+                .collect(Collectors.toList());
     }
     /**
      * Devuelve los lotes que estan a un mes de su vencimiento.
@@ -191,17 +173,14 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
      * @return
      */
     public List<Lote> getLotesUnMesVigenciaEnStock(){
-        List<Lote> lotes = new ArrayList<>();
         Calendar UnMes = Calendar.getInstance();
         UnMes.add(Calendar.MONTH, 1);
         Date UnMesVigencia = UnMes.getTime();
         Date Hoy = Calendar.getInstance().getTime();
-        for(Lote lote: this.LotesSuministros){
-            try{
-                if((lote.getVencimientoLote().before(UnMesVigencia) && lote.getVencimientoLote().after(Hoy))  && lote.getCantidadStock()>0) lotes.add(lote);
-            }catch(NullPointerException ex){}
-        }
-        return lotes;
+        return LotesSuministros.stream()
+                .filter((Lote l)-> l.getVencimientoLote()!=null && l.getVencimientoLote().before(UnMesVigencia) && 
+                        l.getVencimientoLote().after(Hoy) && l.getCantidadStock() >0)
+                .collect(Collectors.toList());
     }
     
     /**
@@ -229,25 +208,18 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     /***
      * Devuelve una lista de lotes del suministro con stock.
      * @param incluirVencidos True para incluir todos los lotes, False para retornar solo los que estan vigentes.
-     * @return 
+     * @return
      */
     public List<Lote> getLotesConStock(boolean incluirVencidos){
-        List<Lote> Lotes = new ArrayList<>();
         if(incluirVencidos){
-            this.LotesSuministros.stream()
-                    .forEach(l->{
-                        if(l.getCantidadStock()>0)
-                            Lotes.add(l);
-                    });
-        }else{
-            this.LotesSuministros.stream()
-                    .forEach(l->{
-                        if(!l.EstaVencido() && l.getCantidadStock()>0)
-                            Lotes.add(l);
-                    });
+            return LotesSuministros.stream()
+                    .filter((Lote l)->l.getCantidadStock()>0)
+                    .collect(Collectors.toList());
         }
-        return Lotes;
-    }
+        return LotesSuministros.stream()
+                .filter((Lote l)->l.EstaVencido() && l.getCantidadStock()>0)
+                .collect(Collectors.toList());
+    }    
     
     /**
      * Comprueba la existencia del lote con el numero indicado.
