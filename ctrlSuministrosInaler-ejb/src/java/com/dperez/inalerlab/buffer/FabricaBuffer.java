@@ -4,15 +4,12 @@
 */
 package com.dperez.inalerlab.buffer;
 
-import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.proveedor.Proveedor;
-import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 /**
  *
@@ -20,10 +17,8 @@ import javax.inject.Inject;
  */
 @Stateless
 public class FabricaBuffer {
-    @Inject
-    private FacadeManejoProveedor facadeProveedor;
     public BufferGenerico<Suministro> getBufferSuministro(List<Suministro> suministros){
-        BufferGenerico<Suministro> buffer = BufferGenerico.getInstance();
+        BufferGenerico<Suministro> buffer = BufferSuministros.getInstance();
         if(buffer.bufferSize()==0){
             buffer.setEntidades(suministros.stream()
                     .sorted()
@@ -33,7 +28,7 @@ public class FabricaBuffer {
     }
     
     public BufferGenerico<Proveedor> getBufferProveedor(List<Proveedor> proveedores){
-        BufferGenerico<Proveedor> buffer = BufferGenerico.getInstance();
+        BufferGenerico<Proveedor> buffer = BufferProveedores.getInstance();
         if(buffer.bufferSize()==0){
             buffer.setEntidades(proveedores.stream()
                     .sorted(Comparator.comparing((Proveedor p)->p.getNombreProveedor().toLowerCase()))

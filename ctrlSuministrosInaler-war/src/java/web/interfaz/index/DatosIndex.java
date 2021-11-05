@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -88,23 +89,20 @@ public class DatosIndex implements Serializable{
     
     @PostConstruct
     public void init(){
-        Suministros = fSuministro.ListarSuministros(false);
+        Suministros = fSuministro.ListarSuministros(false).stream()
+                .sorted()
+                .collect(Collectors.toList());
         List<Integer> idsStockBajo = fSuministro.GetIdsSuministrosDebajoStockMinimo();
         ListSuministrosVencidos = fSuministro.getSuministrosConLotesVencidos();
-        ListSuministrosDebajoStock = new ArrayList<>();
-        MapLotesVencidos = new HashMap<>();
-        
-        Suministros.stream()
+
+        ListSuministrosDebajoStock = Suministros.stream()
                 .filter(s->s.isVigente() && idsStockBajo.contains(s.getIdSuministro()))
-                .forEach(s->{
-                    ListSuministrosDebajoStock.add(s);
-                });
-        
-        for(Suministro sum: ListSuministrosVencidos){
-            if(sum.isVigente())
-                MapLotesVencidos.put(sum.getIdSuministro(), sum.getLotesVencidosEnStock());
-        }
-        
+                .collect(Collectors.toList());
+       
+        MapLotesVencidos = ListSuministrosVencidos.stream()
+                .filter((Suministro s)->s.isVigente())
+                .collect(Collectors.toMap((Suministro s)->s.getIdSuministro(), (Suministro s)->s.getLotesVencidosEnStock()));
+
         ListSuministroUnMesVigencia = fSuministro.getSuministrosUnMesVigencia();
         MapLotesUnMesVigencia = new HashMap<>();
         Iterator<Suministro> it = ListSuministroUnMesVigencia.iterator();

@@ -16,10 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -167,6 +164,10 @@ public class EditarSuministro implements Serializable{
         strFechaVigenteStock = fDate.format(FechaVigenteStock);
         IdUnidadSuministro = sum.getUnidadSuministro().getIdUnidad();
         IdProveedor = sum.getProveedorSuministro().getIdProveedor();
+        cargarTipoSuministro(sum);
+    }
+    
+    private void cargarTipoSuministro(Suministro sum){
         switch(sum.getClass().getSimpleName()){
             case "ReactivoQuimico":
                 TipoSuministro = TiposSuministros[0];
@@ -178,6 +179,7 @@ public class EditarSuministro implements Serializable{
                 
             case "Material":
                 TipoSuministro = TiposSuministros[2];
+                break;
         }
     }
     

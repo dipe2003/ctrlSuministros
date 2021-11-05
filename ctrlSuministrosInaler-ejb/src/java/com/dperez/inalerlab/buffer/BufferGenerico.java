@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.ejb.Stateful;
 
 /**
  * Manejo intermedio de coleccion de datos para acceso de lectura sin llegar a base de datos.
@@ -16,20 +15,8 @@ import javax.ejb.Stateful;
  * @author dperez
  * @param <T>
  */
-@Stateful
 public class BufferGenerico <T> {
-    
-    private BufferGenerico() {
-    }
-    
-    public static BufferGenerico getInstance() {
-        return BufferGenericoHolder.INSTANCE;
-    }
-    
-    private static class BufferGenericoHolder {
-        private static final BufferGenerico INSTANCE = new BufferGenerico();
-    }
-    
+        
     private Map<Integer, T> Entidades = new HashMap<>();
     
     public void setEntidades(Map<Integer, T> entidades){
