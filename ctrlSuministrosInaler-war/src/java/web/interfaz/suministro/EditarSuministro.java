@@ -141,7 +141,7 @@ public class EditarSuministro implements Serializable{
         Proveedores = fProveedor.ListarProveedores()
                 .stream()
                 .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
-                .toList();
+                .collect(Collectors.toList());
         
         TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};        
         
