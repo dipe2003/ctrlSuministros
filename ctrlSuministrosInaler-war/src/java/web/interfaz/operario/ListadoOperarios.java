@@ -6,6 +6,7 @@ import com.dperez.inalerlab.operario.Operario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -34,12 +35,9 @@ public class ListadoOperarios implements Serializable{
     
     public void filtrarLista(){
         if(!NombreOperario.isEmpty()){
-            ListaOperario.clear();
-            Operarios.forEach(op->{
-                if(op.getNombreCompleto().toLowerCase().contains(NombreOperario.toLowerCase())){
-                    ListaOperario.add(op);
-                }
-            });
+            ListaOperario = Operarios.stream()
+                    .filter((Operario operario)->operario.getNombreCompleto().toLowerCase().contains(NombreOperario))
+                    .collect(Collectors.toList());
         }else{
             ListaOperario = new ArrayList<>(Operarios);
         }

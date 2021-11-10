@@ -13,11 +13,13 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -180,12 +182,10 @@ public class RegistrarIngresoSuministro implements Serializable{
         SetLotesSuministro = new HashMap<>();
         Suministro sum = fSuministro.BuscarSuministro(IdSuministro);
         AvisoCambioLote = sum.isAvisoCambioLote();
-        sum.getLotesSuministros().stream()
-                .forEachOrdered(lot->{
-                    LotesSuministro.put(lot.getIdLote(), lot);
-                    SetLotesSuministro.put(lot.getIdLote(), lot);
-                });
-        SetLotesSuministro = new TreeMap<>(SetLotesSuministro);
+        LotesSuministro = sum.getLotesSuministros().stream()
+                .sorted(Comparator.comparing((Lote lote)->lote.getNumeroLote().toLowerCase()))
+                .collect(Collectors.toMap(Lote::getIdLote, (Lote)->Lote));
+        SetLotesSuministro = new TreeMap<>(LotesSuministro);
     }
     
     @PostConstruct
@@ -207,12 +207,13 @@ public class RegistrarIngresoSuministro implements Serializable{
      * @param IdSuministro
      */
     public void cargarProveedoresSuministro(int IdSuministro){
-        Proveedores.stream()
+        Proveedor prov =  Proveedores.stream()
                 .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
-                .forEachOrdered(proveedor->{
-                    NombreProveedor = proveedor.getNombreProveedor();
-                    idProveedor = proveedor.getIdProveedor();
-                });
+                .findFirst()
+                .get();
+        
+        NombreProveedor = prov.getNombreProveedor();
+        idProveedor = prov.getIdProveedor();        
     }
     
 }

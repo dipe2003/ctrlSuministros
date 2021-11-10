@@ -10,7 +10,6 @@ import com.dperez.inalerlab.proveedor.ControladorProveedor;
 import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -204,19 +203,13 @@ public class ControladorSuministro implements Serializable {
      * minimo, retorna una lista vacia si no los hay.
      */
     public List<Integer> GetIdsSuministrosDebajoStockMinimo() {
-        List<Integer> lista = new ArrayList<>();
-        buffer.getListaEntidades().stream()
+        return buffer.getListaEntidades().stream()
                 .filter((Suministro s)->s.isVigente())
                 .filter((Suministro s)->s.getStock()<s.getStockMinimoSuministro().getCantidadStockMinimo() &&
                         s.getStockMinimoSuministro().getCantidadStockMinimo()>0)
-                .forEach((Suministro s)->{
-                    try {
-                        lista.add(s.getIdSuministro());
-                    } catch (NullPointerException ex) {
-                        System.out.println("Error: " + ex.getMessage() + " en " + s.getNombreSuministro() + s.getIdSuministro());
-                    }
-                });
-        return lista;
+                .mapToInt(Suministro::getIdSuministro)
+                .boxed()
+                .collect(Collectors.toList());
     }
     
     
@@ -228,21 +221,18 @@ public class ControladorSuministro implements Serializable {
      * @return Retorna una lista con los ids de los suministros.
      */
     public List<Integer> getIdsSuministrosConLotesVencidos(boolean ConStock) {
-        List<Integer> lista = new ArrayList<>();
         if (ConStock) {
-            buffer.getListaEntidades().stream()
+            return buffer.getListaEntidades().stream()
                     .filter((Suministro s)->s.isVigente() && s.getLotesVencidosEnStock().size()>0)
-                    .forEach((Suministro s)->{
-                        lista.add(s.getIdSuministro());
-                    });
-        }else{
-            buffer.getListaEntidades().stream()
-                    .filter((Suministro s)->s.isVigente() && s.getLotesVencidos().size()>0)
-                    .forEach((Suministro s)->{
-                        lista.add(s.getIdSuministro());
-                    });
+                    .mapToInt(Suministro::getIdSuministro)
+                    .boxed()
+                    .collect(Collectors.toList());
         }
-        return lista;
+        return buffer.getListaEntidades().stream()
+                .filter((Suministro s)->s.isVigente() && s.getLotesVencidos().size()>0)
+                .mapToInt(Suministro::getIdSuministro)
+                .boxed()
+                .collect(Collectors.toList());        
     }
     
     /**

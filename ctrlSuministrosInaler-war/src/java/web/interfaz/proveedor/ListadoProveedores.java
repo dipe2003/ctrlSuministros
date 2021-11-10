@@ -6,6 +6,7 @@ import com.dperez.inalerlab.proveedor.Proveedor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
@@ -34,12 +35,9 @@ public class ListadoProveedores implements Serializable{
     
     public void filtrarLista(){
         if(!NombreProveedor.isEmpty()){
-            ListaProveedor.clear();
-            Proveedores.forEach(op->{
-                if(op.getNombreProveedor().toLowerCase().contains(NombreProveedor.toLowerCase())){
-                    ListaProveedor.add(op);
-                }
-            });
+            ListaProveedor = Proveedores.stream()
+                    .filter((Proveedor proveedor) -> proveedor.getNombreProveedor().toLowerCase().contains(NombreProveedor.toLowerCase()))
+                    .collect(Collectors.toList());
         }else{
             ListaProveedor = new ArrayList<>(Proveedores);
         }

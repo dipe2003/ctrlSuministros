@@ -6,7 +6,6 @@ import com.dperez.inalerlab.suministro.Suministro;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.timer.TimerService;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

@@ -70,7 +70,11 @@ public class RegistrarSalidaSuministro implements Serializable{
     
     public float getCantidadStockLote() {
         try{
-            for(Lote lote: Lotes) if(lote.getIdLote()==IdLoteSuministro) CantidadStockLote = lote.getCantidadStock();
+           CantidadStockLote =  Lotes.stream()
+                    .filter(lote->lote.getIdLote() == IdLoteSuministro)
+                    .findFirst()
+                    .orElse(null)
+                    .getCantidadStock();           
         }catch(NullPointerException ex){
             CantidadStockLote = 0f;
         }
@@ -157,11 +161,12 @@ public class RegistrarSalidaSuministro implements Serializable{
      * @param IdSuministro
      */
     public void cargarProveedorSuministro(int IdSuministro){
-        Proveedores.stream()
+        Proveedor prov =  Proveedores.stream()
                 .filter(proveedor->proveedor.esProveedorSuministro(IdSuministro))
-                .forEachOrdered(proveedor->{
-                    NombreProveedor = proveedor.getNombreProveedor();
-                    idProveedor = proveedor.getIdProveedor();
-                });
+                .findFirst()
+                .get();
+        
+        NombreProveedor = prov.getNombreProveedor();
+        idProveedor = prov.getIdProveedor();
     }
 }

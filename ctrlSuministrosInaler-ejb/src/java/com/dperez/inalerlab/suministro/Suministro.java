@@ -94,12 +94,10 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
         this.StocksMinimosSuministro.add(StockMinimoSuministro);
     }
     public StockMinimo getStockMinimoSuministro(){
-        for(int i = 0; i < StocksMinimosSuministro.size(); i++){
-            if(StocksMinimosSuministro.get(i).getVigenciaStockMinimo()){
-                return StocksMinimosSuministro.get(i);
-            }
-        }
-        return null;
+        return StocksMinimosSuministro.stream()
+                .filter(stock->stock.getVigenciaStockMinimo() == true)
+                .findFirst()
+                .orElse(null);
     }
     
     //	Lotes

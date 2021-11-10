@@ -17,7 +17,7 @@
                             <f:selectItem itemValue="--Seleccionar Suministro---"  itemDisabled="false"  noSelectionOption="true"  />
                             <f:selectItems value="#{registrarSalidaSuministro.suministros}" var="suministro" itemLabel="#{suministro.nombreSuministro}" itemValue="#{suministro.idSuministro}"/>
                             <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarProveedorSuministro(registrarSalidaSuministro.idSuministro)}" render="selectProveedorSalida" onevent="indicador" />
-                            <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida" onevent="indicador" />
+                            <f:ajax execute="@this" listener="#{registrarSalidaSuministro.cargarNumerosLoteSuministro(registrarSalidaSuministro.idSuministro)}" render="selectNumeroLoteSuministroSalida outputCantidadStockLote outputNuevaCantidadStockLote" onevent="indicador" />
                         </h:selectOneMenu>
                         
                         <div class="label">Proveedor</div>
