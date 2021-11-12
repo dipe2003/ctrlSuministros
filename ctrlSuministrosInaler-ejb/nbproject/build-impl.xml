@@ -803,29 +803,29 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
-        <copyfiles files="${libs.hibernate4-persistence.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.javaee-endorsed-api-7.0.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.jaf-1_1_1.zip}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.javax.mail.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.hibernate-core-5.6.0.Final.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <basename file="${libs.hibernate4-persistence.classpath}" property="manifest.libs.hibernate4-persistence.classpath"/>
         <basename file="${libs.javaee-endorsed-api-7.0.classpath}" property="manifest.libs.javaee-endorsed-api-7.0.classpath"/>
         <basename file="${file.reference.jaf-1_1_1.zip}" property="manifest.file.reference.jaf-1_1_1.zip"/>
         <basename file="${file.reference.javax.mail.jar}" property="manifest.file.reference.javax.mail.jar"/>
+        <basename file="${file.reference.hibernate-core-5.6.0.Final.jar}" property="manifest.file.reference.hibernate-core-5.6.0.Final.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
-            <attribute name="jar-1-Extension-Name" value="${manifest.libs.hibernate4-persistence.classpath}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.libs.javaee-endorsed-api-7.0.classpath}"/>
-            <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.jaf-1_1_1.zip}"/>
-            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.javax.mail.jar}"/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.libs.javaee-endorsed-api-7.0.classpath}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.jaf-1_1_1.zip}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.javax.mail.jar}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.hibernate-core-5.6.0.Final.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <copyfiles files="${libs.hibernate4-persistence.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.javaee-endorsed-api-7.0.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.jaf-1_1_1.zip}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.javax.mail.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.hibernate-core-5.6.0.Final.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
