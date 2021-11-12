@@ -1,11 +1,14 @@
 package com.dperez.inalerlab.suministro.lote;
 
+import com.dperez.inalerlab.buffer.BufferGenerico;
+import com.dperez.inalerlab.buffer.FabricaBuffer;
 import com.dperez.inalerlab.suministro.ControladorSuministro;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,6 +22,15 @@ public class ControladorLote implements Serializable{
     private ControladorIngresoSalida cInSal;
     @Inject
     private ControladorSuministro cSuministro;
+    @Inject
+    private FabricaBuffer fBuffer;
+    
+    private BufferGenerico<Suministro> buffer;
+    
+    @PostConstruct
+    public void init(){
+        buffer = fBuffer.getBufferSuministro(cSuministro.ListarSuministros(false));
+    }
     
     /**
      * Crea un lote en la base de datos.
@@ -31,7 +43,11 @@ public class ControladorLote implements Serializable{
         Lote lote = new Lote(VencimientoLote, NumeroLote);
         Suministro suministro = cSuministro.BuscarSuministro(IdSuministro);
         suministro.addLote(lote);
-        return mLote.CrearLote(lote);
+        int id =mLote.CrearLote(lote);
+        if(id>0){
+            buffer.updateEntidad(suministro, suministro.getIdSuministro());
+        }
+        return id;
     }
     
     /**
@@ -71,6 +87,9 @@ public class ControladorLote implements Serializable{
         Lote lote = mLote.ObtenerLote(IdLote);
         lote.setSuministroLote(cSuministro.BuscarSuministro(IdSuministro));
         int id= mLote.ActualizarLote(lote);
+        if(id>0){
+            buffer.updateEntidad(lote.getSuministroLote(), lote.getSuministroLote().getIdSuministro());
+        }
         return id;
     }
     
@@ -86,16 +105,7 @@ public class ControladorLote implements Serializable{
         }
         return mLote.ExisteNumeroLoteSuministro(NumeroLote, IdSuministro);
     }
-    
-    /**
-     * Devuelve un Map con los lotes registrados de un suministro en el sistema.
-     * @param IdSuministro
-     * @return Retorna un Map con el numero de lote (key) e id (value)
-     */
-    public Map<String, Integer> ListarMapLotes(int IdSuministro){
-        return mLote.ListarMapLotes(IdSuministro);
-    }
-    
+        
     /**
      * Actualiza los datos del ingreso especificado y del lote relacionado. No se actualiza buffer.
      * @param IdLote
@@ -118,7 +128,7 @@ public class ControladorLote implements Serializable{
             }else{
                 lot.setVencimientoLote(FechaVencimientoLote);
             }
-        }        
+        }
         
         if(mLote.ActualizarLote(lot)!= -1){
             return cInSal.ActualizarIngreso(IdIngreso, CantidadIngreso, NumeroFactura);

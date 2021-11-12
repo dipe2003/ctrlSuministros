@@ -1,11 +1,15 @@
 package com.dperez.inalerlab.suministro.lote;
 
+import com.dperez.inalerlab.buffer.BufferGenerico;
+import com.dperez.inalerlab.buffer.FabricaBuffer;
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.suministro.ManejadorSuministro;
+import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,6 +25,15 @@ public class ControladorIngresoSalida implements Serializable{
     private ControladorOperario cOp;
     @Inject
     private ManejadorSuministro mSum;
+    @Inject
+    private FabricaBuffer fBuffer;
+    
+    private BufferGenerico<Suministro> buffer;
+    
+    @PostConstruct
+    public void init(){
+        buffer = fBuffer.getBufferSuministro(mSum.ListarSuministros());
+    }
     
     /**
      * Crea un ingreso en la base de datos.
@@ -41,6 +54,9 @@ public class ControladorIngresoSalida implements Serializable{
             ingreso.setLoteIngreso(cLote.BuscarLote(IdLoteIngreso));
             ingreso.setOperarioIngresoSuministro(operario);
             id= mInSal.CrearIngreso(ingreso);
+            if(id>0){
+                buffer.updateEntidad(ingreso.getLoteIngreso().getSuministroLote(), ingreso.getLoteIngreso().getSuministroLote().getIdSuministro());
+            }
         }catch(NullPointerException ex){}
         return id;
     }
@@ -74,7 +90,11 @@ public class ControladorIngresoSalida implements Serializable{
         Ingreso ingreso = mInSal.ObtenerIngreso(IdIngreso);
         if(ingreso.getCantidadIngreso()!= CantidadIngreso) ingreso.setCantidadIngreso(CantidadIngreso);
         if(!ingreso.getNumeroFactura().equalsIgnoreCase(NumeroFactura)) ingreso.setNumeroFactura(NumeroFactura);
-        return mInSal.ActualizarIngreso(ingreso);
+        int id = mInSal.ActualizarIngreso(ingreso);
+        if(id>0){
+            buffer.updateEntidad(ingreso.getLoteIngreso().getSuministroLote(), ingreso.getLoteIngreso().getSuministroLote().getIdSuministro());
+        }
+        return id;
     }
     
     /*
@@ -98,6 +118,9 @@ public class ControladorIngresoSalida implements Serializable{
             salida.setLoteSalida(cLote.BuscarLote(IdLoteSalida));
             salida.setOperarioSalidaSuministro(Operario);
             id = mInSal.CrearSalida(salida);
+            if(id>0){
+                buffer.updateEntidad(salida.getLoteSalida().getSuministroLote(), salida.getLoteSalida().getSuministroLote().getIdSuministro());
+            }
         }catch(NullPointerException ex){}
         return id;
     }
