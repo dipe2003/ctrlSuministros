@@ -125,7 +125,7 @@ public class RegistrarSalidaSuministro implements Serializable{
             int  IdOperario = ((Operario)request.getSession().getAttribute("Operario")).getIdOperario();
             String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
             Date fechaHoy = Calendar.getInstance().getTime();
-            if(fLote.CrearSalida(fechaHoy, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
+            if(fLote.CrearSalida(SuministroSeleccionado.getIdSuministro(), fechaHoy, CantidadSalidaSuministro, IdLoteSuministro, IdOperario, ObservacionesSalida)!=-1){
                 context.getExternalContext().redirect(url+"/Views/index.xhtml");
                 context.responseComplete();
             }

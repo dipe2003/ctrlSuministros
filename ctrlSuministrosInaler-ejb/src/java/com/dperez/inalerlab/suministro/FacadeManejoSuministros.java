@@ -39,15 +39,6 @@ public class FacadeManejoSuministros implements Serializable {
     }
     
     /**
-     * Comprueba la existencia de un suministro registrado en la base de datos según el id especificado.
-     * @param IdSuministro Numero de Suministro
-     * @return Retorna <b>True</b> si existe el suministro.
-     */
-    public boolean ExisteSuministro(int IdSuministro){
-        return cSuministro.BuscarSuministro(IdSuministro)!=null;
-    }
-    
-    /**
      * Registra un material en la base de datos.
      * @param NombreSuministro
      * @param DescripcionSuministro

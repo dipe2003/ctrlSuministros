@@ -1,6 +1,7 @@
 package com.dperez.inalerlab.suministro.lote;
 
 
+import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.suministro.Suministro;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,10 +30,10 @@ public class Lote implements Serializable{
     private String NumeroLote;
     @ManyToOne
     private Suministro SuministroLote;
-    @OneToMany(mappedBy = "LoteIngreso")
+    @OneToMany(mappedBy = "LoteIngreso", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Ingreso> IngresosLote;
-    @OneToMany(mappedBy = "LoteSalida")
+    @OneToMany(mappedBy = "LoteSalida", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Salida> SalidasLote;
     
@@ -40,9 +42,10 @@ public class Lote implements Serializable{
         SalidasLote = new ArrayList();
         IngresosLote = new ArrayList();
     }
-    public Lote(Date VencimientoLote, String NumeroLote){
+    public Lote(Date VencimientoLote, String NumeroLote, Suministro suministro){
         this.VencimientoLote = VencimientoLote;
         this.NumeroLote = NumeroLote;
+        this.SuministroLote = suministro;
         SalidasLote = new ArrayList();
         IngresosLote = new ArrayList();
     }
@@ -103,20 +106,18 @@ public class Lote implements Serializable{
         return this.getCantidadIngresosLote() - this.getCantidadSalidasLote();
     }
     
-    public void addIngresoLote(Ingreso IngresoLote){
-        this.IngresosLote.add(IngresoLote);
-        if (IngresoLote.getLoteIngreso()==null || !IngresoLote.getLoteIngreso().equals(this)) {
-            IngresoLote.setLoteIngreso(this);
-        }
+    public Ingreso CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, String Observaciones, Operario operario){
+        Ingreso ingreso = new Ingreso(FechaIngreso, CantidadIngreso, NumeroFactura, Observaciones, this, operario);
+        this.IngresosLote.add(ingreso);
+        return ingreso;
     }
     
-    public void addSalidaLote(Salida SalidaLote){
-        this.SalidasLote.add(SalidaLote);
-        if (SalidaLote.getLoteSalida() == null || !SalidaLote.getLoteSalida().equals(this)) {
-            SalidaLote.setLoteSalida(this);
-        }
+    public Salida CrearSalida(Date FechaSalida, float CantidadSalida, String Observaciones, Operario operario){
+        Salida salida = new Salida(FechaSalida, CantidadSalida,Observaciones, this, operario);
+        this.SalidasLote.add(salida);
+        return salida;
     }
-    
+ 
     /**
      * Comprueba cada ingreso y devuelve el ultimo registro.
      * @return
@@ -134,6 +135,39 @@ public class Lote implements Serializable{
             return IngresosLote.get(index);
         }
         return null;
+    }
+    
+    public Ingreso FindIngreso(int IdIngreso){
+        return this.IngresosLote.stream()
+                .filter(i->i.getIdIngreso() == IdIngreso)
+                .findFirst()
+                .orElse(null);
+    }
+    
+        /**
+     * Comprueba cada salida y devuelve el ultimo registro.
+     * @return
+     */
+    public Salida getUltimaSalida(){
+        int index = 0;
+        if(!SalidasLote.isEmpty()){
+            Date max = SalidasLote.get(0).getFechaSalida();
+            for (int i = 0; i < SalidasLote.size(); i++) {
+                if(SalidasLote.get(i).getFechaSalida().after(max)){
+                    max = SalidasLote.get(i).getFechaSalida();
+                    index = i;
+                }
+            }
+            return SalidasLote.get(index);
+        }
+        return null;
+    }
+    
+    public Salida FindSalida(int IdSalida){
+        return this.SalidasLote.stream()
+                .filter(s->s.getIdSalida() == IdSalida)
+                .findFirst()
+                .orElse(null);
     }
     
     public boolean EstaVencido(){

@@ -28,6 +28,8 @@ public class EditarIngreso implements Serializable{
     @EJB
     private FacadeLote fLote;
     
+    private int IdLote;
+    private int IdSuministro;
     private int IdIngreso;
     private String NumeroFactura;
     private String NumeroLote;
@@ -117,7 +119,7 @@ public class EditarIngreso implements Serializable{
                 msj = "El numero de lote ingresado ya existe";
             }else{
                 // actualizar el ingreso/lote luego actualizar buffer
-                if(fLote.ActualizarLoteIngreso(LoteSuministro.getIdLote(), IdIngreso, NumeroLote, CantidadIngreso, FechaVencimiento, NumeroFactura)!=-1){
+                if(fLote.ActualizarLoteIngreso(SuministroSeleccionado.getIdSuministro(), LoteSuministro.getIdLote(), IdIngreso, NumeroLote, CantidadIngreso, FechaVencimiento, NumeroFactura)!=-1){
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/Suministro/InfoSuministro.xhtml?id="+SuministroSeleccionado.getIdSuministro());
                     FacesContext.getCurrentInstance().renderResponse();
                     FacesContext.getCurrentInstance().responseComplete();
@@ -135,16 +137,20 @@ public class EditarIngreso implements Serializable{
             FacesContext context = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             IdIngreso = Integer.parseInt(request.getParameter("id"));
+            IdLote = Integer.parseInt(request.getParameter("idlote"));
+            IdSuministro = Integer.parseInt(request.getParameter("idSum"));
             cargarDatosIngreso();
         }catch(NullPointerException | NumberFormatException ex){}
     }
     
     
     private void cargarDatosIngreso(){
-        Ingreso ingreso = fLote.BuscarIngreso(IdIngreso);
-        LoteSuministro = ingreso.getLoteIngreso();
+        SuministroSeleccionado = fSuministro.BuscarSuministro(IdSuministro);
+        LoteSuministro = SuministroSeleccionado.FindLote(IdLote);
+        Ingreso ingreso = LoteSuministro.FindIngreso(IdIngreso);
+    
         NumeroFactura = ingreso.getNumeroFactura();
-        NumeroLote = ingreso.getLoteIngreso().getNumeroLote();
+        NumeroLote = LoteSuministro.getNumeroLote();
         // El NumeroLoteOriginal es utilizado para comprobar si se cambio dentro de la edición.
         NumeroLoteOriginal = NumeroLote;
         CantidadIngreso = ingreso.getCantidadIngreso();
@@ -159,9 +165,7 @@ public class EditarIngreso implements Serializable{
             strFechaVencimiento = new String();
         }
         
-        UnidadSuministro =ingreso.getLoteIngreso().getSuministroLote().getUnidadSuministro().getNombreUnidad();
-        
-        SuministroSeleccionado = fSuministro.BuscarSuministro(LoteSuministro.getSuministroLote().getIdSuministro());
+        UnidadSuministro = SuministroSeleccionado.getUnidadSuministro().getNombreUnidad();
     }
     
 }

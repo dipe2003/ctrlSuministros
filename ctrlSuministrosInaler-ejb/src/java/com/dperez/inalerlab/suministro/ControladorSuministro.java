@@ -5,9 +5,10 @@ import com.dperez.inalerlab.buffer.FabricaBuffer;
 import com.dperez.inalerlab.email.SendMail;
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
-import com.dperez.inalerlab.suministro.stockminimo.StockMinimo;
 import com.dperez.inalerlab.proveedor.ControladorProveedor;
-import com.dperez.inalerlab.suministro.stockminimo.ControladorStockMinimo;
+import com.dperez.inalerlab.suministro.lote.Ingreso;
+import com.dperez.inalerlab.suministro.lote.Lote;
+import com.dperez.inalerlab.suministro.lote.Salida;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -29,8 +30,6 @@ public class ControladorSuministro implements Serializable {
     private ControladorUnidad cUnidad;
     @Inject
     private ControladorProveedor cProveedor;
-    @Inject
-    private ControladorStockMinimo cStock;
     @Inject
     private ControladorOperario cOps;
     @Inject
@@ -162,9 +161,8 @@ public class ControladorSuministro implements Serializable {
      * @return
      */
     public int RegistrarStockMinimoSuministro(float CantidadStockMinimo, Date FechaVigenteStockMinimo, int IdSuministro) {
-        StockMinimo stockMinimo = cStock.CrearStockMinimo(CantidadStockMinimo, FechaVigenteStockMinimo);
         Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
-        suministro.addStockMinimoSuministro(stockMinimo);
+        suministro.CrearStockMinimo(CantidadStockMinimo, FechaVigenteStockMinimo);
         int id = mSuministro.ActualizarSuministro(suministro);
         if(id>0){
             buffer.updateEntidad(suministro, id);
@@ -232,7 +230,7 @@ public class ControladorSuministro implements Serializable {
                 .filter((Suministro s)->s.isVigente() && s.getLotesVencidos().size()>0)
                 .mapToInt(Suministro::getIdSuministro)
                 .boxed()
-                .collect(Collectors.toList());        
+                .collect(Collectors.toList());
     }
     
     /**
@@ -296,8 +294,7 @@ public class ControladorSuministro implements Serializable {
                 sumBD.setProveedorSuministro(cProveedor.BuscarProveedor(IdProveedor));
             }
             if (sumBD.getStockMinimoSuministro().getCantidadStockMinimo() != StockMinimoSuministro) {
-                StockMinimo stock = cStock.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
-                sumBD.addStockMinimoSuministro(stock);
+                sumBD.CrearStockMinimo(StockMinimoSuministro, Calendar.getInstance().getTime());
             }
             
             id = mSuministro.ActualizarSuministro(sumBD);
@@ -308,5 +305,127 @@ public class ControladorSuministro implements Serializable {
             System.out.println("Error al actualizar suministro: " + ex.getMessage());
         }
         return id;
+    }
+    
+    /*
+    Lote
+    */
+    
+    /**
+     * Crea un lote en la base de datos.
+     * @param VencimientoLote
+     * @param NumeroLote
+     * @param IdSuministro
+     * @return Retorna el id del lote creado. Retorna -1 si no se creo.
+     */
+    public int AgregarLote(Date VencimientoLote, String NumeroLote, int IdSuministro){
+        Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
+        Lote lote = suministro.CrearLote(VencimientoLote, NumeroLote);
+        mSuministro.ActualizarSuministro(suministro);
+        if(suministro.ExisteNumeroLote(NumeroLote)){
+            lote.setIdLote(suministro.getLotesSuministros().stream()
+                    .filter(l->l.getNumeroLote().equalsIgnoreCase(NumeroLote))
+                    .findFirst()
+                    .get()
+                    .getIdLote());
+        }
+        if(lote.getIdLote()>0){
+            buffer.updateEntidad(suministro, suministro.getIdSuministro());
+        }
+        return lote.getIdLote();
+    }
+    /**
+     * Crea un ingreso en la base de datos.
+     * @param FechaIngreso
+     * @param CantidadIngreso
+     * @param NumeroFactura
+     * @param IdLoteIngreso
+     * @param IdOperarioIngreso
+     * @param ObservacionesIngreso
+     * @param IdSuministro
+     * @return Retorna el id del ingreso creada. Retorna -1 si no se crea.
+     */
+    public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperarioIngreso, String ObservacionesIngreso, int IdSuministro){
+        int id = -1;
+        try{
+            Operario operario = cOps.BuscarOperario(IdOperarioIngreso);
+            Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
+            if(suministro.FindLote(IdLoteIngreso)!=null){
+                suministro.FindLote(IdLoteIngreso).CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, ObservacionesIngreso, operario);
+                mSuministro.ActualizarSuministro(suministro);
+                Ingreso ingreso = suministro.FindLote(IdLoteIngreso).getUltimoIngreso();
+                id = ingreso.getIdIngreso();
+                if(id>0){
+                    buffer.updateEntidad(suministro, suministro.getIdSuministro());
+                }
+            }
+        }catch(NullPointerException ex){}
+        return id;
+    }
+    /*
+    * Crea un salida en la base de datos.
+    * @param FechaSalida
+    * @param CantidadSalida
+    * @param IdLoteSalida
+    * @param IdOperarioSalida
+    * @param ObservacionesSalida
+    * @return Retorna el id de la salida creada. Retorna -1 si no se crea.
+    */
+    public int CrearSalida(int IdSuministro, Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperarioSalida, String ObservacionesSalida){
+        int id = -1;
+        try{
+            Operario operario = cOps.BuscarOperario(IdOperarioSalida);
+            Suministro suministro = mSuministro.ObtenerSuministro(IdSuministro);
+            if(suministro.FindLote(IdLoteSalida)!=null){
+                suministro.FindLote(IdLoteSalida).CrearSalida(FechaSalida, CantidadSalida, ObservacionesSalida, operario);
+                mSuministro.ActualizarSuministro(suministro);
+                Salida salida = suministro.FindLote(IdLoteSalida).getUltimaSalida();
+                id = salida.getIdSalida();
+                if(id>0){
+                    buffer.updateEntidad(suministro, suministro.getIdSuministro());
+                }
+            }
+        }catch(NullPointerException ex){}
+        return id;
+    }
+    
+    /**
+     * Actualiza los datos del ingreso especificado y del lote relacionado.No se actualiza buffer.
+     * @param idSuministro
+     * @param IdLote
+     * @param IdIngreso
+     * @param NumeroLote
+     * @param CantidadIngreso
+     * @param FechaVencimientoLote
+     * @param NumeroFactura
+     * @return -1 si no se actualizo. IdLote si se actualizo.
+     */
+    public int ActualizarLoteIngreso(int idSuministro, int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso,
+            Date FechaVencimientoLote, String NumeroFactura){
+        Suministro suministro = mSuministro.ObtenerSuministro(idSuministro);
+        Lote lot = suministro.FindLote(IdLote);
+        try{
+            if(lot != null){
+                if(!lot.getNumeroLote().equalsIgnoreCase(NumeroLote))
+                    lot.setNumeroLote(NumeroLote);
+                
+                if(lot.getVencimientoLote()!=null){
+                    if(lot.getVencimientoLote().compareTo(FechaVencimientoLote)!=0){
+                        lot.setVencimientoLote(FechaVencimientoLote);
+                    }
+                }else{
+                    lot.setVencimientoLote(FechaVencimientoLote);
+                }
+                Ingreso ingreso = lot.FindIngreso(IdIngreso);
+                if(ingreso.getCantidadIngreso() != CantidadIngreso)
+                    ingreso.setCantidadIngreso(CantidadIngreso);
+                
+                if(!ingreso.getNumeroFactura().equalsIgnoreCase(NumeroFactura))
+                    ingreso.setNumeroFactura(NumeroFactura);
+            }
+            buffer.updateEntidad(suministro, suministro.getIdSuministro());
+            return mSuministro.ActualizarSuministro(suministro);
+        }catch(Exception ex){}
+        return -1;
     }
 }

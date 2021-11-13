@@ -31,10 +31,10 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     private String CodigoSAPSuministro;
     @ManyToOne
     private Unidad UnidadSuministro;
-    @OneToMany(mappedBy = "SuministroLote")
+    @OneToMany(mappedBy = "SuministroLote", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Lote> LotesSuministros;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<StockMinimo> StocksMinimosSuministro;
     @ManyToOne
@@ -87,12 +87,15 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}
     
     //	StocksMinimos
-    public void addStockMinimoSuministro(StockMinimo StockMinimoSuministro){
-        this.StocksMinimosSuministro.forEach(stock -> {
-            stock.setVigente(false);
+    public StockMinimo CrearStockMinimo(float cantidad, Date fechaVigente){
+        StockMinimo stock = new StockMinimo(cantidad, fechaVigente, true);
+         this.StocksMinimosSuministro.forEach((StockMinimo s) -> {
+            s.setVigente(false);
         });
-        this.StocksMinimosSuministro.add(StockMinimoSuministro);
+        this.StocksMinimosSuministro.add(stock);
+        return stock;
     }
+
     public StockMinimo getStockMinimoSuministro(){
         return StocksMinimosSuministro.stream()
                 .filter(stock->stock.getVigenciaStockMinimo() == true)
@@ -101,11 +104,17 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     }
     
     //	Lotes
-    public void addLote(Lote LoteSuministro){
-        this.LotesSuministros.add(LoteSuministro);
-        if(LoteSuministro.getSuministroLote()==null || !LoteSuministro.getSuministroLote().equals(this)){
-            LoteSuministro.setSuministroLote(this);
-        }
+    public Lote CrearLote(Date vencimiento, String numeroLote){
+        Lote lote = new Lote(vencimiento, numeroLote, this);
+        this.LotesSuministros.add(lote);
+        return lote;
+    }
+    
+    public Lote FindLote(int idLote){
+        return this.LotesSuministros.stream()
+                .filter(l->l.getIdLote() == idLote)
+                .findFirst()
+                .orElse(null);
     }
     
     public float getStock(){

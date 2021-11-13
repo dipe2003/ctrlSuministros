@@ -1,5 +1,6 @@
 package com.dperez.inalerlab.suministro.lote;
 
+import com.dperez.inalerlab.suministro.ControladorSuministro;
 import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.Stateless;
@@ -10,9 +11,7 @@ import javax.inject.Named;
 @Stateless
 public class FacadeLote implements Serializable{
     @Inject
-    private ControladorIngresoSalida cInSal;
-    @Inject
-    private ControladorLote cLote;
+    private ControladorSuministro cSuministro;
     
     /**
      * Crea un lote y lo agrega al suministro.
@@ -21,8 +20,8 @@ public class FacadeLote implements Serializable{
      * @param IdSuministro
      * @return Retorna el id del lote. Retorna -1 si no se pudo crear.
      */
-    public int CrearLote(Date VencimientoLote, String NumeroLote, int IdSuministro){
-        return cLote.CrearLote(VencimientoLote, NumeroLote, IdSuministro);
+    public int AgregarLote(Date VencimientoLote, String NumeroLote, int IdSuministro){
+        return cSuministro.AgregarLote(VencimientoLote, NumeroLote, IdSuministro);
     }
     
     /**
@@ -36,11 +35,12 @@ public class FacadeLote implements Serializable{
      * @return
      */
     public int CrearIngreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, int IdLoteIngreso, int IdOperario, String Observaciones, int IdSuministro ){
-        return cInSal.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones, IdSuministro);
+        return cSuministro.CrearIngreso(FechaIngreso, CantidadIngreso, NumeroFactura, IdLoteIngreso, IdOperario, Observaciones, IdSuministro);
     }
     
     /**
      * Crea una salida de suministro para el lote especificado.
+     * @param IdSuministro
      * @param FechaSalida
      * @param CantidadSalida
      * @param IdLoteSalida
@@ -48,49 +48,13 @@ public class FacadeLote implements Serializable{
      * @param ObservacionesSalida
      * @return
      */
-    public int CrearSalida(Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario, String ObservacionesSalida){
-        return cInSal.CrearSalida(FechaSalida, CantidadSalida, IdLoteSalida, IdOperario, ObservacionesSalida);
-    }
-    
-    /**
-     * Buscar un lote por numero de lote.
-     * @param NumeroLote
-     * @return Retorna Null si no existe.
-     */
-    public Lote BuscarLotePorNumeroLote(String NumeroLote){
-        return cLote.BuscarLotePorNumeroLote(NumeroLote);
-    }
-    
-    /**
-     * Buscar un lote por Id.
-     * @param IdLote
-     * @return Retorna Null si no existe.
-     */
-    public Lote BuscarLotePorIdLote(int IdLote){
-        return cLote.BuscarLote(IdLote);
-    }
-    
-    /**
-     * Comprueba la existencia del numero de lote para el suministro especificado.
-     * @param NumeroLote
-     * @param IdSuministro
-     * @return Retorna el id del suministro. Retorna 0 si no existe.
-     */
-    public int ExisteLoteSuministro(String NumeroLote, int IdSuministro){
-        return cLote.ExisteLoteSuministro(NumeroLote, IdSuministro);
-    }
-    
-    /**
-     * Devuelve el ingreso especificado por su Id.
-     * @param IdIngreso
-     * @return
-     */
-    public Ingreso BuscarIngreso(int IdIngreso){
-        return cInSal.BuscarIngreso(IdIngreso);
+    public int CrearSalida(int IdSuministro, Date FechaSalida, float CantidadSalida, int IdLoteSalida, int IdOperario, String ObservacionesSalida){
+        return cSuministro.CrearSalida(IdSuministro, FechaSalida, CantidadSalida, IdLoteSalida, IdOperario, ObservacionesSalida);
     }
     
     /**
      * Actualiza los datos del ingreso especificado y del lote relacionado.No se actualiza el buffer.
+     * @param idSuministro
      * @param IdLote
      * @param IdIngreso
      * @param NumeroLote
@@ -99,8 +63,8 @@ public class FacadeLote implements Serializable{
      * @param NumeroFactura
      * @return -1 si no se actualizo. IdLote si se actualizo.
      */
-    public int ActualizarLoteIngreso(int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, Date FechaVencimientoLote, String NumeroFactura){
-        return cLote.ActualizarLoteIngreso(IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
+    public int ActualizarLoteIngreso(int idSuministro, int IdLote, int IdIngreso, String NumeroLote, float CantidadIngreso, Date FechaVencimientoLote, String NumeroFactura){
+        return cSuministro.ActualizarLoteIngreso(idSuministro, IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
     }
     
 }

@@ -28,11 +28,13 @@ public class Ingreso implements Serializable{
     
     //	Constructores
     public Ingreso(){}
-    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, String Observaciones){
+    public Ingreso(Date FechaIngreso, float CantidadIngreso, String NumeroFactura, String Observaciones, Lote lote, Operario operario){
         this.FechaIngreso = FechaIngreso;
         this.CantidadIngreso = CantidadIngreso;
         this.NumeroFactura = NumeroFactura;
         this.ObservacionesIngreso = Observaciones;
+        this.LoteIngreso = lote;
+        this.OperarioIngresoSuministro = operario;
     }
     
     //	Getters
@@ -58,10 +60,7 @@ public class Ingreso implements Serializable{
         }
         this.OperarioIngresoSuministro = OperarioIngresoSuministro;
     }
-    public void setLoteIngreso(Lote loteIngreso) {        
-        if (!loteIngreso.getIngresosLote().contains(this)) {
-            loteIngreso.addIngresoLote(this);
-        }
+    public void setLoteIngreso(Lote loteIngreso) {
         this.LoteIngreso = loteIngreso;
     }
     public void setNumeroFactura(String NumeroFactura) {this.NumeroFactura = NumeroFactura;}

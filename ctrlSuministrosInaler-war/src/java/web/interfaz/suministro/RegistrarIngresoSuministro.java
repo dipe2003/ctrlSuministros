@@ -156,7 +156,7 @@ public class RegistrarIngresoSuministro implements Serializable{
                 NumeroLoteSuministro = LotesSuministro.get(IdLoteSeleccionado).getNumeroLote();
                 idLote = IdLoteSeleccionado;
             }else{ // lote nuevo, se crea lote
-                idLote = fLote.CrearLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
+                idLote = fLote.AgregarLote(FechaVencimientoSuministro, NumeroLoteSuministro, IdSuministro);
                 if(idLote != -1){
                     // enviar mail de aviso de cambio de lote cuando corresponde
                     if(AvisoCambioLote){
