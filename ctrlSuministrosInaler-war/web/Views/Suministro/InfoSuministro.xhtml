@@ -40,132 +40,152 @@
                     </div>
                     <fieldset>
                         <legend>Movimientos de Stock</legend>
-                        <c:choose>
-                            <c:when test="#{infoSuministro.lotesSuministro.size() == 0}">                                    
-                                <div class="div-output">No hay registros de movimientos.</div>                                    
-                            </c:when>
-                            <c:otherwise>
-                                <div class="contenedor-5050">                            
-                                    <div class="contenedor-60">
-                                        <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
-                                        <table class="tabla-infoSuministro">
-                                            <thead>
-                                                <th class="label" style="width: 20%">Lote</th>
-                                                <th class="label" style="width: 10%">Fecha</th>
-                                                <th class="label" style="width: 10%">Factura</th>
-                                                <th class="label" style="width: 10%">Cantidad</th>
-                                                <th class="label" style="width: 20%">Vencimiento</th>
-                                                <th class="label" style="width: 18%">Operario</th>
-                                                <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                    <th class="label" style="width: 0.5%"></th>
-                                                </c:if>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
-                                                    <c:forEach items="#{lot.ingresosLote}" var="ingreso">
-                                                        <tr>
-                                                            <td class="div-output" >
-                                                                <div>#{lot.numeroLote}</div>
-                                                            </td>
-                                                            <td class="div-output" >
-                                                                <div>#{ingreso.strFechaIngreso}</div>
-                                                            </td>
-                                                            <td class="div-output" >
-                                                                <div>#{ingreso.numeroFactura}</div>
-                                                            </td>
-                                                            <td class="div-output">
-                                                                <div>#{ingreso.cantidadIngreso}</div>
-                                                            </td>
-                                                            
-                                                            <c:choose>
-                                                                <c:when test="#{lot.vencido == true and lot.cantidadStock gt 0}">
+                        <table>
+                            <td>
+                                <div class="label">Filtro: </div>
+                            </td>
+                            <td>
+                                <h:selectOneMenu value="#{infoSuministro.verTodosLotes}" class="select-opt-menu">
+                                    <f:selectItem itemLabel="Ver todos los movimientos registrados." itemValue="true"/>
+                                    <f:selectItem itemLabel="Ver solo movimientos acutalmente con stock." itemValue="false" />
+                                    <f:ajax execute="@this" render="form-info-suministro:panel-movimientos" onevent="indicador" listener="#{infoSuministro.cargarDatosLotes()}" />
+                                </h:selectOneMenu>
+                            </td>
+                        </table>
+                        <h:panelGroup id="panel-movimientos">
+                            <c:choose>
+                                <c:when test="#{infoSuministro.lotesSuministro.size() == 0}">                                    
+                                    <div class="div-output">No hay registros de movimientos.</div>                                    
+                                </c:when>
+                                <c:otherwise>
+                                    
+                                    <div class="contenedor-5050">                            
+                                        <div class="contenedor-60">
+                                            <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
+                                            <table class="tabla-infoSuministro">
+                                                <thead>
+                                                    <th class="label" style="width: 20%">Lote</th>
+                                                    <th class="label" style="width: 10%">Fecha</th>
+                                                    <th class="label" style="width: 10%">Factura</th>
+                                                    <th class="label" style="width: 10%">Cantidad</th>
+                                                    <th class="label" style="width: 20%">Vencimiento</th>
+                                                    <th class="label" style="width: 18%">Operario</th>
+                                                    <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                                        <th class="label" style="width: 0.5%"></th>
+                                                    </c:if>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach items="#{infoSuministro.lotesSuministro}" var="lot">  
+                                                        <c:forEach items="#{lot.ingresosLote}" var="ingreso">
+                                                            <tr>
+                                                                <td class="div-output" >
+                                                                    <div>#{ingreso.loteIngreso.numeroLote}</div>
+                                                                </td>
+                                                                <td class="div-output" >
+                                                                    <div>#{ingreso.strFechaIngreso}</div>
+                                                                </td>
+                                                                <td class="div-output" >
+                                                                    <div>#{ingreso.numeroFactura}</div>
+                                                                </td>
+                                                                <td class="div-output">
+                                                                    <div>#{ingreso.cantidadIngreso}</div>
+                                                                </td>                                                                
+                                                                
+                                                                <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == true and ingreso.loteIngreso.cantidadStock gt 0}">
                                                                     <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                                        <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
+                                                                    </td>
+                                                                </h:panelGroup>                                                                        
+                                                                
+                                                                <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == false and ingreso.loteIngreso.cantidadStock gt 0}" >
+                                                                    <td class="div-output" >
+                                                                        <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
+                                                                    </td>                                                                     
+                                                                </h:panelGroup>    
+                                                                
+                                                                <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == false and ingreso.loteIngreso.cantidadStock == 0}" >
+                                                                    <td class="div-output" >
+                                                                        <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
+                                                                    </td>                                                                     
+                                                                </h:panelGroup>  
+                                                                
+                                                                <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == true and ingreso.loteIngreso.cantidadStock == 0}" >
+                                                                    <td class="div-output" >
+                                                                        <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
+                                                                    </td>                                                                     
+                                                                </h:panelGroup>  
+                                                                
+                                                                <td class="div-output" >
+                                                                    <div>#{ingreso.operarioIngresoSuministro.idOperario}</div>
+                                                                </td>
+                                                                <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                                                    <td class="div-output" style="width: 0.6%">
+                                                                        <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarIngreso.xhtml?id=#{ingreso.idIngreso}&amp;idSum=#{lot.suministroLote.idSuministro}&amp;idlote=#{lot.idLote}">
+                                                                            <img title="Editar Ingreso/Lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/edit_icon.ico"/>
+                                                                        </a>
+                                                                    </td>
+                                                                </c:if>
+                                                            </tr>
+                                                        </c:forEach>
+                                                        <tr bgcolor="azure" style="border-top: 1px !important;">
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>Stock Lote:</td>
+                                                            <c:choose>
+                                                                <c:when test="#{lot.vencido == true and lot.cantidadStock > 0}">
+                                                                    <td class="div-output" style="background-color: red; color:whitesmoke;">
+                                                                        <div>#{lot.cantidadStock}</div>                    
                                                                     </td>
                                                                 </c:when>
-                                                                <c:when test="#{lot.vencido == true}">
+                                                                <c:when test="#{lot.cantidadStock le 0 or lot.vencido == false }" >
                                                                     <td class="div-output" >
-                                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                                        <div>#{lot.cantidadStock}</div>
                                                                     </td>
                                                                 </c:when>
                                                                 <c:otherwise>
                                                                     <td class="div-output" >
-                                                                        <div>#{lot.strFechaVencimientoLote}</div>
+                                                                        <div>#{lot.cantidadStock}</div>
                                                                     </td>
                                                                 </c:otherwise>
-                                                            </c:choose> 
-                                                            
-                                                            <td class="div-output" >
-                                                                <div>#{ingreso.operarioIngresoSuministro.idOperario}</div>
-                                                            </td>
+                                                            </c:choose>
+                                                            <td></td>
                                                             <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                                <td class="div-output" style="width: 0.6%">
-                                                                    <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarIngreso.xhtml?id=#{ingreso.idIngreso}&amp;idSum=#{lot.suministroLote.idSuministro}&amp;idlote=#{lot.idLote}">
-                                                                        <img title="Editar Ingreso/Lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/edit_icon.ico"/>
-                                                                    </a>
-                                                                </td>
+                                                                <td></td>
                                                             </c:if>
                                                         </tr>
                                                     </c:forEach>
-                                                    <tr bgcolor="azure" style="border-top: 1px !important;">
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>Stock Lote:</td>
-                                                        <c:choose>
-                                                            <c:when test="#{lot.vencido == true and lot.cantidadStock > 0}">
-                                                                <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                                                    <div>#{lot.cantidadStock}</div>                    
-                                                                </td>
-                                                            </c:when>
-                                                            <c:when test="#{lot.cantidadStock le 0 or lot.vencido == false }" >
-                                                                <td class="div-output" >
-                                                                    <div>#{lot.cantidadStock}</div>
-                                                                </td>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <td class="div-output" >
-                                                                    <div>#{lot.cantidadStock}</div>
-                                                                </td>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <td></td>
-                                                        <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                            <td></td>
-                                                        </c:if>
-                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <div class="contenedor-40">
+                                            <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
+                                            <table class="tabla-infoSuministro">
+                                                <th class="label" style="width: 30%">Lote</th>
+                                                <th class="label" style="width: 10%">Cantidad</th> 
+                                                <th class="label" style="width: 20%">Operario</th>
+                                                <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
+                                                    <c:forEach items="#{lote.salidasLote}" var="salida">
+                                                        <tr>
+                                                            <td class="div-output" >
+                                                                <div>#{salida.loteSalida.numeroLote}</div>
+                                                            </td>
+                                                            <td class="div-output" >
+                                                                <div>#{salida.cantidadSalida}</div>                                            
+                                                            </td>
+                                                            <td class="div-output" >
+                                                                <div>#{salida.operarioSalidaSuministro.idOperario}</div>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
                                                 </c:forEach>
-                                            </tbody>
-                                        </table>
+                                            </table> 
+                                        </div>                              
                                     </div>
-                                    
-                                    <div class="contenedor-40">
-                                        <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
-                                        <table class="tabla-infoSuministro">
-                                            <th class="label" style="width: 30%">Lote</th>
-                                            <th class="label" style="width: 10%">Cantidad</th> 
-                                            <th class="label" style="width: 20%">Operario</th>
-                                            <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
-                                                <c:forEach items="#{lote.salidasLote}" var="salida">
-                                                    <tr>
-                                                        <td class="div-output" >
-                                                            <div>#{salida.loteSalida.numeroLote}</div>
-                                                        </td>
-                                                        <td class="div-output" >
-                                                            <div>#{salida.cantidadSalida}</div>                                            
-                                                        </td>
-                                                        <td class="div-output" >
-                                                            <div>#{salida.operarioSalidaSuministro.idOperario}</div>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </c:forEach>
-                                        </table> 
-                                    </div>                              
-                                </div>
-                            </c:otherwise>
-                        </c:choose>                       
-                        
+                                </c:otherwise>
+                            </c:choose>                       
+                        </h:panelGroup>
                         <div class="contenedor-5050">
                             <div class="contenedor-60">
                                 <table>

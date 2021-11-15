@@ -23,20 +23,29 @@ public class InfoSuministro implements Serializable{
     
     private Suministro SuministroSeleccionado;
     private List<Lote> LotesSuministro;
-    
+    private static List<Lote> LotesSuministrosSinFiltro;
+    private boolean VerTodosLotes = false;
+        
     //  Getters
     public List<Lote> getLotesSuministro() {return LotesSuministro;}
     public Suministro getSuministroSeleccionado() {return SuministroSeleccionado;}
+    public boolean isVerTodosLotes() {return VerTodosLotes;}
     
     //  Setters
     public void setLotesSuministro(List<Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}
     public void setSuministroSeleccionado(Suministro SuministroSeleccionado) {this.SuministroSeleccionado = SuministroSeleccionado;}
+    public void setVerTodosLotes(boolean VerTodosLotes) {this.VerTodosLotes = VerTodosLotes;}    
     
     public void cargarDatosLotes(){
-        LotesSuministro = SuministroSeleccionado.getLotesSuministros().stream()
-                .filter((Lote l)-> !LotesSuministro.contains(l))
-                .sorted(Comparator.comparing((Lote lote)->lote.getIdLote()))
-                .collect(Collectors.toList());
+        if(VerTodosLotes){
+            LotesSuministro = LotesSuministrosSinFiltro.stream()
+                    .sorted(Comparator.comparing((Lote lote)->lote.getIdLote()))
+                    .collect(Collectors.toList());
+        }else{
+            LotesSuministro = LotesSuministrosSinFiltro.stream()
+                    .filter((Lote l)->l.getCantidadStock()>0)
+                    .collect(Collectors.toList());
+        }
     }
     
     @PostConstruct
@@ -44,7 +53,9 @@ public class InfoSuministro implements Serializable{
         FacesContext context = FacesContext.getCurrentInstance();
         int id = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("id"));
         SuministroSeleccionado = fSuministro.BuscarSuministro(id);
-        LotesSuministro = new ArrayList<>();
-        cargarDatosLotes();
+        LotesSuministrosSinFiltro = new ArrayList<>(SuministroSeleccionado.getLotesSuministros());
+        LotesSuministro = LotesSuministro = LotesSuministrosSinFiltro.stream()
+                .filter((Lote l)->l.getCantidadStock()>0)
+                .collect(Collectors.toList());
     }
 }
