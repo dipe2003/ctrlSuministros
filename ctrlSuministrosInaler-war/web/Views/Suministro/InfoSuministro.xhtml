@@ -47,7 +47,7 @@
                             <td>
                                 <h:selectOneMenu value="#{infoSuministro.verTodosLotes}" class="select-opt-menu">
                                     <f:selectItem itemLabel="Ver todos los movimientos registrados." itemValue="true"/>
-                                    <f:selectItem itemLabel="Ver solo movimientos acutalmente con stock." itemValue="false" />
+                                    <f:selectItem itemLabel="Ver solo movimientos actualmente con stock." itemValue="false" />
                                     <f:ajax execute="@this" render="form-info-suministro:panel-movimientos" onevent="indicador" listener="#{infoSuministro.cargarDatosLotes()}" />
                                 </h:selectOneMenu>
                             </td>
@@ -55,7 +55,7 @@
                         <h:panelGroup id="panel-movimientos">
                             <c:choose>
                                 <c:when test="#{infoSuministro.lotesSuministro.size() == 0}">                                    
-                                    <div class="div-output">No hay registros de movimientos.</div>                                    
+                                    <div class="div-output">No hay registros de movimientos con el filro seleccionado.</div>                                    
                                 </c:when>
                                 <c:otherwise>
                                     
@@ -113,7 +113,7 @@
                                                                     <td class="div-output" >
                                                                         <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
                                                                     </td>                                                                     
-                                                                </h:panelGroup>  
+                                                                </h:panelGroup>                                                                
                                                                 
                                                                 <td class="div-output" >
                                                                     <div>#{ingreso.operarioIngresoSuministro.idOperario}</div>
@@ -132,26 +132,34 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Stock Lote:</td>
-                                                            <c:choose>
-                                                                <c:when test="#{lot.vencido == true and lot.cantidadStock > 0}">
-                                                                    <td class="div-output" style="background-color: red; color:whitesmoke;">
-                                                                        <div>#{lot.cantidadStock}</div>                    
-                                                                    </td>
-                                                                </c:when>
-                                                                <c:when test="#{lot.cantidadStock le 0 or lot.vencido == false }" >
-                                                                    <td class="div-output" >
-                                                                        <div>#{lot.cantidadStock}</div>
-                                                                    </td>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <td class="div-output" >
-                                                                        <div>#{lot.cantidadStock}</div>
-                                                                    </td>
-                                                                </c:otherwise>
-                                                            </c:choose>
+                                                            
+                                                            <h:panelGroup rendered="#{lot.vencido == true and lot.cantidadStock > 0}">
+                                                                <td class="div-output" style="background-color: red; color:whitesmoke;">
+                                                                    <div>#{lot.cantidadStock}</div>                    
+                                                                </td>
+                                                            </h:panelGroup>
+                                                            
+                                                            <h:panelGroup rendered="#{lot.vencido == true and lot.cantidadStock == 0}">
+                                                                <td class="div-output" >
+                                                                    <div>#{lot.cantidadStock}</div>
+                                                                </td>
+                                                            </h:panelGroup>
+                                                            
+                                                            <h:panelGroup rendered="#{lot.vencido == false and lot.cantidadStock == 0}">
+                                                                <td class="div-output" >
+                                                                    <div>#{lot.cantidadStock}</div>
+                                                                </td>
+                                                            </h:panelGroup>
+                                                            
+                                                            <h:panelGroup rendered="#{lot.vencido == false and lot.cantidadStock gt 0}">
+                                                                <td class="div-output" >
+                                                                    <div>#{lot.cantidadStock}</div>
+                                                                </td>
+                                                            </h:panelGroup>
+                                                            
                                                             <td></td>
                                                             <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                                <td></td>
+                                                            <td></td>
                                                             </c:if>
                                                         </tr>
                                                     </c:forEach>

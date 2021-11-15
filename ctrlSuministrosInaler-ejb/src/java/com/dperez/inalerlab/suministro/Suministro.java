@@ -89,9 +89,7 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
     //	StocksMinimos
     public StockMinimo CrearStockMinimo(float cantidad, Date fechaVigente){
         StockMinimo stock = new StockMinimo(cantidad, fechaVigente, true);
-         this.StocksMinimosSuministro.forEach((StockMinimo s) -> {
-            s.setVigente(false);
-        });
+        DarDeBajaTodosLosStocks();
         this.StocksMinimosSuministro.add(stock);
         return stock;
     }
@@ -101,6 +99,12 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
                 .filter(stock->stock.getVigenciaStockMinimo() == true)
                 .findFirst()
                 .orElse(null);
+    }
+    
+    private void DarDeBajaTodosLosStocks(){
+        StocksMinimosSuministro.stream()
+                .filter((StockMinimo s)->s.getVigenciaStockMinimo() == true)
+                .forEach((StockMinimo s)->s.setVigente(false));
     }
     
     //	Lotes

@@ -54,8 +54,6 @@ public class InfoSuministro implements Serializable{
         int id = Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("id"));
         SuministroSeleccionado = fSuministro.BuscarSuministro(id);
         LotesSuministrosSinFiltro = new ArrayList<>(SuministroSeleccionado.getLotesSuministros());
-        LotesSuministro = LotesSuministro = LotesSuministrosSinFiltro.stream()
-                .filter((Lote l)->l.getCantidadStock()>0)
-                .collect(Collectors.toList());
+        cargarDatosLotes();
     }
 }
