@@ -61,18 +61,18 @@ public class ControladorSuministro implements Serializable {
     public int CrearSuministro(String NombreSuministro, String DescripcionSuministro,
             String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro, boolean AvisoCambioLote) {
         Suministro suministro = null;
-        switch (TipoSuministro.toString()) {
-            case "Material":
+        switch (TipoSuministro) {
+            case MATERIAL:
                 suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
                 
-            case "MedioEnsayo":
+            case MEDIO_ENSAYO:
                 suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;
                 
-            case "ReactivoQuimico":
+            case REACTIVO_QUIMICO:
                 suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
                         cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
                 break;

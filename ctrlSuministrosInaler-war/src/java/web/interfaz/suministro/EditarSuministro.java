@@ -3,6 +3,7 @@ package web.interfaz.suministro;
 
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.proveedor.Proveedor;
+import com.dperez.inalerlab.suministro.EnumSuministro;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.Material;
 import com.dperez.inalerlab.suministro.MedioEnsayo;
@@ -46,8 +47,8 @@ public class EditarSuministro implements Serializable{
     private String strFechaVigenteStock;
     private int IdUnidadSuministro;
     private int IdProveedor;
-    private String TipoSuministro;
-    private String[] TiposSuministros;
+    private EnumSuministro TipoSuministro;
+    private EnumSuministro[] TiposSuministros;
     
     private List<Unidad> Unidades;
     private List<Proveedor> Proveedores;
@@ -59,8 +60,8 @@ public class EditarSuministro implements Serializable{
     public String getCodigoSAPSuministro() {return CodigoSAPSuministro;}
     public int getIdProveedor() {return IdProveedor;}
     public int getIdUnidadSuministro() {return IdUnidadSuministro;}
-    public String getTipoSuministro() {return TipoSuministro;}
-    public String[] getTiposSuministros() {return TiposSuministros;}
+    public EnumSuministro getTipoSuministro() {return TipoSuministro;}
+    public EnumSuministro[] getTiposSuministros() {return TiposSuministros;}
     public float getCantidadStockMinimo() {return CantidadStockMinimo;}
     public Date getFechaVigenteStock() {return FechaVigenteStock;}
     public String getStrFechaVigenteStock() {
@@ -83,8 +84,8 @@ public class EditarSuministro implements Serializable{
     public void setCodigoSAPSuministro(String CodigoSAPSuministro) {this.CodigoSAPSuministro = CodigoSAPSuministro;}
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
     public void setIdUnidadSuministro(int IdUnidadSuministro) {this.IdUnidadSuministro = IdUnidadSuministro;}
-    public void setTipoSuministro(String TipoSuministro) {this.TipoSuministro = TipoSuministro;}
-    public void setTiposSuministros(String[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
+    public void setTipoSuministro(EnumSuministro TipoSuministro) {this.TipoSuministro = TipoSuministro;}
+    public void setTiposSuministros(EnumSuministro[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
     public void setCantidadStockMinimo(float CantidadStockMinimo) {this.CantidadStockMinimo = CantidadStockMinimo;}
     public void setFechaVigenteStock(Date FechaVigenteStock) {this.FechaVigenteStock = FechaVigenteStock;}
     public void setStrFechaVigenteStock(String strFechaVigenteStock) {
@@ -106,11 +107,11 @@ public class EditarSuministro implements Serializable{
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         Suministro suministro;
         switch(TipoSuministro){
-            case "Reactivo Quimico":
+            case REACTIVO_QUIMICO:
                 suministro = new ReactivoQuimico();
                 break;
                 
-            case "Medio de Ensayo":
+            case MEDIO_ENSAYO:
                 suministro = new MedioEnsayo();
                 break;
                 
@@ -140,7 +141,7 @@ public class EditarSuministro implements Serializable{
                 .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
                 .collect(Collectors.toList());
         
-        TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};        
+        TiposSuministros = EnumSuministro.values();
         
         try{
             FacesContext context = FacesContext.getCurrentInstance();
@@ -170,15 +171,15 @@ public class EditarSuministro implements Serializable{
     private void cargarTipoSuministro(Suministro sum){
         switch(sum.getClass().getSimpleName()){
             case "ReactivoQuimico":
-                TipoSuministro = TiposSuministros[0];
+                TipoSuministro = EnumSuministro.REACTIVO_QUIMICO;
                 break;
                 
             case "MedioEnsayo":
-                TipoSuministro = TiposSuministros[1];
+                TipoSuministro = EnumSuministro.MEDIO_ENSAYO;
                 break;
                 
             case "Material":
-                TipoSuministro = TiposSuministros[2];
+                TipoSuministro = EnumSuministro.MATERIAL;
                 break;
         }
     }

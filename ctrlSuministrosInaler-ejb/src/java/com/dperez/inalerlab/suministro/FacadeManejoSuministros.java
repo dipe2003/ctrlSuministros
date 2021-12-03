@@ -51,7 +51,7 @@ public class FacadeManejoSuministros implements Serializable {
     public int RegistrarMaterial(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.Material, AvisoCambioLote);
+                IdProveedorSuministro, EnumSuministro.MATERIAL, AvisoCambioLote);
     }
     /**
      * Registra un medio de ensayo en la base de datos.
@@ -66,7 +66,7 @@ public class FacadeManejoSuministros implements Serializable {
     public int RegistrarMedioEnsayo(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.MedioEnsayo, AvisoCambioLote);
+                IdProveedorSuministro, EnumSuministro.MEDIO_ENSAYO, AvisoCambioLote);
     }
     /**
      * Registra un reactivo quimico en la base de datos.
@@ -81,7 +81,7 @@ public class FacadeManejoSuministros implements Serializable {
     public int RegistrarReactivoQuimico(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
             int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
         return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.ReactivoQuimico, AvisoCambioLote);
+                IdProveedorSuministro, EnumSuministro.REACTIVO_QUIMICO, AvisoCambioLote);
     }
     
     public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){

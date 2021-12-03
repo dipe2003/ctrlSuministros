@@ -38,13 +38,13 @@
                                     <tr>
                                         <td class="div-output">
                                             <c:choose>
-                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'Material'}">
+                                                <c:when test="#{listadoSuministros.checkTipo(sum) == 'Material'}">
                                                     Material
                                                 </c:when>
-                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'ReactivoQuimico'}">
+                                                <c:when test="#{listadoSuministros.checkTipo(sum) == 'ReactivoQuimico'}">
                                                     Reactivo Quimico
                                                 </c:when>
-                                                <c:when test="#{listadoSuministros.checkTipo(sum.idSuministro) == 'MedioEnsayo'}">
+                                                <c:when test="#{listadoSuministros.checkTipo(sum) == 'MedioEnsayo'}">
                                                     Medio de Ensayo
                                                 </c:when>                                            
                                             </c:choose>

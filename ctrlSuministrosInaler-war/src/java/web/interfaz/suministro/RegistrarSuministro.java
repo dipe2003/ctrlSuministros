@@ -3,6 +3,7 @@ package web.interfaz.suministro;
 
 import com.dperez.inalerlab.proveedor.FacadeManejoProveedor;
 import com.dperez.inalerlab.proveedor.Proveedor;
+import com.dperez.inalerlab.suministro.EnumSuministro;
 import com.dperez.inalerlab.suministro.FacadeManejoSuministros;
 import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.IOException;
@@ -39,8 +40,8 @@ public class RegistrarSuministro implements Serializable{
     private String strFechaVigenteStock;
     private int IdUnidadSuministro;
     private int IdProveedor;
-    private String TipoSuministro;
-    private String[] TiposSuministros;
+    private EnumSuministro TipoSuministro;
+    private EnumSuministro[] TiposSuministros;
     
     private List<Unidad> Unidades;
     private List<Proveedor> Proveedores;
@@ -53,8 +54,8 @@ public class RegistrarSuministro implements Serializable{
     public boolean isAvisoCambioLote() {return AvisoCambioLote;}    
     public int getIdProveedor() {return IdProveedor;}
     public int getIdUnidadSuministro() {return IdUnidadSuministro;}
-    public String getTipoSuministro() {return TipoSuministro;}
-    public String[] getTiposSuministros() {return TiposSuministros;}
+    public EnumSuministro getTipoSuministro() {return TipoSuministro;}
+    public EnumSuministro[] getTiposSuministros() {return TiposSuministros;}
     public float getCantidadStockMinimo() {return CantidadStockMinimo;}
     public Date getFechaVigenteStock() {return FechaVigenteStock;}
     public String getStrFechaVigenteStock() {
@@ -77,8 +78,8 @@ public class RegistrarSuministro implements Serializable{
     public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}    
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
     public void setIdUnidadSuministro(int IdUnidadSuministro) {this.IdUnidadSuministro = IdUnidadSuministro;}
-    public void setTipoSuministro(String TipoSuministro) {this.TipoSuministro = TipoSuministro;}
-    public void setTiposSuministros(String[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
+    public void setTipoSuministro(EnumSuministro TipoSuministro) {this.TipoSuministro = TipoSuministro;}
+    public void setTiposSuministros(EnumSuministro[] TiposSuministros) {this.TiposSuministros = TiposSuministros;}
     public void setCantidadStockMinimo(float CantidadStockMinimo) {this.CantidadStockMinimo = CantidadStockMinimo;}
     public void setFechaVigenteStock(Date FechaVigenteStock) {this.FechaVigenteStock = FechaVigenteStock;}
     public void setStrFechaVigenteStock(String strFechaVigenteStock) {
@@ -98,23 +99,23 @@ public class RegistrarSuministro implements Serializable{
         int idSuministro = -1;
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         switch(TipoSuministro){
-            case "Reactivo Quimico":
+            case REACTIVO_QUIMICO:
                 if((idSuministro = fSuministro.RegistrarReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
                 break;
                 
-            case "Medio de Ensayo":
+            case MEDIO_ENSAYO:
                 if((idSuministro = fSuministro.RegistrarMedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
                 break;
                 
             default:
                 if((idSuministro = fSuministro.RegistrarMaterial(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(IdUnidadSuministro, FechaVigenteStock, idSuministro);
+                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
                     FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
                 }
                 break;
@@ -129,7 +130,7 @@ public class RegistrarSuministro implements Serializable{
                 .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
                 .collect(Collectors.toList());
         
-        TiposSuministros = new String[]{"Reactivo Quimico", "Medio de Ensayo", "Material"};
+        TiposSuministros = EnumSuministro.values(); 
         TipoSuministro = TiposSuministros[0];
     }
     

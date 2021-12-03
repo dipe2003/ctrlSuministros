@@ -50,9 +50,7 @@ public class ListadoSuministros implements Serializable{
         ListaSuministros = new ArrayList<>(ListaTodosLosSuministros);
     }
     
-    public String checkTipo(int IdSuministro){
-        return ListaSuministros.stream()
-                .filter(suministro->suministro.getIdSuministro()==IdSuministro)
-                .findFirst().get().getClass().getSimpleName();
+    public String checkTipo(Suministro sum){
+        return sum.getClass().getSimpleName();
     }
 }

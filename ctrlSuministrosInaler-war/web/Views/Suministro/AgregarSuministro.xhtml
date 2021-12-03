@@ -18,7 +18,7 @@
                         <fieldset><legend>Agregar Suministro</legend>
                             <div class="label">Tipo de Suministro</div>
                             <h:selectOneRadio value="#{registrarSuministro.tipoSuministro}" class="select-opt" required="true" requiredMessage="No se selecciono tipo." >
-                                <f:selectItems value="#{registrarSuministro.tiposSuministros}" />
+                                <f:selectItems var="tipo" value="#{registrarSuministro.tiposSuministros}" itemLabel="#{tipo.nombre}" />
                             </h:selectOneRadio>
                             
                             <div class="label">Nombre de Suministro</div>

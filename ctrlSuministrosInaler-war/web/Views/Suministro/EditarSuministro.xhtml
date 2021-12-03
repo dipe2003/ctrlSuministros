@@ -17,7 +17,7 @@
                     <h:form id="frmEditSuministro">
                         <fieldset><legend>Editar Suministro</legend>
                             <div class="label">Tipo de Suministro</div>
-                            <h:outputText class="output" value="#{editarSuministro.tipoSuministro}" />
+                            <h:outputText class="output" value="#{editarSuministro.tipoSuministro.nombre}" />
                             
                             <div class="label">Nombre de Suministro</div>
                             <h:inputText id="inputEditNombreSuministro" class="input" value="#{editarSuministro.nombreSuministro}" required="true" requiredMessage="No se ingreso nombre de suministro." p:placeholder="Nombre del suministro."/>
