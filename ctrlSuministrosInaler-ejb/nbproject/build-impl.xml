@@ -141,7 +141,7 @@ is divided into following sections:
         <property name="javadoc.encoding.used" value="${source.encoding}"/>
         <property name="includes" value="**"/>
         <property name="excludes" value=""/>
-        <path id="endorsed.classpath.path" path="${endorsed.classpath}"/>
+        <path id="" path="${endorsed.classpath}"/>
         <condition else="" property="endorsed.classpath.cmd.line.arg" value="-Xbootclasspath/p:'${toString:endorsed.classpath.path}'">
             <and>
                 <isset property="endorsed.classpath"/>

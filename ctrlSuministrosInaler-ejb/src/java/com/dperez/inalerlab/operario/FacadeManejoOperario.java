@@ -1,6 +1,5 @@
 package com.dperez.inalerlab.operario;
 
-import com.dperez.inalerlab.operario.seguridad.ControladorSeguridad;
 import com.dperez.inalerlab.operario.permiso.ControladorPermiso;
 import com.dperez.inalerlab.operario.permiso.Permiso;
 import java.io.Serializable;
@@ -20,9 +19,6 @@ public class FacadeManejoOperario implements Serializable {
     private ControladorOperario cOperario;
     @Inject
     private ControladorPermiso cPermiso;
-    @Inject
-    private ControladorSeguridad cSeg;
-
     /**
      * Lista todos los operario registrados en la base de datos.
      * @return Retorna una lista vacia si no existen operarios registrados.

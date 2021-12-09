@@ -1,9 +1,15 @@
 package com.dperez.inalerlab.proveedor;
 
+import com.dperez.inalerlab.suministro.EnumSuministro;
+import com.dperez.inalerlab.suministro.Material;
+import com.dperez.inalerlab.suministro.MedioEnsayo;
+import com.dperez.inalerlab.suministro.ReactivoQuimico;
 import com.dperez.inalerlab.suministro.Suministro;
+import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +23,7 @@ public class Proveedor implements Serializable{
     private int IdProveedor;
     private String NombreProveedor;
     private String ContactoProveedor;
-    @OneToMany(mappedBy = "ProveedorSuministro", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ProveedorSuministro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Suministro> SuministrosProveedor;
     
     //	Constructores
@@ -48,5 +54,16 @@ public class Proveedor implements Serializable{
     public boolean esProveedorSuministro(int IdSuministro){
         return SuministrosProveedor.stream()
                 .anyMatch(suministro->suministro.getIdSuministro()==IdSuministro);
+    }
+    public Suministro CrearSuministro(String Nombre, String Descripcion, String CodigoSAP, Unidad UnidadSuministro, 
+            EnumSuministro TipoSuministro, boolean AvisoCambioLote){
+        Suministro suministro = null;
+        switch (TipoSuministro) {
+            case MATERIAL-> suministro = new Material(Nombre, Descripcion, CodigoSAP, UnidadSuministro, this, AvisoCambioLote);                
+            case MEDIO_ENSAYO-> suministro = new MedioEnsayo(Nombre, Descripcion, CodigoSAP, UnidadSuministro, this, AvisoCambioLote);
+            case REACTIVO_QUIMICO-> suministro = new ReactivoQuimico(Nombre, Descripcion, CodigoSAP, UnidadSuministro, this, AvisoCambioLote);
+        }
+        this.SuministrosProveedor.add(suministro);
+        return suministro;
     }
 }

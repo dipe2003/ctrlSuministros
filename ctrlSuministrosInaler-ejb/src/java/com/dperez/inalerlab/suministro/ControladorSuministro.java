@@ -6,10 +6,12 @@ import com.dperez.inalerlab.email.SendMail;
 import com.dperez.inalerlab.operario.ControladorOperario;
 import com.dperez.inalerlab.operario.Operario;
 import com.dperez.inalerlab.proveedor.ControladorProveedor;
+import com.dperez.inalerlab.proveedor.Proveedor;
 import com.dperez.inalerlab.suministro.lote.Ingreso;
 import com.dperez.inalerlab.suministro.lote.Lote;
 import com.dperez.inalerlab.suministro.lote.Salida;
 import com.dperez.inalerlab.suministro.unidad.ControladorUnidad;
+import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,23 +62,10 @@ public class ControladorSuministro implements Serializable {
      */
     public int CrearSuministro(String NombreSuministro, String DescripcionSuministro,
             String CodigoSAPSuministro, int IdUnidadSuministro, int IdProveedorSuministro, EnumSuministro TipoSuministro, boolean AvisoCambioLote) {
-        Suministro suministro = null;
-        switch (TipoSuministro) {
-            case MATERIAL:
-                suministro = new Material(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
-                break;
-                
-            case MEDIO_ENSAYO:
-                suministro = new MedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
-                break;
-                
-            case REACTIVO_QUIMICO:
-                suministro = new ReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
-                        cUnidad.BuscarUnidad(IdUnidadSuministro), cProveedor.BuscarProveedor(IdProveedorSuministro), AvisoCambioLote);
-                break;
-        }
+        Proveedor proveedor = cProveedor.BuscarProveedor(IdProveedorSuministro);
+        Unidad unidad = cUnidad.BuscarUnidad(IdUnidadSuministro);
+        
+        Suministro suministro = proveedor.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, unidad, TipoSuministro, AvisoCambioLote);
         int id = mSuministro.CrearSuministro(suministro);
         if(id>0){
             buffer.putEntidad(suministro, id);
@@ -140,12 +129,12 @@ public class ControladorSuministro implements Serializable {
      */
     private String GetMensajeCambioDeLote(int IdSuministro, String NumeroLoteSuministro) {
         Suministro suministro = buffer.getEntidad(IdSuministro);
-        String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>";
-        mensaje += "<h3>Ingreso de Nuevo Lote: ";
-        mensaje += suministro.getNombreSuministro();
-        mensaje += " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")";
-        mensaje += "</h3><br></br>";
-        mensaje += "Lote: " + NumeroLoteSuministro;
+        String mensaje = "<p style='font-family: sans-serif;'><h1 style='color: blue;'> Control Suministros </h1><br></br>"
+                + "<h3>Ingreso de Nuevo Lote: "
+                + suministro.getNombreSuministro()
+                + " (" + suministro.getProveedorSuministro().getNombreProveedor() + ")"
+                + "</h3><br></br>"
+                + "Lote: " + NumeroLoteSuministro;
         return mensaje;
     }
     

@@ -54,7 +54,8 @@ public class EditarOperario implements Serializable {
     
     private String[] PasswordsOperario;
     
-    //  getters
+ 
+    //<editor-fold desc="Getters" >
     public String getIdOperario() {
         return IdOperario;
     }
@@ -106,8 +107,9 @@ public class EditarOperario implements Serializable {
     public boolean isVigenciaOperario() {
         return VigenciaOperario;
     }
-    
-    //  setters
+    //</editor-fold>
+   
+    //<editor-fold desc="Setters">
     public void setIdOperario(String IdOperario) {
         this.IdOperario = IdOperario;
     }
@@ -159,7 +161,9 @@ public class EditarOperario implements Serializable {
     public void setVigenciaOperario(boolean VigenciaOperario) {
         this.VigenciaOperario = VigenciaOperario;
     }
+    //</editor-fold>
     
+    //<editor-fold desc="Metodos">
     /**
      * Guarda los datos modificados del operario. Se comprueban que sean
      * correctas las contraseñas (si se modificaron).
@@ -307,4 +311,5 @@ public class EditarOperario implements Serializable {
     public void generarCorreo() {
         CorreoOperario = NombreOperario.toLowerCase() + "." + ApellidoOperario.toLowerCase() + "@marfrig.com";
     }
+    //</editor-fold>
 }

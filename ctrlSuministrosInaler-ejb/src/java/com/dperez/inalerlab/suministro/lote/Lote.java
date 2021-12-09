@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -39,15 +40,15 @@ public class Lote implements Serializable{
     
     //	Constructores
     public Lote(){
-        SalidasLote = new ArrayList();
-        IngresosLote = new ArrayList();
+        SalidasLote = new ArrayList<>();
+        IngresosLote = new ArrayList<>();
     }
     public Lote(Date VencimientoLote, String NumeroLote, Suministro suministro){
         this.VencimientoLote = VencimientoLote;
         this.NumeroLote = NumeroLote;
         this.SuministroLote = suministro;
-        SalidasLote = new ArrayList();
-        IngresosLote = new ArrayList();
+        SalidasLote = new ArrayList<>();
+        IngresosLote = new ArrayList<>();
     }
     
     //	Getters
@@ -84,8 +85,8 @@ public class Lote implements Serializable{
      */
     public float getCantidadIngresosLote(){
         return (float) IngresosLote.stream()
-        .mapToDouble((Ingreso i) ->i.getCantidadIngreso())
-        .sum();
+                .mapToDouble((Ingreso i) ->i.getCantidadIngreso())
+                .sum();
     }
     
     /**
@@ -94,8 +95,8 @@ public class Lote implements Serializable{
      */
     public float getCantidadSalidasLote(){
         return (float) SalidasLote.stream()
-        .mapToDouble((Salida a) ->a.getCantidadSalida())
-        .sum();
+                .mapToDouble((Salida a) ->a.getCantidadSalida())
+                .sum();
     }
     
     /**
@@ -117,50 +118,33 @@ public class Lote implements Serializable{
         this.SalidasLote.add(salida);
         return salida;
     }
- 
+    
     /**
      * Comprueba cada ingreso y devuelve el ultimo registro.
      * @return
      */
-    public Ingreso getUltimoIngreso(){
-        int index = 0;
-        if(!IngresosLote.isEmpty()){
-            Date max = IngresosLote.get(0).getFechaIngreso();
-            for (int i = 0; i < IngresosLote.size(); i++) {
-                if(IngresosLote.get(i).getFechaIngreso().after(max)){
-                    max = IngresosLote.get(i).getFechaIngreso();
-                    index = i;
-                }
-            }
-            return IngresosLote.get(index);
-        }
-        return null;
+    public Ingreso getUltimoIngreso(){        
+        return IngresosLote.stream()
+                .max(Comparator.comparing(i->i.getFechaIngreso()))
+                .orElse(null);
+        
     }
     
     public Ingreso FindIngreso(int IdIngreso){
         return this.IngresosLote.stream()
-                .filter(i->i.getIdIngreso() == IdIngreso)
+                .filter((Ingreso ingreso)->ingreso.getIdIngreso() == IdIngreso)
                 .findFirst()
                 .orElse(null);
     }
     
-        /**
+    /**
      * Comprueba cada salida y devuelve el ultimo registro.
      * @return
      */
     public Salida getUltimaSalida(){
-        int index = 0;
-        if(!SalidasLote.isEmpty()){
-            Date max = SalidasLote.get(0).getFechaSalida();
-            for (int i = 0; i < SalidasLote.size(); i++) {
-                if(SalidasLote.get(i).getFechaSalida().after(max)){
-                    max = SalidasLote.get(i).getFechaSalida();
-                    index = i;
-                }
-            }
-            return SalidasLote.get(index);
-        }
-        return null;
+        return SalidasLote.stream()
+                .max(Comparator.comparing((Salida salida)->salida.getFechaSalida()))
+                .orElse(null);
     }
     
     public Salida FindSalida(int IdSalida){

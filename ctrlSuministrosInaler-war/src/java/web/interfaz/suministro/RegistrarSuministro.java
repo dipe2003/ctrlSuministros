@@ -51,7 +51,7 @@ public class RegistrarSuministro implements Serializable{
     public String getNombreSuministro() {return NombreSuministro;}
     public String getDescripcionSuministro() {return DescripcionSuministro;}
     public String getCodigoSAPSuministro() {return CodigoSAPSuministro;}
-    public boolean isAvisoCambioLote() {return AvisoCambioLote;}    
+    public boolean isAvisoCambioLote() {return AvisoCambioLote;}
     public int getIdProveedor() {return IdProveedor;}
     public int getIdUnidadSuministro() {return IdUnidadSuministro;}
     public EnumSuministro getTipoSuministro() {return TipoSuministro;}
@@ -75,7 +75,7 @@ public class RegistrarSuministro implements Serializable{
     public void setNombreSuministro(String NombreSuministro) {this.NombreSuministro = NombreSuministro;}
     public void setDescripcionSuministro(String DescripcionSuministro) {this.DescripcionSuministro = DescripcionSuministro;}
     public void setCodigoSAPSuministro(String CodigoSAPSuministro) {this.CodigoSAPSuministro = CodigoSAPSuministro;}
-    public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}    
+    public void setAvisoCambioLote(boolean AvisoCambioLote) {this.AvisoCambioLote = AvisoCambioLote;}
     public void setIdProveedor(int IdProveedor) {this.IdProveedor = IdProveedor;}
     public void setIdUnidadSuministro(int IdUnidadSuministro) {this.IdUnidadSuministro = IdUnidadSuministro;}
     public void setTipoSuministro(EnumSuministro TipoSuministro) {this.TipoSuministro = TipoSuministro;}
@@ -98,39 +98,22 @@ public class RegistrarSuministro implements Serializable{
     public void registrarSuministro() throws IOException{
         int idSuministro = -1;
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        switch(TipoSuministro){
-            case REACTIVO_QUIMICO:
-                if((idSuministro = fSuministro.RegistrarReactivoQuimico(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
-                }
-                break;
-                
-            case MEDIO_ENSAYO:
-                if((idSuministro = fSuministro.RegistrarMedioEnsayo(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
-                }
-                break;
-                
-            default:
-                if((idSuministro = fSuministro.RegistrarMaterial(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro, IdProveedor, AvisoCambioLote))!=-1){
-                    fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
-                }
-                break;
+        if((idSuministro = fSuministro.RegistrarSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro,
+                IdUnidadSuministro, IdProveedor, AvisoCambioLote, TipoSuministro))!=-1){
+            fSuministro.RegistrarStockMinimo(CantidadStockMinimo, FechaVigenteStock, idSuministro);
+            FacesContext.getCurrentInstance().getExternalContext().redirect(url+"/Views/index.xhtml");
         }
     }
     
     @PostConstruct
     public void init(){
         Unidades = fSuministro.ListarUnidades();
-               Proveedores = fProveedor.ListarProveedores()
+        Proveedores = fProveedor.ListarProveedores()
                 .stream()
                 .sorted(Comparator.comparing(Proveedor::getNombreProveedor))
                 .collect(Collectors.toList());
         
-        TiposSuministros = EnumSuministro.values(); 
+        TiposSuministros = EnumSuministro.values();
         TipoSuministro = TiposSuministros[0];
     }
     

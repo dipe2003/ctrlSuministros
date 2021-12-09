@@ -52,7 +52,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     private String UnidadCantidad;
     private float StockSuministro;
     
-    //  getters
+    //<editor-fold desc="Getters">
     public int getIdProveedor() {return idProveedor;}
     public String getNombreProveedor() {return NombreProveedor;}
     public List<Proveedor> getProveedores() {return Proveedores;}
@@ -88,8 +88,9 @@ public class RegistrarSalidaSuministro implements Serializable{
         return CantidadStockLote;
     }
     public float getStockSuministro() {return StockSuministro;}
+    //</editor-fold>
     
-    //  setters
+    //<editor-fold desc="Setters">
     public void setIdProveedor(int idProveedor) {this.idProveedor = idProveedor;}
     public void setNombreProveedor(String NombreProveedor) {this.NombreProveedor = NombreProveedor;}
     public void setProveedores(List<Proveedor> Proveedores) {this.Proveedores = Proveedores;}
@@ -113,7 +114,7 @@ public class RegistrarSalidaSuministro implements Serializable{
     public void setCantidadStockLote(float CantidadStockLote) {this.CantidadStockLote = CantidadStockLote;}
     public void setUnidadCantidad(String UnidadCantidad) {this.UnidadCantidad = UnidadCantidad;}
     public void setStockSuministro(float StockSuministro) {this.StockSuministro = StockSuministro;}
-    
+    //</editor-fold>
     /**
      * Registra la salida de un suministro.
      * @throws IOException

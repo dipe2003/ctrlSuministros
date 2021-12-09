@@ -2,7 +2,6 @@ package com.dperez.inalerlab.suministro.stockminimo;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +33,6 @@ public class StockMinimo implements Serializable{
     public Date getFechaVigenteStockMinimo(){return this.FechaVigenteStockMinimo;}
     public boolean getVigenciaStockMinimo(){return this.VigenciaStockMinimo;}
     public String getStrFechaVigenteStockMinimo(){
-        Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(FechaVigenteStockMinimo==null) return "---";
         return sdf.format(FechaVigenteStockMinimo);  

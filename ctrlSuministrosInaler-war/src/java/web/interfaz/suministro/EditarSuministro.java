@@ -107,17 +107,9 @@ public class EditarSuministro implements Serializable{
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         Suministro suministro;
         switch(TipoSuministro){
-            case REACTIVO_QUIMICO:
-                suministro = new ReactivoQuimico();
-                break;
-                
-            case MEDIO_ENSAYO:
-                suministro = new MedioEnsayo();
-                break;
-                
-            default:
-                suministro = new Material();
-                break;
+            case REACTIVO_QUIMICO-> suministro = new ReactivoQuimico();                
+            case MEDIO_ENSAYO ->suministro = new MedioEnsayo();                     
+            default-> suministro = new Material();
         }
         suministro.setCodigoSAPSuministro(CodigoSAPSuministro);
         suministro.setDescripcionSuministro(DescripcionSuministro);        
@@ -170,17 +162,9 @@ public class EditarSuministro implements Serializable{
     
     private void cargarTipoSuministro(Suministro sum){
         switch(sum.getClass().getSimpleName()){
-            case "ReactivoQuimico":
-                TipoSuministro = EnumSuministro.REACTIVO_QUIMICO;
-                break;
-                
-            case "MedioEnsayo":
-                TipoSuministro = EnumSuministro.MEDIO_ENSAYO;
-                break;
-                
-            case "Material":
-                TipoSuministro = EnumSuministro.MATERIAL;
-                break;
+            case "ReactivoQuimico" -> TipoSuministro = EnumSuministro.REACTIVO_QUIMICO;
+            case "MedioEnsayo"->TipoSuministro = EnumSuministro.MEDIO_ENSAYO;
+            case "Material" ->TipoSuministro = EnumSuministro.MATERIAL;
         }
     }
     

@@ -8,6 +8,7 @@ import com.dperez.inalerlab.suministro.unidad.Unidad;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,7 +94,7 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
         this.StocksMinimosSuministro.add(stock);
         return stock;
     }
-
+    
     public StockMinimo getStockMinimoSuministro(){
         return StocksMinimosSuministro.stream()
                 .filter(stock->stock.getVigenciaStockMinimo() == true)
@@ -189,7 +190,7 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
         Date UnMesVigencia = UnMes.getTime();
         Date Hoy = Calendar.getInstance().getTime();
         return LotesSuministros.stream()
-                .filter((Lote l)-> l.getVencimientoLote()!=null && l.getVencimientoLote().before(UnMesVigencia) && 
+                .filter((Lote l)-> l.getVencimientoLote()!=null && l.getVencimientoLote().before(UnMesVigencia) &&
                         l.getVencimientoLote().after(Hoy) && l.getCantidadStock() >0)
                 .collect(Collectors.toList());
     }
@@ -199,21 +200,13 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
      * @return Retorna null si no hay ingresos.
      */
     public Ingreso getUltimoIngreso(){
-        int index = 0;
-        if(!LotesSuministros.isEmpty()){
-            for (int i = 0; i < this.LotesSuministros.size(); i++) {
-                Ingreso in = LotesSuministros.get(i).getUltimoIngreso();
-                if(in!=null){
-                    Date max = in.getFechaIngreso();
-                    if(this.LotesSuministros.get(i).getUltimoIngreso().getFechaIngreso().after(max)){
-                        max = this.LotesSuministros.get(i).getUltimoIngreso().getFechaIngreso();
-                        index = i;
-                    }
-                }
-            }
-            return this.LotesSuministros.get(index).getUltimoIngreso();
-        }
-        return null;
+        List<Ingreso> ultimosIngresos =  new ArrayList<>();
+        LotesSuministros.stream()
+                .forEach((Lote lote)->ultimosIngresos.add(lote.getUltimoIngreso()));
+        return ultimosIngresos.stream()
+                .filter(i->i!=null)
+                .max(Comparator.comparing((Ingreso ingreso)->ingreso.getFechaIngreso()))
+                .orElse(null);
     }
     
     /***
@@ -230,7 +223,7 @@ abstract public class Suministro implements Serializable, Comparable<Suministro>
         return LotesSuministros.stream()
                 .filter((Lote l)->l.EstaVencido() && l.getCantidadStock()>0)
                 .collect(Collectors.toList());
-    }    
+    }
     
     /**
      * Comprueba la existencia del lote con el numero indicado.

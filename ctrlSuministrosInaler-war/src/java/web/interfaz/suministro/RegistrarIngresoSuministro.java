@@ -62,7 +62,7 @@ public class RegistrarIngresoSuministro implements Serializable{
     private Map<Integer, Lote> LotesSuministro;
     private Map<Integer, Lote> SetLotesSuministro;
     
-    //  getters
+    //<editor-fold desc="Getters">
     public Date getFechaIngresoSuministro() {return FechaIngresoSuministro;}
     public String getStrFechaIngresoSuministro() {
         SimpleDateFormat fDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -95,8 +95,9 @@ public class RegistrarIngresoSuministro implements Serializable{
     public int getIdLoteSeleccionado() {return IdLoteSeleccionado;}
     public Map<Integer, Lote> getLotesSuministro() {return LotesSuministro;}
     public Map<Integer, Lote> getSetLotesSuministro() {return SetLotesSuministro;}
-    
-    //  setters
+    //</editor-fold>
+
+    //<editor-fold desc="Setters">
     public void setFechaIngresoSuministro(Date FechaIngresoSuministro) {this.FechaIngresoSuministro = FechaIngresoSuministro;}
     public void setStrFechaIngresoSuministro(String strFechaIngresoSuministro) {
         Calendar cal = Calendar.getInstance();
@@ -134,7 +135,9 @@ public class RegistrarIngresoSuministro implements Serializable{
     public void setIdLoteSeleccionado(int IdLoteSeleccionado) {this.IdLoteSeleccionado = IdLoteSeleccionado;}
     public void setLotesSuministro(Map<Integer, Lote> LotesSuministro) {this.LotesSuministro = LotesSuministro;}
     public void setSetLotesSuministro(Map<Integer, Lote> SetLotesSuministro) {this.SetLotesSuministro = SetLotesSuministro;}
+    //</editor-fold>
     
+    //<editor-fold desc="Metodos">
     /**
      * Registra un nuevo ingreso de suministro.
      * Comprueba que la cantidad a ingresar sea correcta (mayor a 0)
@@ -215,5 +218,5 @@ public class RegistrarIngresoSuministro implements Serializable{
         NombreProveedor = prov.getNombreProveedor();
         idProveedor = prov.getIdProveedor();        
     }
-    
+    //</editor-fold>
 }

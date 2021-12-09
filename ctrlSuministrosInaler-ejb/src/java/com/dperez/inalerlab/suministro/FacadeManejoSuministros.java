@@ -27,7 +27,7 @@ public class FacadeManejoSuministros implements Serializable {
     public List<Suministro> ListarSuministros(boolean Vigentes){
         return cSuministro.ListarSuministros(Vigentes);
     }
-        
+    
     /**
      * Busca un suministro registrado en la base de datos.
      * El suministro debe estar registrado previamente.
@@ -39,49 +39,20 @@ public class FacadeManejoSuministros implements Serializable {
     }
     
     /**
-     * Registra un material en la base de datos.
-     * @param NombreSuministro
-     * @param DescripcionSuministro
-     * @param CodigoSAPSuministro
-     * @param IdUnidadSuministro
-     * @param IdProveedorSuministro
+     * Registra un suministro en la base de datos.
+     * @param Nombre
+     * @param Descripcion
+     * @param CodigoSAP
+     * @param IdUnidad
+     * @param IdProveedor
      * @param AvisoCambioLote
+     * @param TipoSuministro
      * @return Retorna el id de suministro creado. Si no se creo retorna -1.
      */
-    public int RegistrarMaterial(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
-        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.MATERIAL, AvisoCambioLote);
-    }
-    /**
-     * Registra un medio de ensayo en la base de datos.
-     * @param NombreSuministro
-     * @param DescripcionSuministro
-     * @param CodigoSAPSuministro
-     * @param IdUnidadSuministro
-     * @param IdProveedorSuministro
-     * @param AvisoCambioLote
-     * @return Retorna el id de suministro creado. Si no se creo retorna -1.
-     */
-    public int RegistrarMedioEnsayo(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
-        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.MEDIO_ENSAYO, AvisoCambioLote);
-    }
-    /**
-     * Registra un reactivo quimico en la base de datos.
-     * @param NombreSuministro
-     * @param DescripcionSuministro
-     * @param CodigoSAPSuministro
-     * @param IdUnidadSuministro
-     * @param IdProveedorSuministro
-     * @param AvisoCambioLote
-     * @return Retorna el id de suministro creado. Si no se creo retorna -1.
-     */
-    public int RegistrarReactivoQuimico(String NombreSuministro, String DescripcionSuministro, String CodigoSAPSuministro,
-            int IdUnidadSuministro, int  IdProveedorSuministro, boolean AvisoCambioLote){
-        return cSuministro.CrearSuministro(NombreSuministro, DescripcionSuministro, CodigoSAPSuministro, IdUnidadSuministro,
-                IdProveedorSuministro, EnumSuministro.REACTIVO_QUIMICO, AvisoCambioLote);
+    public int RegistrarSuministro(String Nombre, String Descripcion, String CodigoSAP,
+            int IdUnidad, int  IdProveedor, boolean AvisoCambioLote, EnumSuministro TipoSuministro){
+        return cSuministro.CrearSuministro(Nombre, Descripcion, CodigoSAP, IdUnidad,
+                IdProveedor, TipoSuministro, AvisoCambioLote);
     }
     
     public void EnviarNotificacionCambioLote(int IdSuministro, String NumeroLoteSuministro){
@@ -131,7 +102,7 @@ public class FacadeManejoSuministros implements Serializable {
     public Unidad BuscarUnidadSuministro(int IdSuministro){
         return cUnidad.BuscarUnidadSuministro(IdSuministro);
     }
-   
+    
     /**
      * Calcula la cantidad de suministros que están por debajo de su stock minimo.
      * @return Retorna array[0] = total de suministros y array[1]= total de suministros debajo de stock minimo
@@ -149,7 +120,7 @@ public class FacadeManejoSuministros implements Serializable {
         return cSuministro.GetIdsSuministrosDebajoStockMinimo();
     }
     
-  
+    
     /**
      * Devuelve los suministros con lotes vencidos en stock.
      * @return Retorna una lista con los ids de los suministros.
@@ -182,7 +153,7 @@ public class FacadeManejoSuministros implements Serializable {
      * @return Retorna el id de suministro actualizado. Si no se creo retorna -1.
      */
     public int ActualizarSuministro(Suministro suministro, int IdProveedor,int IdUnidad, float StockMinimo){
-            return cSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidad, StockMinimo);
+        return cSuministro.ActualizarSuministro(suministro, IdProveedor, IdUnidad, StockMinimo);
     }
     
 }
