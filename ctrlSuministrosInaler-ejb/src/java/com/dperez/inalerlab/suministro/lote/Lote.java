@@ -51,7 +51,8 @@ public class Lote implements Serializable{
         IngresosLote = new ArrayList<>();
     }
     
-    //	Getters
+    
+    //<editor-fold desc="Getters">
     public int getIdLote(){return this.IdLote;}
     public Date getVencimientoLote(){return this.VencimientoLote;}
     public Suministro getSuministroLote(){return this.SuministroLote;}
@@ -63,22 +64,18 @@ public class Lote implements Serializable{
         if(VencimientoLote==null) return "---";
         return sdf.format(VencimientoLote);
     }
-    
-    //	Setters
+    //</editor-fold>
+   
+    //<editor-fold desc="Setters">
     public void setIdLote(int IdLote){this.IdLote = IdLote;}
     public void setVencimientoLote(Date VencimientoLote){this.VencimientoLote = VencimientoLote;}
-    public void setSuministroLote(Suministro SuministroLote){
-        this.SuministroLote = SuministroLote;
-        if(!SuministroLote.getLotesSuministros().contains(this)){
-            SuministroLote.getLotesSuministros().add(this);
-        }
-    }
+    public void setSuministroLote(Suministro SuministroLote){this.SuministroLote = SuministroLote;}
     public void setIngresosLote(List<Ingreso> IngresosLote){this.IngresosLote = IngresosLote;}
     public void setNumeroLote(String NumeroLote) {this.NumeroLote = NumeroLote;}
     public void setSalidasLote(List<Salida> SalidasLote) {this.SalidasLote = SalidasLote;}
-    
-    //	Ingresos - Salidas
-    
+    //</editor-fold>
+
+    //<editor-fold desc="Ingresos / Salidas">
     /**
      *	Devuelve la cantidad ingresada del Suministro con el lote.
      * @return
@@ -154,6 +151,8 @@ public class Lote implements Serializable{
                 .orElse(null);
     }
     
+    //</editor-fold>
+    
     public boolean EstaVencido(){
         Date hoy = Calendar.getInstance().getTime();
         boolean vencido = false;
@@ -165,4 +164,5 @@ public class Lote implements Serializable{
     public boolean isVencido(){
         return EstaVencido();
     }
+    
 }
