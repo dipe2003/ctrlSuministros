@@ -41,9 +41,12 @@ public class ControladorSuministro implements Serializable {
     
     private BufferGenerico<Suministro> buffer;
     
+    private BufferGenerico<Proveedor> bufferProveedores;
+    
     @PostConstruct
     public void init(){
         buffer = fBuffer.getBufferSuministro(mSuministro.ListarSuministros());
+        bufferProveedores = fBuffer.getBufferProveedor(cProveedor.ListarProveedores());
     }
     
     
@@ -69,6 +72,7 @@ public class ControladorSuministro implements Serializable {
         int id = mSuministro.CrearSuministro(suministro);
         if(id>0){
             buffer.putEntidad(suministro, id);
+            bufferProveedores.putEntidad(proveedor, proveedor.getIdProveedor());
         }
         return id;
     }
