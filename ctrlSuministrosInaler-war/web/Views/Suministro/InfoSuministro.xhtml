@@ -159,7 +159,7 @@
                                                             
                                                             <td></td>
                                                             <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
-                                                            <td></td>
+                                                                <td></td>
                                                             </c:if>
                                                         </tr>
                                                     </c:forEach>
@@ -173,6 +173,8 @@
                                                 <th class="label" style="width: 30%">Lote</th>
                                                 <th class="label" style="width: 10%">Cantidad</th> 
                                                 <th class="label" style="width: 20%">Operario</th>
+                                                <th class="label" style="width: 5%"></th>
+                                                
                                                 <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
                                                     <c:forEach items="#{lote.salidasLote}" var="salida">
                                                         <tr>
@@ -185,6 +187,13 @@
                                                             <td class="div-output" >
                                                                 <div>#{salida.operarioSalidaSuministro.idOperario}</div>
                                                             </td>
+                                                            <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
+                                                                <td class="div-output" style="width: 0.6%">
+                                                                    <a href="#{facesContext.externalContext.requestContextPath}/Views/Suministro/EditarSalida.xhtml?id=#{salida.idSalida}&amp;idSum=#{lote.suministroLote.idSuministro}&amp;idlote=#{lote.idLote}">
+                                                                        <img title="Editar Salida/Lote" width="16px" src="#{facesContext.externalContext.requestContextPath}/resources/Images/edit_icon.ico"/>
+                                                                    </a>
+                                                                </td>
+                                                            </c:if>
                                                         </tr>
                                                     </c:forEach>
                                                 </c:forEach>

@@ -383,7 +383,7 @@ public class ControladorSuministro implements Serializable {
     }
     
     /**
-     * Actualiza los datos del ingreso especificado y del lote relacionado.No se actualiza buffer.
+     * Actualiza los datos del ingreso especificado y del lote relacionado.
      * @param idSuministro
      * @param IdLote
      * @param IdIngreso
@@ -415,6 +415,35 @@ public class ControladorSuministro implements Serializable {
                 
                 if(!ingreso.getNumeroFactura().equalsIgnoreCase(NumeroFactura))
                     ingreso.setNumeroFactura(NumeroFactura);
+            }
+            buffer.updateEntidad(suministro, suministro.getIdSuministro());
+            return mSuministro.ActualizarSuministro(suministro);
+        }catch(Exception ex){}
+        return -1;
+    }
+    
+    /**
+     * Actualiza los datos de la salida especificada y del lote relacionado. 
+     * @param idSuministro
+     * @param IdLote
+     * @param IdSalida
+     * @param CantidadSalida
+     * @param FechaSalida
+     * @return -1 si no se actualizo. IdLote si se actualizo.
+     */
+    public int ActualizarLoteSalida(int idSuministro, int IdLote, int IdSalida, float CantidadSalida, Date FechaSalida){
+        Suministro suministro = mSuministro.ObtenerSuministro(idSuministro);
+        Lote lot = suministro.FindLote(IdLote);
+        try{
+            if(lot != null){
+                Salida salida = lot.FindSalida(IdSalida);
+                
+                if(salida.getFechaSalida().compareTo(FechaSalida)!=0){
+                    salida.setFechaSalida(FechaSalida);
+                }
+                if(salida.getCantidadSalida() != CantidadSalida){
+                    salida.setCantidadSalida(CantidadSalida);
+                }
             }
             buffer.updateEntidad(suministro, suministro.getIdSuministro());
             return mSuministro.ActualizarSuministro(suministro);

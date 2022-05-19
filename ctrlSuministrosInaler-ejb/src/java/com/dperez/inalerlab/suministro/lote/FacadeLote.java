@@ -67,4 +67,17 @@ public class FacadeLote implements Serializable{
         return cSuministro.ActualizarLoteIngreso(idSuministro, IdLote, IdIngreso, NumeroLote, CantidadIngreso, FechaVencimientoLote, NumeroFactura);
     }
     
+        /**
+     * Actualiza los datos de la salida especificada y del lote relacionado.No se actualiza el buffer.
+     * @param idSuministro
+     * @param IdLote
+     * @param IdSalida
+     * @param CantidadSalida
+     * @param FechaSalida
+     * @return -1 si no se actualizo. IdLote si se actualizo.
+     */
+    public int ActualizarLoteSalida(int idSuministro, int IdLote, int IdSalida, float CantidadSalida, Date FechaSalida){
+        return cSuministro.ActualizarLoteSalida(idSuministro, IdLote, IdSalida, CantidadSalida, FechaSalida);
+    }
+    
 }

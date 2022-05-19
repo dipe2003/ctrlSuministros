@@ -5,7 +5,6 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>ctrlSuministrosInaler-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">libs.javaee-endorsed-api-7.0.classpath</included-library>
             <included-library dirs="200">file.reference.jaf-1_1_1.zip</included-library>
             <included-library dirs="200">file.reference.javax.mail.jar</included-library>
             <included-library dirs="200">file.reference.hibernate-core-5.6.0.Final.jar</included-library>
