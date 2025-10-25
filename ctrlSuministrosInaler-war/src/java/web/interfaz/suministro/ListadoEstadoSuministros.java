@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import web.interfaz.herramientas.Excelsea;
 
 
 @Named
@@ -61,6 +62,11 @@ public class ListadoEstadoSuministros implements Serializable{
     public void init() {
         Suministros = fSuministro.ListarSuministros(true);
         ListaSuministros = new ArrayList<>(Suministros);
+    }
+    
+    public void excelseaListado() {
+        Excelsea excel = new Excelsea();
+        excel.ExportarLibroExcel(ListaSuministros, "Listado Estado Suministros", true);
     }
     
 }

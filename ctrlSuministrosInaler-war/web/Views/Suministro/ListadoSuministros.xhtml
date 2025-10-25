@@ -9,15 +9,20 @@
     <ui:define name="page_content">
         <div class="contenido">
             <fieldset><legend>Listado de Suministros Registrados</legend>
-                <h:panelGroup rendered="#{loginOperario.permisoOperario=='Administrador'}">
-                    <div class="div-boton">
-                        <h:link class="boton-input" outcome="/Views/Suministro/AgregarSuministro.xhtml">
-                            Nuevo
-                        </h:link>
-                    </div>
-                </h:panelGroup>
+
                 <f:view>
                     <h:form>
+                        <h:panelGroup >
+                            <div class="div-boton">
+                                <h:link class="boton-input" outcome="/Views/Suministro/AgregarSuministro.xhtml" rendered="#{loginOperario.permisoOperario=='Administrador'}">
+                                    Nuevo
+                                </h:link>
+                                <h:commandLink class="boton-input" style="margin-left: 2px" action="#{listadoSuministros.excelseaListado()}" immediate="true">
+                                    Exportar
+                                </h:commandLink>
+                            </div>
+                        </h:panelGroup>
+
                         <table>
                             <td><div class="label">Filtro: </div></td>
                             <td><h:inputText value="#{listadoSuministros.nombreSuministro}" >

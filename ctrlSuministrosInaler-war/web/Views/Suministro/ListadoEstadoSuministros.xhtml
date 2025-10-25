@@ -11,6 +11,13 @@
             <fieldset><legend>Estado Actual de Suministros</legend>
                 <f:view>
                     <h:form>
+                        <h:panelGroup >
+                            <div class="div-boton">
+                                <h:commandLink class="boton-input" style="margin-left: 2px" action="#{listadoEstadoSuministros.excelseaListado()}" immediate="true">
+                                    Exportar
+                                </h:commandLink>
+                            </div>
+                        </h:panelGroup>
                         <table>
                             <td>
                                 <div class="label">Filtro: </div>
