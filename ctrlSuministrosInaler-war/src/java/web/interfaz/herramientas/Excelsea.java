@@ -72,23 +72,30 @@ public class Excelsea {
 
     private final String[] encabezadosInfoIngresosSuministros = new String[]{
         "Lote",
-        "Fecha",
+        "Fecha Ingreso",
         "Factura",
         "Cantidad",
         "Unidad",
         "Vencimiento",
-        "Observaciones",
-        "Total Lote"
+        "Observaciones"
     };
 
     private final String[] encabezadosInfoSalidasSuministros = new String[]{
         "Lote",
-        "Fecha",
+        "Fecha Salida",
         "Cantidad",
         "Unidad",
         "Vencimiento",
-        "Observaciones",
-        "Total Lote"            
+        "Observaciones"
+    };
+
+    private final String[] encabezadosInfoMovimientosSuministros = new String[]{
+        "Lote",
+        "Vencimiento",
+        "Cantidad Ingreso",
+        "Cantidad Salida",
+        "Stock Lote",
+        "Unidad"
     };
 
     public Excelsea() {
@@ -168,6 +175,15 @@ public class Excelsea {
 
     }
 
+    private void CrearHojaLibroExcelMovimientos(Suministro suministro) {
+
+        Sheet sheet = workbook.createSheet("Movimientos");
+
+        CrearEncabezadosTabla(sheet, encabezadosInfoMovimientosSuministros);
+        CrearContenidoTablaMovimientos(sheet, suministro);
+
+    }
+
     private void ExportarLibroExcel(String tituloArchivo) {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -234,6 +250,16 @@ public class Excelsea {
         for (var lote : suministro.getLotesSuministros()) {
             if (!lote.getSalidasLote().isEmpty()) {
                 AgregarRegistroSalida(lote, hoja, numFila);
+            }
+        }
+    }
+
+    private void CrearContenidoTablaMovimientos(Sheet hoja, Suministro suministro) {
+        int[] numFila = new int[]{1};
+
+        for (var lote : suministro.getLotesSuministros()) {
+            if (!lote.getIngresosLote().isEmpty()) {
+                AgregarRegistroMovimiento(lote, hoja, numFila);
             }
         }
     }
@@ -374,15 +400,9 @@ public class Excelsea {
                 celda.setCellValue("");
             }
             celda.setCellStyle(estiloContenidoTablaFecha);
-            
+
             celda = getNextCelda(fila, columnaActual);
             celda.setCellValue(ingreso.getObservacionesIngreso());
-            
-            celda = getNextCelda(fila, columnaActual);
-            celda.setCellValue(String.valueOf(lote.getIngresosLote()
-                    .stream()
-                    .mapToDouble(in->(double)in.getCantidadIngreso()).sum())
-            );
             
             i++;
         } while (i < lote.getIngresosLote().size());
@@ -428,14 +448,43 @@ public class Excelsea {
             celda = getNextCelda(fila, columnaActual);
             celda.setCellValue(salida.getObservacionesSalida());
 
-            celda = getNextCelda(fila, columnaActual);
-            celda.setCellValue(String.valueOf(lote.getSalidasLote()
-                    .stream()
-                    .mapToDouble(in->(double)in.getCantidadSalida()).sum())
-            );
-            
             i++;
         } while (i < lote.getSalidasLote().size());
+    }
+
+    private void AgregarRegistroMovimiento(Lote lote, Sheet hoja, int[] numFila) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyy");
+        Cell celda = null;
+        Row fila = null;
+        int[] columnaActual;
+        // argg
+
+        columnaActual = new int[]{0};
+        fila = hoja.createRow(numFila[0]++);
+
+        celda = getNextCelda(fila, columnaActual);
+        celda.setCellValue(lote.getNumeroLote());
+
+        celda = getNextCelda(fila, columnaActual);
+        try {
+            celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
+        } catch (ParseException ex) {
+            celda.setCellValue("");
+        }
+        celda.setCellStyle(estiloContenidoTablaFecha);
+
+        celda = getNextCelda(fila, columnaActual);
+        celda.setCellValue(lote.getCantidadIngresosLote());
+
+        celda = getNextCelda(fila, columnaActual);
+        celda.setCellValue(lote.getCantidadSalidasLote());
+
+        celda = getNextCelda(fila, columnaActual);
+        celda.setCellValue(lote.getCantidadStock());
+
+        celda = getNextCelda(fila, columnaActual);
+        celda.setCellValue(String.valueOf(lote.getSuministroLote().getUnidadSuministro().getNombreUnidad()));
+
     }
 
     private Cell getNextCelda(Row fila, int[] columnaActual) {
@@ -447,6 +496,7 @@ public class Excelsea {
     public void ExportarLibroExcelInfo(Suministro suministro, String tituloArchivo) {
         CrearHojaLibroExcelIngresos(suministro);
         CrearHojaLibroExcelSalidas(suministro);
+        CrearHojaLibroExcelMovimientos(suministro);
         ExportarLibroExcel(tituloArchivo);
     }
 
