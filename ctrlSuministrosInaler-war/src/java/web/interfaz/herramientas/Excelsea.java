@@ -5,9 +5,14 @@
 package web.interfaz.herramientas;
 
 import com.dperez.inalerlab.suministro.Suministro;
+import com.dperez.inalerlab.suministro.lote.Ingreso;
+import com.dperez.inalerlab.suministro.lote.Lote;
+import com.dperez.inalerlab.suministro.lote.Salida;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +28,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import static web.interfaz.herramientas.TipoLibro.LISTADO_ESTADO_SUMINISTRO;
+import static web.interfaz.herramientas.TipoLibro.LISTADO_SUMINISTRO;
 
 /**
  *
@@ -34,6 +41,7 @@ public class Excelsea {
 
     private final CellStyle estiloEncabezadoTabla = workbook.createCellStyle();
     private final CellStyle estiloContenidoTabla = workbook.createCellStyle();
+    private final CellStyle estiloContenidoTablaFecha = workbook.createCellStyle();
     private final HSSFFont fuenteEncabezado = ((HSSFWorkbook) workbook).createFont();
     private final HSSFFont fuenteContenido = ((HSSFWorkbook) workbook).createFont();
 
@@ -62,6 +70,27 @@ public class Excelsea {
         "Estado"
     };
 
+    private final String[] encabezadosInfoIngresosSuministros = new String[]{
+        "Lote",
+        "Fecha",
+        "Factura",
+        "Cantidad",
+        "Unidad",
+        "Vencimiento",
+        "Observaciones",
+        "Total Lote"
+    };
+
+    private final String[] encabezadosInfoSalidasSuministros = new String[]{
+        "Lote",
+        "Fecha",
+        "Cantidad",
+        "Unidad",
+        "Vencimiento",
+        "Observaciones",
+        "Total Lote"            
+    };
+
     public Excelsea() {
 
         fuenteEncabezado.setFontName("Arial");
@@ -80,6 +109,9 @@ public class Excelsea {
         estiloContenidoTabla.setBottomBorderColor(IndexedColors.GREY_50_PERCENT.getIndex());
         estiloContenidoTabla.setShrinkToFit(true);
 
+        estiloContenidoTablaFecha.cloneStyleFrom(estiloContenidoTabla);
+        estiloContenidoTablaFecha.setDataFormat((short) 14);
+
         estiloEncabezadoTabla.cloneStyleFrom(estiloContenidoTabla);
         estiloEncabezadoTabla.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         estiloEncabezadoTabla.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -96,20 +128,50 @@ public class Excelsea {
 
     }
 
-    public void ExportarLibroExcel(List<Suministro> sumninistros, String tituloArchivo, boolean esListadoEstado) {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+    private void CrearHojaLibroExcel(List<Suministro> suministros, TipoLibro tipoDeLibro) {
 
         Sheet sheet = workbook.createSheet("Suministros");
 
-        if (esListadoEstado) {
-            CrearEncabezadosTabla(sheet, encabezadosEstadoSuministros);
-            CrearContenidoTabla(sheet, sumninistros, true);
-        } else {
-            CrearEncabezadosTabla(sheet, encabezadosListado);
-            CrearContenidoTabla(sheet, sumninistros, false);
+        switch (tipoDeLibro) {
+            case LISTADO_SUMINISTRO -> {
+                CrearEncabezadosTabla(sheet, encabezadosListado);
+                CrearContenidoTabla(sheet, suministros, false);
+            }
+
+            case LISTADO_ESTADO_SUMINISTRO -> {
+                CrearEncabezadosTabla(sheet, encabezadosEstadoSuministros);
+                CrearContenidoTabla(sheet, suministros, true);
+            }
+
+            default -> {
+
+            }
         }
+
+    }
+
+    private void CrearHojaLibroExcelIngresos(Suministro suministro) {
+
+        Sheet sheet = workbook.createSheet("Ingresos");
+
+        CrearEncabezadosTabla(sheet, encabezadosInfoIngresosSuministros);
+        CrearContenidoTablaIngresos(sheet, suministro);
+
+    }
+
+    private void CrearHojaLibroExcelSalidas(Suministro suministro) {
+
+        Sheet sheet = workbook.createSheet("Salidas");
+
+        CrearEncabezadosTabla(sheet, encabezadosInfoSalidasSuministros);
+        CrearContenidoTablaSalidas(sheet, suministro);
+
+    }
+
+    private void ExportarLibroExcel(String tituloArchivo) {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 
         try {
             response.setContentType("application/vnd.ms-excel");
@@ -156,11 +218,30 @@ public class Excelsea {
         }
     }
 
+    private void CrearContenidoTablaIngresos(Sheet hoja, Suministro suministro) {
+        int[] numFila = new int[]{1};
+
+        for (var lote : suministro.getLotesSuministros()) {
+            if (!lote.getIngresosLote().isEmpty()) {
+                AgregarRegistroIngreso(lote, hoja, numFila);
+            }
+        }
+    }
+
+    private void CrearContenidoTablaSalidas(Sheet hoja, Suministro suministro) {
+        int[] numFila = new int[]{1};
+
+        for (var lote : suministro.getLotesSuministros()) {
+            if (!lote.getSalidasLote().isEmpty()) {
+                AgregarRegistroSalida(lote, hoja, numFila);
+            }
+        }
+    }
+
     private void AgregarRegistro(Suministro suministro, Sheet hoja, int[] numFila) {
         Cell celda = null;
         Row fila = null;
         int[] columnaActual;
-        int i = 0;
         // argg
 
         columnaActual = new int[]{0};
@@ -209,7 +290,6 @@ public class Excelsea {
         Cell celda = null;
         Row fila = null;
         int[] columnaActual;
-        int i = 0;
         // argg
 
         columnaActual = new int[]{0};
@@ -233,9 +313,9 @@ public class Excelsea {
         celda.setCellValue(suministro.getProveedorSuministro().getNombreProveedor());
 
         celda = getNextCelda(fila, columnaActual);
-        if(suministro.getUltimoIngreso()!=null){
+        if (suministro.getUltimoIngreso() != null) {
             celda.setCellValue(String.valueOf(suministro.getUltimoIngreso().getCantidadIngreso()));
-        }else{
+        } else {
             celda.setCellValue("0");
         }
 
@@ -255,10 +335,123 @@ public class Excelsea {
         }
     }
 
+    private void AgregarRegistroIngreso(Lote lote, Sheet hoja, int[] numFila) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyy");
+        Cell celda = null;
+        Row fila = null;
+        int[] columnaActual;
+        int i = 0;
+        // argg
+        do {
+            columnaActual = new int[]{0};
+            fila = hoja.createRow(numFila[0]++);
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(lote.getNumeroLote());
+
+            celda = getNextCelda(fila, columnaActual);
+            Ingreso ingreso = lote.getIngresosLote().get(i);
+            try {
+                celda.setCellValue(df.parse(df.format(ingreso.getFechaIngreso())));
+            } catch (ParseException ex) {
+                celda.setCellValue("");
+            }
+            celda.setCellStyle(estiloContenidoTablaFecha);
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(ingreso.getNumeroFactura());
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(ingreso.getCantidadIngreso());
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(String.valueOf(lote.getSuministroLote().getUnidadSuministro().getNombreUnidad()));
+
+            celda = getNextCelda(fila, columnaActual);
+            try {
+                celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
+            } catch (ParseException ex) {
+                celda.setCellValue("");
+            }
+            celda.setCellStyle(estiloContenidoTablaFecha);
+            
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(ingreso.getObservacionesIngreso());
+            
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(String.valueOf(lote.getIngresosLote()
+                    .stream()
+                    .mapToDouble(in->(double)in.getCantidadIngreso()).sum())
+            );
+            
+            i++;
+        } while (i < lote.getIngresosLote().size());
+    }
+
+    private void AgregarRegistroSalida(Lote lote, Sheet hoja, int[] numFila) {
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyy");
+        Cell celda = null;
+        Row fila = null;
+        int[] columnaActual;
+        int i = 0;
+        // argg
+        do {
+            columnaActual = new int[]{0};
+            fila = hoja.createRow(numFila[0]++);
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(lote.getNumeroLote());
+
+            celda = getNextCelda(fila, columnaActual);
+            Salida salida = lote.getSalidasLote().get(i);
+            try {
+                celda.setCellValue(df.parse(df.format(salida.getFechaSalida())));
+            } catch (ParseException ex) {
+                celda.setCellValue("");
+            }
+            celda.setCellStyle(estiloContenidoTablaFecha);
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(salida.getCantidadSalida());
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(String.valueOf(lote.getSuministroLote().getUnidadSuministro().getNombreUnidad()));
+
+            celda = getNextCelda(fila, columnaActual);
+            try {
+                celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
+            } catch (ParseException ex) {
+                celda.setCellValue("");
+            }
+            celda.setCellStyle(estiloContenidoTablaFecha);
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(salida.getObservacionesSalida());
+
+            celda = getNextCelda(fila, columnaActual);
+            celda.setCellValue(String.valueOf(lote.getSalidasLote()
+                    .stream()
+                    .mapToDouble(in->(double)in.getCantidadSalida()).sum())
+            );
+            
+            i++;
+        } while (i < lote.getSalidasLote().size());
+    }
+
     private Cell getNextCelda(Row fila, int[] columnaActual) {
         Cell celda = fila.createCell(columnaActual[0]++);
         celda.setCellStyle(estiloContenidoTabla);
         return celda;
     }
 
+    public void ExportarLibroExcelInfo(Suministro suministro, String tituloArchivo) {
+        CrearHojaLibroExcelIngresos(suministro);
+        CrearHojaLibroExcelSalidas(suministro);
+        ExportarLibroExcel(tituloArchivo);
+    }
+
+    public void ExportarLibroExcelListado(List<Suministro> suministros, String tituloArchivo, TipoLibro tipo) {
+        CrearHojaLibroExcel(suministros, tipo);
+        ExportarLibroExcel(tituloArchivo);
+    }
 }

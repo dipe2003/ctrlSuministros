@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import web.interfaz.herramientas.Excelsea;
+import web.interfaz.herramientas.TipoLibro;
 
 
 @Named
@@ -66,7 +67,7 @@ public class ListadoEstadoSuministros implements Serializable{
     
     public void excelseaListado() {
         Excelsea excel = new Excelsea();
-        excel.ExportarLibroExcel(ListaSuministros, "Listado Estado Suministros", true);
+        excel.ExportarLibroExcelListado(ListaSuministros, "Listado Estado Suministros", TipoLibro.LISTADO_ESTADO_SUMINISTRO);
     }
     
 }

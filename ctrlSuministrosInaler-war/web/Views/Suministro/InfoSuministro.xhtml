@@ -8,10 +8,10 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="page_content">
         <div class="contenido">
-            <h:form id="form-info-suministro">
+            <h:form id="form-info-suministro">                
                 <fieldset>
                     <legend>#{infoSuministro.suministroSeleccionado.nombreSuministro} (#{infoSuministro.suministroSeleccionado.proveedorSuministro.nombreProveedor})</legend>
-                    
+
                     <div class="label">Descripcion</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.descripcionSuministro}"/></div><br/>
                     <div class="label">Codigo SAP</div> <div style="text-align: left;"><h:outputText class="output" value="#{infoSuministro.suministroSeleccionado.codigoSAPSuministro}"/></div><br/>
                     <div class="contenedor-5050" style="margin-left: -2%;">
@@ -38,6 +38,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <h:panelGroup >
+                        <div class="div-boton">
+                            <h:commandLink class="boton-input" style="margin-left: 2px" action="#{infoSuministro.excelseaInfoSuministro()}" immediate="true">
+                                Exportar
+                            </h:commandLink>
+                        </div>
+                    </h:panelGroup>
+
                     <fieldset>
                         <legend>Movimientos de Stock</legend>
                         <table>
@@ -57,8 +66,8 @@
                                 <c:when test="#{infoSuministro.lotesSuministro.size() == 0}">                                    
                                     <div class="div-output">No hay registros de movimientos con el filro seleccionado.</div>                                    
                                 </c:when>
-                                <c:otherwise>
-                                    
+                                <c:otherwise>                                    
+
                                     <div class="contenedor-5050">                            
                                         <div class="contenedor-60">
                                             <div class="label" style="width: 99%;margin-left: 0.5%;">Ingresos</div>                        
@@ -90,31 +99,31 @@
                                                                 <td class="div-output">
                                                                     <div>#{ingreso.cantidadIngreso}</div>
                                                                 </td>                                                                
-                                                                
+
                                                                 <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == true and ingreso.loteIngreso.cantidadStock gt 0}">
                                                                     <td class="div-output" style="background-color: red; color:whitesmoke;">
                                                                         <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
                                                                     </td>
                                                                 </h:panelGroup>                                                                        
-                                                                
+
                                                                 <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == false and ingreso.loteIngreso.cantidadStock gt 0}" >
                                                                     <td class="div-output" >
                                                                         <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
                                                                     </td>                                                                     
                                                                 </h:panelGroup>    
-                                                                
+
                                                                 <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == false and ingreso.loteIngreso.cantidadStock == 0}" >
                                                                     <td class="div-output" >
                                                                         <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
                                                                     </td>                                                                     
                                                                 </h:panelGroup>  
-                                                                
+
                                                                 <h:panelGroup rendered="#{ingreso.loteIngreso.vencido == true and ingreso.loteIngreso.cantidadStock == 0}" >
                                                                     <td class="div-output" >
                                                                         <div>#{ingreso.loteIngreso.strFechaVencimientoLote}</div>
                                                                     </td>                                                                     
                                                                 </h:panelGroup>                                                                
-                                                                
+
                                                                 <td class="div-output" >
                                                                     <div>#{ingreso.operarioIngresoSuministro.idOperario}</div>
                                                                 </td>
@@ -132,31 +141,31 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>Stock Lote:</td>
-                                                            
+
                                                             <h:panelGroup rendered="#{lot.vencido == true and lot.cantidadStock > 0}">
                                                                 <td class="div-output" style="background-color: red; color:whitesmoke;">
                                                                     <div>#{lot.cantidadStock}</div>                    
                                                                 </td>
                                                             </h:panelGroup>
-                                                            
+
                                                             <h:panelGroup rendered="#{lot.vencido == true and lot.cantidadStock == 0}">
                                                                 <td class="div-output" >
                                                                     <div>#{lot.cantidadStock}</div>
                                                                 </td>
                                                             </h:panelGroup>
-                                                            
+
                                                             <h:panelGroup rendered="#{lot.vencido == false and lot.cantidadStock == 0}">
                                                                 <td class="div-output" >
                                                                     <div>#{lot.cantidadStock}</div>
                                                                 </td>
                                                             </h:panelGroup>
-                                                            
+
                                                             <h:panelGroup rendered="#{lot.vencido == false and lot.cantidadStock gt 0}">
                                                                 <td class="div-output" >
                                                                     <div>#{lot.cantidadStock}</div>
                                                                 </td>
                                                             </h:panelGroup>
-                                                            
+
                                                             <td></td>
                                                             <c:if test="#{loginOperario.permisoOperario == 'Administrador'}" >
                                                                 <td></td>
@@ -166,7 +175,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        
+
                                         <div class="contenedor-40">
                                             <div class="label" style="width: 99%;margin-left: 0.5%;">Salidas</div>
                                             <table class="tabla-infoSuministro">
@@ -174,7 +183,7 @@
                                                 <th class="label" style="width: 10%">Cantidad</th> 
                                                 <th class="label" style="width: 20%">Operario</th>
                                                 <th class="label" style="width: 5%"></th>
-                                                
+
                                                 <c:forEach items="#{infoSuministro.lotesSuministro}" var="lote">
                                                     <c:forEach items="#{lote.salidasLote}" var="salida">
                                                         <tr>

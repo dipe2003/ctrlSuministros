@@ -14,6 +14,8 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import web.interfaz.herramientas.Excelsea;
+import web.interfaz.herramientas.TipoLibro;
 
 @Named
 @ViewScoped
@@ -55,5 +57,10 @@ public class InfoSuministro implements Serializable{
         SuministroSeleccionado = fSuministro.BuscarSuministro(id);
         LotesSuministrosSinFiltro = new ArrayList<>(SuministroSeleccionado.getLotesSuministros());
         cargarDatosLotes();
+    }
+    
+    public void excelseaInfoSuministro() {
+        Excelsea excel = new Excelsea();
+        excel.ExportarLibroExcelInfo(SuministroSeleccionado, "Movimientos " + SuministroSeleccionado.getNombreSuministro());
     }
 }
