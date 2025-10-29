@@ -380,8 +380,10 @@ public class Excelsea {
             try {
                 celda.setCellValue(df.parse(df.format(ingreso.getFechaIngreso())));
             } catch (ParseException ex) {
+            } catch (NullPointerException ex) {
                 celda.setCellValue("");
             }
+
             celda.setCellStyle(estiloContenidoTablaFecha);
 
             celda = getNextCelda(fila, columnaActual);
@@ -397,13 +399,14 @@ public class Excelsea {
             try {
                 celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
             } catch (ParseException ex) {
+            } catch (NullPointerException ex) {
                 celda.setCellValue("");
             }
             celda.setCellStyle(estiloContenidoTablaFecha);
 
             celda = getNextCelda(fila, columnaActual);
             celda.setCellValue(ingreso.getObservacionesIngreso());
-            
+
             i++;
         } while (i < lote.getIngresosLote().size());
     }
@@ -427,6 +430,7 @@ public class Excelsea {
             try {
                 celda.setCellValue(df.parse(df.format(salida.getFechaSalida())));
             } catch (ParseException ex) {
+            } catch (NullPointerException ex) {
                 celda.setCellValue("");
             }
             celda.setCellStyle(estiloContenidoTablaFecha);
@@ -441,6 +445,7 @@ public class Excelsea {
             try {
                 celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
             } catch (ParseException ex) {
+            } catch (NullPointerException ex) {
                 celda.setCellValue("");
             }
             celda.setCellStyle(estiloContenidoTablaFecha);
@@ -469,6 +474,7 @@ public class Excelsea {
         try {
             celda.setCellValue(df.parse(df.format(lote.getVencimientoLote())));
         } catch (ParseException ex) {
+        } catch (NullPointerException ex) {
             celda.setCellValue("");
         }
         celda.setCellStyle(estiloContenidoTablaFecha);
